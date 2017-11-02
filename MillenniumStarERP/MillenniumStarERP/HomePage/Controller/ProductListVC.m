@@ -62,7 +62,7 @@
 - (void)setIsRefresh:(BOOL)isRefresh{
     if (isRefresh) {
         _isRefresh = isRefresh;
-        [self.rightCollection.header beginRefreshing];
+        [self.rightCollection.mj_header beginRefreshing];
     }
 }
 
@@ -87,7 +87,7 @@
     [self setPopView];
     [self setupHeaderRefresh];
     [self creatNearNetView:^(BOOL isWifi) {
-        [self.rightCollection.header beginRefreshing];
+        [self.rightCollection.mj_header beginRefreshing];
     }];
 }
 
@@ -252,7 +252,7 @@
 - (void)changeTextFieKeyWord:(NSString *)searchWord{
     _searchFie.text = searchWord;
     _keyWord = searchWord;
-    [self.rightCollection.header beginRefreshing];
+    [self.rightCollection.mj_header beginRefreshing];
 }
 
 #pragma mark -- 创建侧滑菜单
@@ -270,7 +270,7 @@
         self.popClassView.seIndex = 0;
         _titleLab.text = @"全部";
         [self.backDict addEntriesFromDictionary:dict];
-        [self.rightCollection.header beginRefreshing];
+        [self.rightCollection.mj_header beginRefreshing];
     };
     [self.rightSideBar setContentViewInSideBar:slideTab];
     slideTab.rightSideBar = self.rightSideBar;
@@ -327,7 +327,7 @@
     classVc.values = self.values;
     classVc.listBack = ^(BOOL isYes){
         if (isYes) {
-            [self.rightCollection.header beginRefreshing];
+            [self.rightCollection.mj_header beginRefreshing];
         }
     };
     [self.navigationController pushViewController:classVc animated:YES];
@@ -369,8 +369,8 @@
     [header setTitle:@"用力往下拉我!!!" forState:MJRefreshStateIdle];
     [header setTitle:@"快放开我!!!" forState:MJRefreshStatePulling];
     [header setTitle:@"努力刷新中..." forState:MJRefreshStateRefreshing];
-    _rightCollection.header = header;
-    [self.rightCollection.header beginRefreshing];
+    _rightCollection.mj_header = header;
+    [self.rightCollection.mj_header beginRefreshing];
 }
 
 - (void)setupFootRefresh{
@@ -381,7 +381,7 @@
     [footer setTitle:@"上拉有惊喜" forState:MJRefreshStateIdle];
     [footer setTitle:@"好了，可以放松一下手指" forState:MJRefreshStatePulling];
     [footer setTitle:@"努力加载中，请稍候" forState:MJRefreshStateRefreshing];
-    _rightCollection.footer = footer;
+    _rightCollection.mj_footer = footer;
 }
 #pragma mark - MJRefresh
 - (void)headerRereshing{
@@ -422,8 +422,8 @@
     [SVProgressHUD show];
     NSString *url = [NSString stringWithFormat:@"%@modelListPage",baseUrl];
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        [self.rightCollection.header endRefreshing];
-        [self.rightCollection.footer endRefreshing];
+        [self.rightCollection.mj_header endRefreshing];
+        [self.rightCollection.mj_footer endRefreshing];
         if ([response.error intValue]==0) {
             [self setupFootRefresh];
             if ([YQObjectBool boolForObject:response.data]){
@@ -444,36 +444,36 @@
 - (void)setupDataWithData:(NSDictionary *)data{
     if([YQObjectBool boolForObject:data[@"searchValue"]]){
         self.values = [WeightInfo
-                       objectArrayWithKeyValuesArray:data[@"searchValue"]];
+                       mj_objectArrayWithKeyValuesArray:data[@"searchValue"]];
         self.slideRightTab.values = self.values;
     }
     if([YQObjectBool boolForObject:data[@"typeList"]]){
         self.slideRightTab.isTop = YES;
         self.slideRightTab.goods = [ScreeningInfo
-                              objectArrayWithKeyValuesArray:data[@"typeList"]];
+                              mj_objectArrayWithKeyValuesArray:data[@"typeList"]];
     }
     if([YQObjectBool boolForObject:data[@"customList"]]){
         self.popClassView.productList = [DetailTypeInfo
-                             objectArrayWithKeyValuesArray:data[@"customList"]];
+                             mj_objectArrayWithKeyValuesArray:data[@"customList"]];
     }
 }
 //初始化列表数据
 - (void)setupListDataWithDict:(NSDictionary *)data{
     if([YQObjectBool boolForObject:data[@"model"][@"modelList"]]){
-        self.rightCollection.footer.state = MJRefreshStateIdle;
+        self.rightCollection.mj_footer.state = MJRefreshStateIdle;
         curPage++;
         totalCount = [data[@"model"][@"list_count"]intValue];
-        NSArray *seaArr = [ProductInfo objectArrayWithKeyValuesArray:data[@"model"][@"modelList"]];
+        NSArray *seaArr = [ProductInfo mj_objectArrayWithKeyValuesArray:data[@"model"][@"modelList"]];
         [_dataArray addObjectsFromArray:seaArr];
         if(_dataArray.count>=totalCount){
-            MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.rightCollection.footer;
+            MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.rightCollection.mj_footer;
             [footer setTitle:@"没有更多了" forState:MJRefreshStateNoMoreData];
-            self.rightCollection.footer.state = MJRefreshStateNoMoreData;
+            self.rightCollection.mj_footer.state = MJRefreshStateNoMoreData;
         }
     }else{
-        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.rightCollection.footer;
+        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.rightCollection.mj_footer;
         [footer setTitle:@"暂时没有商品" forState:MJRefreshStateNoMoreData];
-        self.rightCollection.footer.state = MJRefreshStateNoMoreData;
+        self.rightCollection.mj_footer.state = MJRefreshStateNoMoreData;
     }
 }
 

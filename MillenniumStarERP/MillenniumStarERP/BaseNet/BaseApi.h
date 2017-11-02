@@ -10,19 +10,15 @@
 #import "BaseResponse.h"
 
 @interface BaseApi : NSObject
-/*登录页面接口
- */
-+ (void)getNoLogGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
+
++ (void)getNoGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
                      params:(NSMutableDictionary*)params;
-/*登录更新数据接口
- */
-+ (void)upData:(REQUEST_CALLBACK)callback URL:(NSString*)URL params:(NSMutableDictionary*)params;
++ (void)getNewVerData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
+               params:(NSMutableDictionary*)params;
 /*通用接口
  */
 + (void)getGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL params:(NSMutableDictionary*)params;
 + (void)postGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL params:(NSMutableDictionary*)params;
-+ (void)getNewVerData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
-               params:(NSMutableDictionary*)params;
 /*
 取消所有队列
  */

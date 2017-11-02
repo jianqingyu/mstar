@@ -341,7 +341,7 @@
     params[@"password"] = self.passWordFie.text;
     params[@"phoneCode"] = self.codeField.text;
     NSString *logUrl = [NSString stringWithFormat:@"%@userLoginDo",baseUrl];
-    [BaseApi getNoLogGeneralData:^(BaseResponse *response, NSError *error) {
+    [BaseApi getNoGeneralData:^(BaseResponse *response, NSError *error) {
         if (response !=nil&&[response.error intValue]==0) {
             params[@"tokenKey"] = response.data[@"tokenKey"];
             params[@"isNoShow"] = [AccountTool account].isNoShow;

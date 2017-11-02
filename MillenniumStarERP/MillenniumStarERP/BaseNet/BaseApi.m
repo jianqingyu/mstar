@@ -14,14 +14,14 @@
 @implementation BaseApi
 //自定义接口版本
 #define ApiVersion @"1.7"
-+ (void)getNoLogGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
++ (void)getNoGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
                 params:(NSMutableDictionary*)params{
     params[@"QxVersion"] = ApiVersion;
-    [[RequestClient sharedClient] GET:requestURL parameters:params success:^(NSURLSessionDataTask *operation, NSDictionary *responseObject) {
+    [[RequestClient sharedClient]GET:requestURL parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         BaseResponse*result = [self resultWithDic:responseObject];
         callback(result,nil);
         [SVProgressHUD dismiss];
-    } failure:^(NSURLSessionDataTask *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [MBProgressHUD showError:@"网络错误"];
         [SVProgressHUD dismiss];
         if(callback){
@@ -29,10 +29,11 @@
         }
     }];
 }
-//更新数据接口
-+ (void)upData:(REQUEST_CALLBACK)callback URL:(NSString*)URL params:(NSMutableDictionary*)params{
-    params[@"QxVersion"] = ApiVersion;
-    [[RequestClient sharedClient] GET:URL parameters:params success:^(NSURLSessionDataTask *operation, NSDictionary *responseObject) {
+/*版本检查接口
+ */
++ (void)getNewVerData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
+               params:(NSMutableDictionary*)params{
+    [[RequestClient sharedClient] GET:requestURL parameters:params progress:nil success:^(NSURLSessionDataTask *operation, id responseObject) {
         BaseResponse*result = [self resultWithDic:responseObject];
         callback(result,nil);
         [SVProgressHUD dismiss];
@@ -50,12 +51,12 @@
                                              params:(NSMutableDictionary*)params{
     params[@"QxVersion"] = ApiVersion;
 //    [OrderNumTool NSLoginWithStr:requestURL andDic:params];
-    [[RequestClient sharedClient] GET:requestURL parameters:params success:^(NSURLSessionDataTask *operation, NSDictionary *responseObject) {
+    [[RequestClient sharedClient] GET:requestURL parameters:params progress:nil success:^(NSURLSessionDataTask *operation, NSDictionary *responseObject) {
         if ([responseObject[@"error"] intValue]==2) {
             [MBProgressHUD showError:@"需要登录"];
-            [self gotoLoginView:callback requestURL:requestURL params:params];
+            [self showLoginView:callback requestURL:requestURL params:params];
             [SVProgressHUD dismiss];
-            return ;
+            return;
         }
         BaseResponse*result = [self resultWithDic:responseObject];
         callback(result,nil);
@@ -69,14 +70,14 @@
     }];
 }
 
-+ (void)gotoLoginView:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
++ (void)showLoginView:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
                params:(NSMutableDictionary*)params{
     UIViewController *vc = [ShowLoginViewTool getCurrentVC];
     LoginViewController *login = [LoginViewController new];
     login.noLogin = YES;
     login.back = ^(BOOL isYes){
         params[@"tokenKey"] = [AccountTool account].tokenKey;
-        [self getNoLogGeneralData:^(BaseResponse *response, NSError *error) {
+        [self getNoGeneralData:^(BaseResponse *response, NSError *error) {
             callback(response,nil);
         } requestURL:requestURL params:params];
     };
@@ -87,25 +88,9 @@
 + (void)postGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
                                             params:(NSMutableDictionary*)params{
     params[@"QxVersion"] = ApiVersion;
-    [[RequestClient sharedClient] POST:requestURL parameters:params success:^(NSURLSessionDataTask *operation, NSDictionary *responseObject) {
+    [[RequestClient sharedClient] POST:requestURL parameters:params progress:nil success:^(NSURLSessionDataTask *operation, NSDictionary *responseObject) {
         BaseResponse*result = [self resultWithDic:responseObject];
         callback(result,nil);
-    } failure:^(NSURLSessionDataTask *operation, NSError *error) {
-        [MBProgressHUD showError:@"网络错误"];
-        [SVProgressHUD dismiss];
-        if(callback){
-            callback(nil,error);
-        }
-    }];
-}
-/*版本检查接口
- */
-+ (void)getNewVerData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
-                 params:(NSMutableDictionary*)params{
-    [[RequestClient sharedClient] GET:requestURL parameters:params success:^(NSURLSessionDataTask *operation, id responseObject) {
-        BaseResponse*result = [self resultWithDic:responseObject];
-        callback(result,nil);
-        [SVProgressHUD dismiss];
     } failure:^(NSURLSessionDataTask *operation, NSError *error) {
         [MBProgressHUD showError:@"网络错误"];
         [SVProgressHUD dismiss];

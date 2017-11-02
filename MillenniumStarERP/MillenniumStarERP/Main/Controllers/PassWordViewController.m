@@ -115,7 +115,7 @@
 }
 //修改密码与忘记密码
 - (void)loadNetEditPassWithDic:(NSMutableDictionary*)params andUrl:(NSString *)passUrl{
-    [BaseApi getNoLogGeneralData:^(BaseResponse *response, NSError *error) {
+    [BaseApi getNoGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
             params[@"userName"] = [AccountTool account].userName;
             params[@"phoneCode"] = [AccountTool account].phone;
