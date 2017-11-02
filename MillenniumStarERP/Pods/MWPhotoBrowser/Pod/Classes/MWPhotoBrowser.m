@@ -1399,10 +1399,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 // If permanent then we don't set timers to hide again
 // Fades all controls on iOS 5 & 6, and iOS 7 controls slide and fade
 - (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated permanent:(BOOL)permanent {
-//    if (hidden) {
-//        [self.navigationController popViewControllerAnimated:YES];
-//        return;
-//    }
+    
     // Force visible
     if (![self numberOfPhotos] || _gridController || _alwaysShowControls)
         hidden = NO;
@@ -1533,14 +1530,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 - (BOOL)areControlsHidden { return (_toolbar.alpha == 0); }
 - (void)hideControls { [self setControlsHidden:YES animated:YES permanent:NO]; }
 - (void)showControls { [self setControlsHidden:NO animated:YES permanent:NO]; }
-//单击图片返回
-#pragma mark -- 自己修改代码 单击返回
-- (void)toggleControls {
-    [UIView animateWithDuration:0.2 animations:^{
-        [self.navigationController popViewControllerAnimated:YES];
-    }];
-//    [self setControlsHidden:![self areControlsHidden] animated:YES permanent:NO];
-}
+- (void)toggleControls { [self setControlsHidden:![self areControlsHidden] animated:YES permanent:NO]; }
 
 #pragma mark - Properties
 

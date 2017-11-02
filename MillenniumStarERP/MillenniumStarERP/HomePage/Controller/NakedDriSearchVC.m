@@ -64,7 +64,7 @@
 - (void)setIsRef:(BOOL)isRef{
     if (isRef) {
         _isRef = isRef;
-        [self.tableView.header beginRefreshing];
+        [self.tableView.mj_header beginRefreshing];
     }
 }
 
@@ -176,8 +176,8 @@
     [header setTitle:@"用力往下拉我!!!" forState:MJRefreshStateIdle];
     [header setTitle:@"快放开我!!!" forState:MJRefreshStatePulling];
     [header setTitle:@"努力刷新中..." forState:MJRefreshStateRefreshing];
-    _tableView.header = header;
-    [self.tableView.header beginRefreshing];
+    _tableView.mj_header = header;
+    [self.tableView.mj_header beginRefreshing];
 }
 
 - (void)setupFootRefresh{
@@ -188,7 +188,7 @@
     [footer setTitle:@"上拉有惊喜" forState:MJRefreshStateIdle];
     [footer setTitle:@"好了，可以放松一下手指" forState:MJRefreshStatePulling];
     [footer setTitle:@"努力加载中，请稍候" forState:MJRefreshStateRefreshing];
-    self.tableView.footer = footer;
+    self.tableView.mj_footer = footer;
 }
 #pragma mark - MJRefresh
 - (void)headerRereshing{
@@ -226,8 +226,8 @@
     self.view.userInteractionEnabled = NO;
     NSString *url = [NSString stringWithFormat:@"%@stoneList",baseUrl];
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        [self.tableView.header endRefreshing];
-        [self.tableView.footer endRefreshing];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
         if ([response.error intValue]==0) {
             [self setupFootRefresh];
             if ([YQObjectBool boolForObject:response.data]){
@@ -270,7 +270,7 @@
     NakedDriSeaHeadV *head = [[NakedDriSeaHeadV alloc]initWithFrame:frame];
     head.back = ^(NSString *mess){
         _sortStr = mess;
-        [self.tableView.header beginRefreshing];
+        [self.tableView.mj_header beginRefreshing];
     };
     head.topArr = arr;
     [self.backScr addSubview:head];
@@ -285,20 +285,20 @@
 //初始化列表数据
 - (void)setupListDataWithDict:(NSDictionary *)data{
     if([YQObjectBool boolForObject:data[@"stone"][@"list"]]){
-        self.tableView.footer.state = MJRefreshStateIdle;
+        self.tableView.mj_footer.state = MJRefreshStateIdle;
         curPage++;
         totalCount = [data[@"stone"][@"list_count"]intValue];
-        NSArray *seaArr = [NakedDriSeaListInfo objectArrayWithKeyValuesArray:data[@"stone"][@"list"]];
+        NSArray *seaArr = [NakedDriSeaListInfo mj_objectArrayWithKeyValuesArray:data[@"stone"][@"list"]];
         [_dataArray addObjectsFromArray:seaArr];
         if(_dataArray.count>=totalCount){
-            MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.tableView.footer;
+            MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.tableView.mj_footer;
             [footer setTitle:@"没有更多了" forState:MJRefreshStateNoMoreData];
-            self.tableView.footer.state = MJRefreshStateNoMoreData;
+            self.tableView.mj_footer.state = MJRefreshStateNoMoreData;
         }
     }else{
-        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.tableView.footer;
+        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.tableView.mj_footer;
         [footer setTitle:@"暂时没有商品" forState:MJRefreshStateNoMoreData];
-        self.tableView.footer.state = MJRefreshStateNoMoreData;
+        self.tableView.mj_footer.state = MJRefreshStateNoMoreData;
     }
 }
 

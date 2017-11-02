@@ -34,8 +34,6 @@
     _mTableView.delegate = self;
     _mTableView.dataSource = self;
     _mTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-//    _mTableView.rowHeight = UITableViewAutomaticDimension;
-//    _mTableView.estimatedRowHeight = 90;
     [self addSubview:_mTableView];
     [_mTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(0);
@@ -43,6 +41,11 @@
         make.right.equalTo(self).offset(0);
         make.bottom.equalTo(self).offset(-44);
     }];
+    if (@available(iOS 11.0, *)) {
+        _mTableView.estimatedRowHeight = 0;
+        _mTableView.estimatedSectionHeaderHeight = 0;
+        _mTableView.estimatedSectionFooterHeight = 0;
+    }
 }
 
 - (void)setTableHeadView:(ProduceOrderInfo *)info{

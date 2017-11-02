@@ -39,6 +39,10 @@
         make.bottom.equalTo(self.view).offset(-48);
         make.top.equalTo(self.view).offset(0);
     }];
+    if (@available(iOS 11.0, *)) {
+        self.addressTab.estimatedSectionHeaderHeight = 0;
+        self.addressTab.estimatedSectionFooterHeight = 0;
+    }
     self.addressTab.dataSource = self;
     self.addressTab.delegate = self;
     self.addressTab.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];

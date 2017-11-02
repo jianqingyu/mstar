@@ -11,6 +11,7 @@
 #import "ProductListVC.h"
 #import "EditUserInfoVC.h"
 #import "CustomerInfo.h"
+#import "OrderNumTool.h"
 #import "HYBLoopScrollView.h"
 #import "CusHauteCoutureView.h"
 #import "NakedDriLibViewController.h"
@@ -228,7 +229,7 @@
         }
     };
     // 当前顶层窗口
-    UIWindow *window = [[UIApplication sharedApplication].windows lastObject];
+    UIWindow *window = [OrderNumTool lastWindow];
     window.frame = CGRectMake(0, 0, SDevWidth, SDevHeight);
     window.backgroundColor = [UIColor clearColor];
     // 添加到窗口

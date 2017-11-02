@@ -10,7 +10,8 @@
 #import "StrWithIntTool.h"
 @implementation OrderNumTool
 
-+ (void)orderWithNum:(int)number andView:(UILabel *)sLab{
++ (void)orderWithNum:(int)number andView:(UILabel *)sLab
+{
     if (number>0&&number<=99) {
         sLab.text = [NSString stringWithFormat:@"%d",number];
         sLab.hidden = NO;
@@ -22,11 +23,13 @@
     }
 }
 
-+ (NSString *)strWithPrice:(float)price{
++ (NSString *)strWithPrice:(float)price
+{
     return [NSString stringWithFormat:@"￥%0.0f",price];
 }
 
-+ (void)NSLoginWithStr:(NSString *)str andDic:(NSDictionary *)dic{
++ (void)NSLoginWithStr:(NSString *)str andDic:(NSDictionary *)dic
+{
     NSMutableArray *mutA = @[].mutableCopy;
     [dic enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         NSString *str = [NSString stringWithFormat:@"%@=%@",key,obj];
@@ -34,6 +37,17 @@
     }];
     NSString *mes = [StrWithIntTool strWithArr:mutA With:@"&"];
     NSLog(@"%@?%@",str,mes);
+}
+
++ (UIWindow *)lastWindow
+{
+    NSArray *windows = [UIApplication sharedApplication].windows;
+    for(UIWindow *window in [windows reverseObjectEnumerator]) {
+        if ([window isKindOfClass:[UIWindow class]] &&
+            CGRectEqualToRect(window.bounds, [UIScreen mainScreen].bounds)&&[window isKindOfClass:NSClassFromString(@"UITextEffectsWindow")])
+            return window;
+    }
+    return [UIApplication sharedApplication].keyWindow;
 }
 
 @end

@@ -4,14 +4,13 @@
 # use_frameworks!
 
 target 'MillenniumStarERP' do
-     pod 'AFNetworking', '~> 2.5.4'
-     pod 'SDWebImage', '~> 3.7.3'
-     pod 'MJExtension', '~> 2.5.5'
-     pod 'SVProgressHUD', '~> 1.1.3'
-     pod 'MJRefresh', '~> 2.3.2'
-     pod 'MWPhotoBrowser', '~> 2.1.1'
-     pod 'Masonry', '~> 0.6.2'
-     pod 'ReactiveCocoa'
+     pod 'AFNetworking’
+     pod 'SDWebImage'
+     pod 'MJExtension'
+     pod 'SVProgressHUD'
+     pod 'MJRefresh'
+     pod 'MWPhotoBrowser'
+     pod 'Masonry'
 end
 
 target 'MillenniumStarERPTests' do

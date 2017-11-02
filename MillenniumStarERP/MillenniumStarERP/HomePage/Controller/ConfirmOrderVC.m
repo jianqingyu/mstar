@@ -148,6 +148,10 @@
         make.bottom.equalTo(self.view).offset(-50);
         make.right.equalTo(self.view).offset(0);
     }];
+    if (@available(iOS 11.0, *)) {
+        self.tableView.estimatedSectionHeaderHeight = 0;
+        self.tableView.estimatedSectionFooterHeight = 0;
+    }
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
 }
 

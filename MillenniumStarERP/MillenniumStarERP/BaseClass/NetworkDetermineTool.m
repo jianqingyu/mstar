@@ -13,7 +13,7 @@
 @implementation NetworkDetermineTool
 NetworkView *_networkView;
 + (void)isSView:(BOOL)isYes{
-    UIWindow *netWindow = [[UIApplication sharedApplication].windows lastObject];
+    UIWindow *netWindow = [[UIApplication sharedApplication].windows firstObject];
     netWindow.backgroundColor = [UIColor clearColor];
     _networkView = [NetworkView creatSmallNetView];
     _networkView.frame = CGRectMake(0, 64, SDevWidth, 44);

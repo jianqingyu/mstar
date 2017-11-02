@@ -78,6 +78,11 @@
         make.right.equalTo(self).offset(0);
         make.bottom.equalTo(self).offset(-50);
     }];
+    if (@available(iOS 11.0, *)) {
+        self.tableView.estimatedRowHeight = 0;
+        self.tableView.estimatedSectionHeaderHeight = 0;
+        self.tableView.estimatedSectionFooterHeight = 0;
+    }
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     
     UIButton *sureBtn = [self setB:@"查询" andS:88 andC:MAIN_COLOR];

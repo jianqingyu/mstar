@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 qxzx.com. All rights reserved.
 //
 
-#import "AFHTTPRequestOperationManager.h"
+#import "AFHTTPSessionManager.h"
 static NSString * const ROOT_URL = @"http://www.citypasswifi.com/api/";
-@interface RequestClient : AFHTTPRequestOperationManager
+@interface RequestClient : AFHTTPSessionManager
 + (instancetype)sharedClient;
-- (BOOL)checkNetwork:(AFHTTPRequestOperationManager*)manager;
+- (BOOL)checkNetwork:(AFHTTPSessionManager*)manager;
 @end

@@ -65,6 +65,12 @@
         make.right.equalTo(self.view).offset(0);
         make.bottom.equalTo(self.view).offset(0);
     }];
+    
+    if (@available(iOS 11.0, *)) {
+        self.tableView.estimatedRowHeight = 0;
+        self.tableView.estimatedSectionHeaderHeight = 0;
+        self.tableView.estimatedSectionFooterHeight = 0;
+    }
     // 9.0以上才有这个属性，针对ipad
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 9.0){
         self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
@@ -129,7 +135,7 @@
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
             if ([YQObjectBool boolForObject:response.data]) {
-                self.masterInfo = [MasterCountInfo objectWithKeyValues:response.data];
+                self.masterInfo = [MasterCountInfo mj_objectWithKeyValues:response.data];
                 if ([YQObjectBool boolForObject:response.data[@"headPic"]]) {
                     self.url = response.data[@"headPic"];
                 }

@@ -36,7 +36,7 @@
 }
 
 - (void)showFrom:(UIView *)from{
-    UIWindow *window = [[UIApplication sharedApplication].windows lastObject];
+    UIWindow *window = [[UIApplication sharedApplication].windows firstObject];
     [window addSubview:self];
     self.frame = window.bounds;
     //默认情况下,frame是以父控件左上角为坐标原点

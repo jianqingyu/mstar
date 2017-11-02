@@ -17,11 +17,11 @@
 + (void)getNoLogGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
                 params:(NSMutableDictionary*)params{
     params[@"QxVersion"] = ApiVersion;
-    [[RequestClient sharedClient] GET:requestURL parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+    [[RequestClient sharedClient] GET:requestURL parameters:params success:^(NSURLSessionDataTask *operation, NSDictionary *responseObject) {
         BaseResponse*result = [self resultWithDic:responseObject];
         callback(result,nil);
         [SVProgressHUD dismiss];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask *operation, NSError *error) {
         [MBProgressHUD showError:@"网络错误"];
         [SVProgressHUD dismiss];
         if(callback){
@@ -32,11 +32,11 @@
 //更新数据接口
 + (void)upData:(REQUEST_CALLBACK)callback URL:(NSString*)URL params:(NSMutableDictionary*)params{
     params[@"QxVersion"] = ApiVersion;
-    [[RequestClient sharedClient] GET:URL parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+    [[RequestClient sharedClient] GET:URL parameters:params success:^(NSURLSessionDataTask *operation, NSDictionary *responseObject) {
         BaseResponse*result = [self resultWithDic:responseObject];
         callback(result,nil);
         [SVProgressHUD dismiss];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask *operation, NSError *error) {
         [MBProgressHUD showError:@"网络错误"];
         [SVProgressHUD dismiss];
         if(callback){
@@ -50,7 +50,7 @@
                                              params:(NSMutableDictionary*)params{
     params[@"QxVersion"] = ApiVersion;
 //    [OrderNumTool NSLoginWithStr:requestURL andDic:params];
-    [[RequestClient sharedClient] GET:requestURL parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+    [[RequestClient sharedClient] GET:requestURL parameters:params success:^(NSURLSessionDataTask *operation, NSDictionary *responseObject) {
         if ([responseObject[@"error"] intValue]==2) {
             [MBProgressHUD showError:@"需要登录"];
             [self gotoLoginView:callback requestURL:requestURL params:params];
@@ -60,7 +60,7 @@
         BaseResponse*result = [self resultWithDic:responseObject];
         callback(result,nil);
         [SVProgressHUD dismiss];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask *operation, NSError *error) {
         [MBProgressHUD showError:@"网络错误"];
         [SVProgressHUD dismiss];
         if(callback){
@@ -87,10 +87,10 @@
 + (void)postGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
                                             params:(NSMutableDictionary*)params{
     params[@"QxVersion"] = ApiVersion;
-    [[RequestClient sharedClient] POST:requestURL parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+    [[RequestClient sharedClient] POST:requestURL parameters:params success:^(NSURLSessionDataTask *operation, NSDictionary *responseObject) {
         BaseResponse*result = [self resultWithDic:responseObject];
         callback(result,nil);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask *operation, NSError *error) {
         [MBProgressHUD showError:@"网络错误"];
         [SVProgressHUD dismiss];
         if(callback){
@@ -102,11 +102,11 @@
  */
 + (void)getNewVerData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
                  params:(NSMutableDictionary*)params{
-    [[RequestClient sharedClient] GET:requestURL parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[RequestClient sharedClient] GET:requestURL parameters:params success:^(NSURLSessionDataTask *operation, id responseObject) {
         BaseResponse*result = [self resultWithDic:responseObject];
         callback(result,nil);
         [SVProgressHUD dismiss];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask *operation, NSError *error) {
         [MBProgressHUD showError:@"网络错误"];
         [SVProgressHUD dismiss];
         if(callback){

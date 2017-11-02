@@ -22,7 +22,7 @@
     return _sharedClient;
 }
 
-- (BOOL)checkNetwork:(AFHTTPRequestOperationManager*)manager{
+- (BOOL)checkNetwork:(AFHTTPSessionManager*)manager{
     NSOperationQueue *operationQueue = manager.operationQueue;
     
     [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {

@@ -21,7 +21,6 @@
 #import "AFNetworking.h"
 #import "MJExtension.h"
 #import "AccountTool.h"
-#import "ReactiveCocoa.h"
 #import "MBProgressHUD+MJ.h"
 #import "MBProgressHUD.h"
 #import "MWPhotoBrowser.h"

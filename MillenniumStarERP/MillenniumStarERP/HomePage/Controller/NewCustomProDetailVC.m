@@ -262,6 +262,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 
 #pragma mark -- loadData 初始化数据
 - (void)setupDetailData{
+    [SVProgressHUD show];
     if (self.mutArr.count>0) {
         [self.mutArr removeAllObjects];
     }

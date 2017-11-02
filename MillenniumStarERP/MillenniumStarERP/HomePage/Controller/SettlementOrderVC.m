@@ -41,7 +41,11 @@
         make.right.equalTo(self.view).offset(0);
         make.bottom.equalTo(self.view).offset(0);
     }];
-    
+    if (@available(iOS 11.0, *)) {
+        self.settlementTab.estimatedRowHeight = 0;
+        self.settlementTab.estimatedSectionHeaderHeight = 0;
+        self.settlementTab.estimatedSectionFooterHeight = 0;
+    }
     self.settlementTab.backgroundColor = DefaultColor;
     UIView *headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SDevWidth, 130)];
     headV.backgroundColor = DefaultColor;
@@ -81,7 +85,7 @@
         if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
             if ([YQObjectBool boolForObject:response.data[@"recItem"]]) {
                 SettlementHeadInfo *info = [SettlementHeadInfo
-                                 objectWithKeyValues:response.data[@"recItem"]];
+                                 mj_objectWithKeyValues:response.data[@"recItem"]];
                 self.delHView.headInfo = info;
                 self.delFView.footInfo = info;
             }
@@ -96,7 +100,7 @@
 
 - (SettlementListInfo *)setData:(NSDictionary *)dict andStr:(NSString *)key{
     NSDictionary *dic = dict[key];
-    SettlementListInfo *sInfo = [SettlementListInfo objectWithKeyValues:dic];
+    SettlementListInfo *sInfo = [SettlementListInfo mj_objectWithKeyValues:dic];
     NSDictionary *par = @{key:dic};
     sInfo.list = [ArrayWithDict DateWithDict:par];
     return sInfo;

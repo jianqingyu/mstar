@@ -93,27 +93,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
 
-//- (void)addStoneWithDic:(NSDictionary *)data{
-//    CustomJewelInfo *CusInfo = [CustomJewelInfo objectWithKeyValues:data];
-//    NSArray *infoArr = @[@"钻石",CusInfo.jewelStoneWeight,@"圆形",CusInfo.jewelStoneColor,
-//                         CusInfo.jewelStonePurity];
-//    NSMutableArray *mutA = [NSMutableArray new];
-//    for (int i=0; i<5; i++) {
-//        DetailTypeInfo *info = [DetailTypeInfo new];
-//        info.id = 1;
-//        BOOL isNull = [infoArr[i] length]>0&&![infoArr[i] isEqualToString:@" "];
-//        NSString *title = isNull?infoArr[i]:@"默认";
-//        info.title = title;
-//        [mutA addObject:info];
-//    }
-//    self.driCode = CusInfo.jewelStoneCode;
-//    self.driPrice = CusInfo.jewelStonePrice;
-//    self.driId = CusInfo.jewelStoneId;
-//    self.proNum = @"1";
-//    [self.mutArr addObject:mutA];
-//    [self.tableView reloadData];
-//}
-
 - (void)orientChange:(NSNotification *)notification{
     self.textCView.frame = CGRectMake(0, 0, SDevWidth, SDevHeight);
     [self changeTableHeadView];
@@ -195,6 +174,7 @@
 
 #pragma mark -- loadData 初始化数据
 - (void)setupDetailData{
+    [SVProgressHUD show];
     self.nums = @[@"",@"",@"",@""].mutableCopy;
     self.bools = @[@YES,@NO,@NO,@NO].mutableCopy;
     if (self.mutArr.count>0) {

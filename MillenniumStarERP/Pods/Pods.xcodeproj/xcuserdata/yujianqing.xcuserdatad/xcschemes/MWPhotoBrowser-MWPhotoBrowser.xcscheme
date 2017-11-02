@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5813251FEA21E4AEE97385709F1912DE"
+               BlueprintIdentifier = "1B9891708D9F9B504F2482EDDB834F6C"
                BuildableName = "MWPhotoBrowser.bundle"
                BlueprintName = "MWPhotoBrowser-MWPhotoBrowser"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -47,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5813251FEA21E4AEE97385709F1912DE"
+            BlueprintIdentifier = "1B9891708D9F9B504F2482EDDB834F6C"
             BuildableName = "MWPhotoBrowser.bundle"
             BlueprintName = "MWPhotoBrowser-MWPhotoBrowser"
             ReferencedContainer = "container:Pods.xcodeproj">
@@ -62,15 +62,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5813251FEA21E4AEE97385709F1912DE"
-            BuildableName = "MWPhotoBrowser.bundle"
-            BlueprintName = "MWPhotoBrowser-MWPhotoBrowser"
-            ReferencedContainer = "container:Pods.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

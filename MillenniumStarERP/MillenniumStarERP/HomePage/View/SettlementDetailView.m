@@ -46,6 +46,13 @@
         make.right.equalTo(self).offset(0); 
         make.bottom.equalTo(self).offset(0);
     }];
+    
+    if (@available(iOS 11.0, *)) {
+        _mTableView.estimatedRowHeight = 0;
+        _mTableView.estimatedSectionHeaderHeight = 0;
+        _mTableView.estimatedSectionFooterHeight = 0;
+    }
+    
     StorageDataTool *data = [StorageDataTool shared];
     if (data.isMain) {
         UIView *head = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SDevWidth, 44)];

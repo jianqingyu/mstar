@@ -8,7 +8,7 @@
 
 #import "HYBLoadImageView.h"
 #import "UIImageView+AFNetworking.h"
-#import "AFHTTPRequestOperationManager.h"
+#import "AFHTTPSessionManager.h"
 #import "HYBLoopScrollView.h"
 
 #define kImageWithName(Name) ([UIImage imageNamed:Name])
@@ -178,15 +178,14 @@
 
 - (void)downloadWithReqeust:(NSURLRequest *)theRequest holder:(UIImage *)holder {
   __weak typeof(self) welfSelf = self;
-  UIImage *cachedImage = [[[self class] sharedImageCache] cachedImageForRequest:theRequest];
-  if (cachedImage) {
-    [self setImage:cachedImage isFromCache:YES];
-    if (self.completion) {
-      self.completion(cachedImage);
-    }
-    return;
-  }
-  
+//  UIImage *cachedImage = [[[self class] sharedImageCache] cachedImageForRequest:theRequest];
+//  if (cachedImage) {
+//    [self setImage:cachedImage isFromCache:YES];
+//    if (self.completion) {
+//      self.completion(cachedImage);
+//    }
+//    return;
+//  }
   [self setImageWithURLRequest:theRequest
               placeholderImage:holder
                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
