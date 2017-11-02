@@ -1,0 +1,179 @@
+//
+//  ScreeningRightView.m
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/20.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import "ScreeningRightView.h"
+#import "CDRTranslucentSideBar.h"
+#import "PopViewMultipleCell.h"
+#import "ScreeningInfo.h"
+#import "ScreeningTableCell.h"
+#import "ScreeningHeadSView.h"
+#import "StrWithIntTool.h"
+#import "ScreenDetailInfo.h"
+@interface ScreeningRightView()<UITableViewDataSource,UITableViewDelegate>{
+    UITableView*_sildeTableView;
+    NSMutableArray*_imgBtns;
+}
+@end
+@implementation ScreeningRightView
+
+- (id)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setBaseView:frame];
+    }
+    return self;
+}
+
+- (void)setBaseView:(CGRect)frame{
+    _imgBtns = [NSMutableArray new];
+    CGRect tabFrame = frame;
+    tabFrame.origin.x = 0;
+    tabFrame.size.height = frame.size.height-40;
+    _sildeTableView = [[UITableView alloc]initWithFrame:tabFrame
+                                            style:UITableViewStyleGrouped];
+    _sildeTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+    _sildeTableView.delegate = self;
+    _sildeTableView.dataSource = self;
+    _sildeTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    _dictB = @{}.mutableCopy;
+    [self addSubview:_sildeTableView];
+    self.backgroundColor = [UIColor whiteColor];
+    UIButton *sureBtn = [self createBtnTitle:@"确定" andse:@selector(btnClick)
+                                                           andColor:MAIN_COLOR];
+    [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self).offset(0);
+        make.height.mas_equalTo(@40);
+        make.bottom.equalTo(self).offset(0);
+        make.width.mas_equalTo(@(frame.size.width/2));
+    }];
+    UIButton *cancelBtn = [self createBtnTitle:@"重置筛选" andse:@selector(cancelClick)
+                                                andColor:CUSTOM_COLOR(242, 140, 42)];
+    [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(sureBtn.mas_right).offset(0);
+        make.height.mas_equalTo(@40);
+        make.bottom.equalTo(self).offset(0);
+        make.right.equalTo(self).offset(0);
+    }];
+}
+
+- (UIButton *)createBtnTitle:(NSString *)title andse:(SEL)tag
+             andColor:(UIColor *)color{
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setTitle:title forState:UIControlStateNormal];
+    [btn setBackgroundColor:color];
+    [btn addTarget:self action:tag forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:btn];
+    return btn;
+}
+
+- (void)btnClick{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    for (ScreeningInfo *info in self.goods) {
+        params[info.groupKey] = @[].mutableCopy;
+    }
+    for (ScreeningInfo *info in self.goods) {
+        NSMutableArray *mutA = params[info.groupKey];
+        for (ScreenDetailInfo *dInfo in info.attributeList) {
+            if (dInfo.isSelect) {
+                [mutA addObject:dInfo.value];
+            }
+        }
+    }
+    [params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if ([obj count]>0) {
+            params[key] = [StrWithIntTool strWithArr:obj];
+        }else{
+            [params removeObjectForKey:key];
+        }
+    }];
+    [_dictB addEntriesFromDictionary:params];
+    if (self.tableBack) {
+        self.tableBack(_dictB,params.count);
+    }
+    if (self.rightSideBar) {
+        [self.rightSideBar dismiss];
+    }
+}
+
+- (void)cancelClick{
+    [_sildeTableView reloadData];
+    if (self.tableBack) {
+        self.tableBack(@{},NO);
+    }
+    if (self.rightSideBar) {
+        [self.rightSideBar dismiss];
+    }
+}
+
+- (void)setGoods:(NSArray *)goods{
+    if (goods.count>0) {
+        _goods = goods;
+        [_dictB removeAllObjects];
+        [_sildeTableView reloadData];
+    }
+}
+#pragma mark - UITableViewDelegate
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return self.goods.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ScreeningInfo * sInfo = self.goods[indexPath.section];
+    NSInteger total = sInfo.attributeList.count;
+    NSInteger rows = (total / COLUMN) + ((total % COLUMN) > 0 ? 1 : 0);
+    if (!sInfo.mulSelect) {
+        rows = rows+1;
+    }
+    CGFloat height = (float)ROWHEIHT * rows + ROWSPACE * (rows + 1);
+    return sInfo.isOpen?0:height;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    ScreeningInfo * sInfo = self.goods[section];
+    ScreeningHeadSView *headView = [[ScreeningHeadSView alloc]initWithFrame:CGRectMake(0, 0, SDevWidth*0.8, 40) WithIdx:section andTitle:sInfo.title];
+    headView.didScreenWithIndex = ^(NSInteger index){
+        ScreeningInfo *info = self.goods[index];
+        info.isOpen = !info.isOpen;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:index];
+        [_sildeTableView reloadRowsAtIndexPaths:@[indexPath]
+                               withRowAnimation:UITableViewRowAnimationNone];
+    };
+    return headView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 0.01f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 44.0f;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ScreeningInfo *info = self.goods[indexPath.section];
+    ScreeningTableCell *mulCell = [ScreeningTableCell cellWithTableView:tableView];
+    mulCell.info = info;
+    mulCell.clickblock = ^(id dict){
+        if ([dict isKindOfClass:[NSString class]]&&self.tableBack) {
+            _dictB[info.groupKey] = dict;
+        }
+    };
+    return mulCell;
+}
+
+@end

@@ -1,0 +1,95 @@
+//
+//  ChooseAddressTableCell.m
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/10/24.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import "ChooseAddressTableCell.h"
+
+@implementation ChooseAddressTableCell
+
++ (instancetype)cellWithTableView:(UITableView *)tableView{
+    static NSString *Id = @"chooseCell";
+    ChooseAddressTableCell *cell = [tableView dequeueReusableCellWithIdentifier:Id];
+    if (cell == nil) {
+        cell = [[ChooseAddressTableCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:Id];
+    }
+    return cell;
+}
+/**
+ *  一个cell只会调用一次
+ */
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        [self setupBtn];
+        self.nameLabel = [self labelWithFont:16 andColor:[UIColor blackColor]];
+        self.phoneLabel = [self labelWithFont:16 andColor:[UIColor blackColor]];
+        self.addressLabel = [self labelWithFont:14 andColor:[UIColor lightGrayColor]];
+        self.addressLabel.numberOfLines = 0;
+    }
+    return self;
+}
+
+- (void)setupBtn{
+    self.defaultBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.defaultBtn setTitle:@"默认" forState:UIControlStateNormal];
+    [self.defaultBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.defaultBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+    self.defaultBtn.backgroundColor = MAIN_COLOR;
+    self.defaultBtn.layer.cornerRadius = 1.0;
+    self.defaultBtn.clipsToBounds = YES;
+    [self.contentView addSubview:self.defaultBtn];
+}
+
+- (UILabel *)labelWithFont:(CGFloat)font andColor:(UIColor *)color{
+    UILabel *label = [[UILabel alloc]init];
+    label.font = [UIFont systemFontOfSize:font];
+    label.textColor = color;
+    [self.contentView addSubview:label];
+    return label;
+}
+/**
+ *  赋值的时候给它坐标
+ */
+- (void)setUserAddInfo:(AddressInfo *)userAddInfo{
+    _userAddInfo = userAddInfo;
+    self.nameLabel.text = _userAddInfo.name;
+    self.phoneLabel.text = _userAddInfo.phone;
+    self.addressLabel.text = _userAddInfo.addr;
+    CGFloat nameX = 20;
+    CGRect rect = CGRectMake(0, 0, SDevWidth-2*nameX, 999);
+    rect = [self.addressLabel textRectForBounds:rect limitedToNumberOfLines:0];
+    
+    if (userAddInfo.isDefault == YES) {
+        self.defaultBtn.hidden = NO;
+        self.defaultBtn.y = 15;
+        self.defaultBtn.width = 32;
+        self.defaultBtn.height = 18;
+        self.defaultBtn.x = nameX;
+        nameX = CGRectGetMaxX(self.defaultBtn.frame)+10;
+    }else{
+        self.defaultBtn.hidden = YES;
+    }
+    self.nameLabel.y = 15;
+    self.nameLabel.width = 48;
+    self.nameLabel.height = 22;
+    self.nameLabel.x = nameX;
+    
+    self.phoneLabel.y = 15;
+    self.phoneLabel.width = 200;
+    self.phoneLabel.height = 22;
+    self.phoneLabel.x = CGRectGetMaxX(self.nameLabel.frame)+15;
+    
+    self.addressLabel.x = 20;
+    self.addressLabel.y = CGRectGetMaxY(self.nameLabel.frame) + 5;
+    self.addressLabel.size = rect.size;
+    
+    CGRect bounds = self.bounds;
+    bounds.size.height = CGRectGetMaxY(self.addressLabel.frame) + 15;
+    self.bounds = bounds;
+}
+
+@end

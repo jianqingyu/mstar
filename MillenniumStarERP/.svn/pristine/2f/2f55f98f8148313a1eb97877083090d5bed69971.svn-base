@@ -1,0 +1,23 @@
+//
+//  ConfirmOrdCell.h
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/14.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "OrderListInfo.h"
+@class ConfirmOrdCell;
+//1.定义协议 命名:类名+Delegate
+@protocol ConfirmOrdCellDelegate <NSObject>
+//方法的命名:尽量体现发消息的时机
+//方法的参数:第一参数是委托方自己,后面的参数可以为委托方发给代理方的辅助信息
+- (void)btnCellClick:(ConfirmOrdCell *)headView
+        andIndex:(NSInteger)index;
+@end
+@interface ConfirmOrdCell : UITableViewCell
++ (id)cellWithTableView:(UITableView *)tableView;
+@property (nonatomic,strong)OrderListInfo *listInfo;
+@property(nonatomic,weak)id<ConfirmOrdCellDelegate> delegate;
+@end

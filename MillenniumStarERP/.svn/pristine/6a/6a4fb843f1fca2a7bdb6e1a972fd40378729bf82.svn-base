@@ -1,0 +1,140 @@
+#define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;//安全self
+#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
+#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+#define DEFAULT_BACKGROUND_COLOR [UIColor colorWithRed:237/255.0f green:238/255.0f blue:239/255.0f alpha:1]
+#define IS_IOS7 ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
+#define IS_IOS8 ([[UIDevice currentDevice].systemVersion doubleValue] >= 8.0)
+#define DF_IOS7 (IS_IOS7*20)
+//判断系统版本
+#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+
+#define IS_OS_5_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0)
+#define IS_OS_6_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0)
+#define IS_OS_7_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+
+//判断字符串是否为空
+#define IS_String_nil(v)                                 (v = (v != nil) ? v : @"")
+//判断NSNumber是否为空
+#define IS_Number_nil(v)                        (v = (v != nil) ? v : [NSNumber numberWithInt:0])
+//判断是否是字符串
+#define IS_String(v)                                 (v = ([v isKindOfClass:[NSString class]]) ? v : [NSString stringWithFormat:@"%@",v])
+
+#define MAIN_COLOR [UIColor colorWithRed:244/255.0f green:43/255.0f blue:56/255.0f alpha:1]
+#define CUSTOM_COLOR(a,b,c) [UIColor colorWithRed:a/255.0f green:b/255.0f blue:c/255.0f alpha:1]
+#define CUSTOM_COLOR_ALPHA(a,b,c,d) [UIColor colorWithRed:a/255.0f green:b/255.0f blue:c/255.0f alpha:d]
+#define DF_View_BaseColor self.view.backgroundColor = DF_Color_BaseColor;
+#define MianScreenBounds [[UIScreen mainScreen] bounds]
+
+#define VIEW_WIDTH self.view.frame.size.width
+#define VIEW_HEIGHT self.view.frame.size.height-64
+#define DF_nowheight(a) (a.frame.origin.y + a.frame.size.height)
+#define DF_nowwidth(a) (a.frame.origin.x + a.frame.size.width)
+#define DF_View_changeFrame_width(view,width) view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, width, view.frame.size.height)
+#define DF_View_changeFrame_height(view,height) view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, height)
+#define DF_View_chageFrame_y(view,y) view.frame = CGRectMake(view.frame.origin.x, y, view.frame.size.width, view.frame.size.height)
+
+#define DF_NSLogFrame(a) NSLog(@"%f,%f  %f,%f",a.frame.origin.x,a.frame.origin.y,a.frame.size.width,a.frame.size.height)
+
+#define BASE_APP AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
+#define IS_Dic(a) (a && [a isKindOfClass:[NSDictionary class]])
+#define IS_Array(a) (a && [a isKindOfClass:[NSArray class]] && a.count)
+
+#define Set_ImageURL(a) [imageview sd_setImageWithURL:[NSURL URLWithString:[HOST stringByAppendingString:photoUrl]]];
+#define UDF_default NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults]
+
+#define REQUEST_CALLBACK void (^)(BaseResponse *response, NSError *error)
+
+//new
+
+#define App AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate
+#define Defs  [NSUserDefaults standardUserDefaults]
+#define HomeDir [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"]
+
+//<<<---  屏幕适配相关
+#define IsPhone ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
+#define iOS7 [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0
+#define SDevWidth  [UIScreen mainScreen].bounds.size.width
+#define SDevHeight  [UIScreen mainScreen].bounds.size.height
+#define DevWidth  (IsPhone ? [UIScreen mainScreen].bounds.size.width:[UIScreen mainScreen].bounds.size.height)
+#define DevHeight  (IsPhone ?[UIScreen mainScreen].bounds.size.height:[UIScreen mainScreen].bounds.size.width)
+#define IS_6PLUS (IsPhone && [[UIScreen mainScreen] bounds].size.height >= 736.0)
+#define IS_RETINA ([[UIScreen mainScreen] scale] >= 2.0)
+
+//<<<--- DataBase相关
+#define DBPath [HomeDir stringByAppendingString:@"/Data.sqlite"]
+#define DB [FMDatabase databaseWithPath:DBPath]
+//--->>>
+
+#define CURRENT_LANAGES  @"CURRENT_LANAGES"
+#define SAVE_INFO_TO_LOCAL @"SAVE_INFO_TO_LOCAL"
+#define STAY_SINGED_IN @"STAY_SINGED_IN"
+#define USER_NAME @"USER_NAME"
+#define PASSWORD @"PASSWORD"
+
+#define LAUNCHIMG_SLEEP_TIME 1.0f
+#define CHINESE @"zh-Hans"
+#define ENGLISH @"en"
+#define ECLocalizedString(key,mytable) [[ECLocalizableController bundle] localizedStringForKey:(key) value:(key) table:(mytable)]
+#define MYTABLE @"InfoPlist"
+#define kRequestTimeOutInterval 10
+#define SERVER_REQUEST_ERROR 1000000
+#define SHOWALERTVIEW(msg)   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];[alertView show];
+#define DefaultColor [UIColor colorWithRed:239/255.0 green:239/255.0 blue:245/246.0 alpha:1]
+#define DefaultYellowColor [UIColor colorWithRed:201/255.0 green:171/255.0 blue:120/255.0 alpha:1]
+#define RGBColor(r,g,b) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
+//基础信息
+#define baseUrl @"http://appapi.fanerweb.com/api/aproxy/"
+//个人信息
+#define registUrl @"http://120.24.60.156:8080/HqCMI/regist.html"
+#define loginUrl @"http://120.24.60.156:8080/HqCMI/login.html"
+#define forPassWordUrl @"http://120.24.60.156:8080/HqCMI/updatePassword.html"
+#define getUDataUrl @"http://120.24.60.156:8080/HqCMI/getUserData.html"
+#define upUdataUrl @"http://120.24.60.156:8080/HqCMI/updateUser.html"
+#define getCodeUrl @"http://120.24.60.156:8080/HqCMI/checkCode.html"
+#define checkCodeUrl @"http://120.24.60.156:8080/HqCMI/checkCode.html"
+//初始化数据
+#define caseInitUrl @"http://120.24.60.156:8080/HqCMI/initData.html"
+//案件
+#define caseReportUrl @"http://120.24.60.156:8080/HqCMI/case/reportCase.html"
+#define caseListUrl @"http://120.24.60.156:8080/HqCMI/case/getCaseList.html"
+#define caseDetailUrl @"http://120.24.60.156:8080/HqCMI/case/getCaseDetail.html"
+#define caseSysUrl @"http://120.24.60.156:8080/HqCMI/case/sysnCase.html"
+//账户信息
+#define userCountUrl @"http://120.24.60.156:8080/HqCMI//count/getUserCount.html"
+#define userCountDetailUrl @"http://120.24.60.156:8080/HqCMI//count/getCountList.html"
+
+#define WeiXinPay @"http://www.fanershop.com/mobile/api/payment/wxpay/redirect_uri.php"//微信支付网址
+/**选择地址通知名字*/
+#define NotificationName @"NotificationChangeCity"
+#define UserInfoName @"userinfoCityName"
+/**管理地址通知*/
+#define NotificationCaseType @"NotificationManagerCaseType"
+#define UserInfoCaseType @"UserinfoManagerCaseType"
+/**用户登录信息通知*/
+#define NotificationUserName @"NotificationUserName"
+/**用户登录信息通知*/
+#define NotificationPaySuccess @"NotificationPaySuccess"
+/**选择代金券通知*/
+#define NotificationVouchName @"NotificationVouchName"
+#define UserInfoVouchName @"UserinfoVouchName"
+//默认图片
+#define DefaultImage  [UIImage imageNamed:@"anios"]
+//分页请求相关
+#define DefaultPage  1
+#define DefaultPageNum  10
+typedef enum{
+    UIImageSplitType80 = 80,
+    UIImageSplitType160 = 160,
+    UIImageSplitType480 = 480,
+    UIImageSplitType640 = 640
+} UIImageSplitType;
+
+typedef enum{
+    DPstarViewAlignTypeRight = 0,
+    DPstarViewAlignTypeLeft
+} DPstarViewAlignType;

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment version="2048" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="NetworkView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Al-X6-ZAb">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_wifi_small" translatesAutoresizingMaskIntoConstraints="NO" id="fuA-Gb-yNJ">
+                            <rect key="frame" x="20" y="12" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="jqj-hi-h4i"/>
+                                <constraint firstAttribute="width" constant="20" id="sMI-8O-0Ac"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="网络请求失败，请检查您的网络设置" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IsK-Ie-YdO">
+                            <rect key="frame" x="48" y="14" width="224" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="95Y-Zb-k3I">
+                            <rect key="frame" x="280" y="12" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="7Qw-wj-E4A"/>
+                                <constraint firstAttribute="width" constant="20" id="nqa-yh-BRq"/>
+                            </constraints>
+                            <state key="normal" image="icon_right">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ll3-mr-ZIE">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="gotoCLick:" destination="iN0-l3-epB" eventType="touchUpInside" id="AUq-ep-RTe"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="0cP-9e-ODT"/>
+                        <constraint firstItem="95Y-Zb-k3I" firstAttribute="centerY" secondItem="8Al-X6-ZAb" secondAttribute="centerY" id="0xX-io-tKf"/>
+                        <constraint firstItem="IsK-Ie-YdO" firstAttribute="centerY" secondItem="8Al-X6-ZAb" secondAttribute="centerY" id="Ecm-dC-yxN"/>
+                        <constraint firstItem="IsK-Ie-YdO" firstAttribute="centerX" secondItem="8Al-X6-ZAb" secondAttribute="centerX" id="NCX-z2-q0A"/>
+                        <constraint firstItem="fuA-Gb-yNJ" firstAttribute="centerY" secondItem="8Al-X6-ZAb" secondAttribute="centerY" id="VkH-Ti-IBQ"/>
+                        <constraint firstItem="Ll3-mr-ZIE" firstAttribute="leading" secondItem="8Al-X6-ZAb" secondAttribute="leading" id="fz8-JX-d7j"/>
+                        <constraint firstAttribute="bottom" secondItem="Ll3-mr-ZIE" secondAttribute="bottom" id="gCT-38-ywj"/>
+                        <constraint firstAttribute="trailing" secondItem="95Y-Zb-k3I" secondAttribute="trailing" constant="20" id="kb0-WG-cER"/>
+                        <constraint firstItem="Ll3-mr-ZIE" firstAttribute="top" secondItem="8Al-X6-ZAb" secondAttribute="top" id="sGA-UJ-sDf"/>
+                        <constraint firstItem="fuA-Gb-yNJ" firstAttribute="leading" secondItem="8Al-X6-ZAb" secondAttribute="leading" constant="20" id="v8i-cW-dKu"/>
+                        <constraint firstAttribute="trailing" secondItem="Ll3-mr-ZIE" secondAttribute="trailing" id="zHy-vU-PrD"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="8Al-X6-ZAb" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="8mw-9p-Cpn"/>
+                <constraint firstAttribute="trailing" secondItem="8Al-X6-ZAb" secondAttribute="trailing" id="ID2-M3-Sxc"/>
+                <constraint firstItem="8Al-X6-ZAb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="z2A-GP-F1F"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="478" y="339"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_right" width="9" height="16"/>
+        <image name="icon_wifi_small" width="17" height="17"/>
+    </resources>
+</document>

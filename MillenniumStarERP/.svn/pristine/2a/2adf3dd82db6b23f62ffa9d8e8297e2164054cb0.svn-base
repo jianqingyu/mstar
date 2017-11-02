@@ -1,0 +1,345 @@
+//
+//  CustomProDetailVC.m
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/13.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import "CustomProDetailVC.h"
+#import "CustomFirstCell.h"
+#import "CustomProCell.h"
+#import "CustomLastCell.h"
+#import "CusDetailHeadView.h"
+#import "ConfirmOrderVC.h"
+#import "DetailTypeInfo.h"
+#import "CustomPopView.h"
+#import "DetailModel.h"
+#import "DetailTypeInfo.h"
+#import "StrWithIntTool.h"
+#import "RemarkPopView.h"
+#import "OrderListInfo.h"
+@interface CustomProDetailVC ()<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic,  weak) IBOutlet UITableView *tableView;
+@property (nonatomic,  weak) IBOutlet UIButton *lookBtn;
+@property (nonatomic,  weak) IBOutlet UIButton *addBtn;
+@property (nonatomic,  weak)CustomFirstCell *firCell;
+@property (nonatomic,  weak)CustomLastCell *lasCell;
+@property (nonatomic,  copy)NSArray *typeArr;
+@property (nonatomic,  copy)NSArray *typeSArr;
+@property (nonatomic,  copy)NSArray*stoneArr;
+@property (nonatomic,  copy)NSArray*chooseArr;
+@property (nonatomic,  copy)NSArray*detailArr;
+@property (nonatomic,  strong)NSMutableArray*nums;
+@property (nonatomic,  strong)NSMutableArray*YesArr;
+@property (nonatomic,  strong)DetailModel *modelInfo;
+@property (nonatomic,  strong)CustomPopView *popView;
+@property (nonatomic,  strong)RemarkPopView *remarkPopView;
+@end
+
+@implementation CustomProDetailVC
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"定制信息";
+    if (self.isEdit) {
+        [self.lookBtn setTitle:@"取消" forState:UIControlStateNormal];
+        [self.addBtn setTitle:@"确定" forState:UIControlStateNormal];
+    }
+    self.typeArr = @[@"主石",@"副石A",@"副石B",@"副石C"];
+    self.typeSArr = @[@"stone",@"stoneA",@"stoneB",@"stoneC"];
+    self.nums = [NSMutableArray new];
+    self.YesArr = @[@0,@0,@0,@0].mutableCopy;
+    [self setupPopView];
+    [self setupRemarkPopView];
+    [self setupDetailData];
+    [self creatNearNetView:^(BOOL isWifi) {
+        [self setupDetailData];
+    }];
+}
+#pragma mark -- loadData
+- (void)setupDetailData{
+    [SVProgressHUD show];
+    NSString *detail = self.isEdit?@"ModelDetailPageForCurrentOrderEditPage":@"ModelDetailPage";
+    NSString *regiUrl = [NSString stringWithFormat:@"%@%@",baseUrl,detail];
+    NSString *proId = self.isEdit?@"itemId":@"id";
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    params[proId] = @(_proId);
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            if ([response.data[@"goldenPrice"]count]>0&&response.data[@"model"]) {
+                self.modelInfo = [DetailModel objectWithKeyValues:response.data[@"model"]];
+                self.stoneArr = @[self.modelInfo.stone,self.modelInfo.stoneA,
+                                  self.modelInfo.stoneB,self.modelInfo.stoneC];
+                self.detailArr = @[[self arrWithDict:self.modelInfo.stone],
+                                   [self arrWithDict:self.modelInfo.stoneA],
+                                   [self arrWithDict:self.modelInfo.stoneB],
+                                   [self arrWithDict:self.modelInfo.stoneC]];
+                [self creatChooseViewWith:response.data[@"goldenPrice"]];
+                [self.tableView reloadData];
+            }
+            if ([response.data[@"stoneType"]count]>0) {
+                self.chooseArr = @[response.data[@"stoneType"],
+                                   response.data[@"stoneSpec"],
+                                   response.data[@"stoneShape"],
+                                   response.data[@"stoneColor"],
+                                   response.data[@"stonePurity"]];
+            }
+            if ([response.data[@"remarks"]count]>0) {
+                self.remarkPopView.typeList = response.data[@"remarks"];
+            }
+        }
+        [SVProgressHUD dismiss];
+    } requestURL:regiUrl params:params];
+}
+#pragma mark -- CustomPopView
+- (void)setupPopView{
+    CustomPopView *popV = [[CustomPopView alloc]initWithFrame:
+                           CGRectMake(0, 0, SDevWidth, SDevHeight)];
+    popV.popBack = ^(id dict){
+        [self chooseType:dict];
+    };
+    self.popView = popV;
+}
+
+- (NSMutableArray *)arrWithDict:(NSDictionary *)dict{
+    DetailTypeInfo *in1 = [DetailTypeInfo new];
+    if ([dict[@"typeTitle"]length]>0) {
+        in1.id = [dict[@"typeId"]intValue];
+        in1.title = dict[@"typeTitle"];
+    }
+    DetailTypeInfo *in2 = [DetailTypeInfo new];
+    if ([dict[@"specTitle"]length]>0) {
+        in2.id = [dict[@"specId"]intValue];
+        in2.title = dict[@"specTitle"];
+    }
+    DetailTypeInfo *in3 = [DetailTypeInfo new];
+    if ([dict[@"shapeTitle"]length]>0) {
+        in3.id = [dict[@"shapeId"]intValue];
+        in3.title = dict[@"shapeTitle"];
+    }
+    DetailTypeInfo *in4 = [DetailTypeInfo new];
+    if ([dict[@"colorTitle"]length]>0) {
+        in4.id = [dict[@"colorId"]intValue];
+        in4.title = dict[@"colorTitle"];
+    }
+    DetailTypeInfo *in5 = [DetailTypeInfo new];
+    if ([dict[@"purityTitle"]length]>0) {
+        in5.id = [dict[@"purityId"]intValue];
+        in5.title = dict[@"purityTitle"];
+    }
+    return @[in1,in2,in3,in4,in5].mutableCopy;
+}
+
+- (void)chooseType:(NSDictionary *)dict{
+    NSIndexPath *path = [dict allKeys][0];
+    DetailTypeInfo *info = [dict allValues][0];
+    NSMutableArray *arr = self.detailArr[path.section];
+    [arr setObject:info atIndexedSubscript:path.row];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:path.section+1 inSection:0];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    if ([self boolWithArr:arr]) {
+        [self.YesArr setObject:@1 atIndexedSubscript:path.section];
+    }
+    if ([self boolWithNOArr:arr]&&![self boolWithArr:arr]) {
+        [self.YesArr setObject:@2 atIndexedSubscript:path.section];
+    }
+}
+//一个石头里面的数据是否齐全
+- (BOOL)boolWithArr:(NSArray *)arr{
+    for (DetailTypeInfo *info in arr) {
+        if (info.title.length==0) {
+            return NO;
+        }
+    }
+    return YES;
+}
+//一个石头里面的数据是否不齐全
+- (BOOL)boolWithNOArr:(NSArray *)arr{
+    for (DetailTypeInfo *info in arr) {
+        if (info.title.length!=0) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)creatChooseViewWith:(NSArray *)arr{
+    NSMutableArray *mutArr = @[].mutableCopy;
+    for (NSDictionary*dict in arr) {
+        NSString *str = [NSString stringWithFormat:@"%@  %@",
+                                                 dict[@"title"],dict[@"price"]];
+        [mutArr addObject:str];
+    }
+    NSMutableArray *mutPic = @[].mutableCopy;
+    for (NSDictionary*dict in self.modelInfo.pics) {
+        NSString *str = dict[@"pic"];
+        [mutPic addObject:str];
+    }
+    UIView *headView = [[UIView alloc]init];
+    CusDetailHeadView *view = [CusDetailHeadView creatCustomDeHeadView];
+    view.titleLab.text = self.modelInfo.title;
+     view.ptLab.text = mutArr[0];
+     view.priceLab.text = mutArr[1];
+    view.photos = mutPic;
+    
+    headView.frame = CGRectMake(0, 0, SDevWidth, view.height+10);
+    view.frame = CGRectMake(0, 0, SDevWidth, view.height);
+    [headView addSubview:view];
+    self.tableView.tableHeaderView = headView;
+    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+}
+#pragma mark -- RemarkPopView
+- (void)setupRemarkPopView{
+    RemarkPopView *popV = [[RemarkPopView alloc]initWithFrame:
+                           CGRectMake(0, 0, SDevWidth, SDevHeight)];
+    popV.popBack = ^(id message){
+        self.lasCell.textView.text = [NSString stringWithFormat:@"%@%@",
+                                            self.lasCell.textView.text,message];
+    };
+    self.remarkPopView = popV;
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.popView removeFromSuperview];
+    [self.remarkPopView removeFromSuperview];
+    [self.tableView resignFirstResponder];
+}
+
+#pragma mark -- UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 6;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    CGFloat height = 90;
+    if (indexPath.row==5) {
+        height = 120;
+    }
+    return height;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row==0) {
+        CustomFirstCell *firstCell = [CustomFirstCell cellWithTableView:tableView];
+        [firstCell.btn setTitle:self.modelInfo.categoryTitle forState:UIControlStateNormal];
+        self.firCell = firstCell;
+        return firstCell;
+    }else if (indexPath.row==5){
+        CustomLastCell *lastCell = [CustomLastCell cellWithTableView:tableView];
+        self.lasCell = lastCell;
+        [lastCell.btn addTarget:self action:@selector(openRemark:) forControlEvents:UIControlEventTouchUpInside];
+        return lastCell;
+    }else{
+        CustomProCell *proCell = [CustomProCell cellWithTableView:tableView];
+        NSDictionary *dict = self.stoneArr[indexPath.row-1];
+        if ([dict[@"num"]isKindOfClass:[NSString class]]) {
+            proCell.numFie.text = dict[@"num"];
+        }
+        if (self.nums.count<4) {
+            [self.nums addObject:proCell];
+        }else{
+            [self.nums setObject:proCell atIndexedSubscript:indexPath.row-1];
+        }
+        proCell.list = self.detailArr[indexPath.row-1];
+        proCell.titleLab.text = self.typeArr[indexPath.row-1];
+        proCell.tableBack = ^(NSInteger index){
+            NSIndexPath *inPath = [NSIndexPath indexPathForRow:index inSection:indexPath.row-1];
+            [self openPopTableWithInPath:inPath];
+        };
+        return proCell;
+    }
+}
+
+- (void)openPopTableWithInPath:(NSIndexPath *)inPath{
+    NSArray *dictArr = self.chooseArr[inPath.row];
+    self.popView.typeList = dictArr;
+    self.popView.section = inPath;
+    [self.view addSubview:self.popView];
+}
+
+- (void)openRemark:(id)sender{
+    [self.view addSubview:self.remarkPopView];
+}
+
+- (IBAction)lookOrder:(id)sender {
+    if (self.isEdit) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+    ConfirmOrderVC *orderVC = [ConfirmOrderVC new];
+    [self.navigationController pushViewController:orderVC animated:YES];
+}
+#pragma mark -- 提交订单
+- (IBAction)addOrder:(id)sender {
+    if (self.firCell.fie1.text.length==0||self.firCell.fie2.text.length==0) {
+        [MBProgressHUD showError:@"请选择件数或者手寸"];
+        return;
+    }
+    NSMutableArray *numArr = @[].mutableCopy;
+    for (CustomProCell *proCell in self.nums) {
+        [numArr addObject:proCell.numFie.text];
+    }
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    for (int i=0; i<numArr.count; i++) {
+        NSMutableArray *arr = self.detailArr[i];
+        BOOL isAdd = ([self.YesArr[i]intValue]==1)||
+                         ([self.YesArr[i]intValue]==0&&[self boolWithArr:arr]);
+        if (isAdd) {
+            NSMutableArray *mutA = @[].mutableCopy;
+            for (DetailTypeInfo *info in arr) {
+                [mutA addObject:@(info.id)];
+            }
+            [mutA addObject:numArr[i]];
+            NSString *str = [StrWithIntTool strWithIntArr:mutA];
+            params[self.typeSArr[i]] = str;
+        }else if ([self.YesArr[i]intValue]==2){
+            [MBProgressHUD showError:@"请选择类型"];
+            return;
+        }
+    }
+    [self addOrderLoadData:params];
+}
+
+- (void)addOrderLoadData:(NSMutableDictionary *)params{
+    NSString *detail = self.isEdit?@"OrderCurrentEditModelItemDo"
+                                            :@"OrderDoCurrentModelItemDo";
+    NSString *regiUrl = [NSString stringWithFormat:@"%@%@",baseUrl,detail];
+    NSString *proId = self.isEdit?@"itemId":@"productId";
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    params[proId] = @(self.proId);
+    params[@"number"] = self.firCell.fie1.text;
+    params[@"handSize"] = self.firCell.fie2.text;
+    if (!self.isEdit) {
+        params[@"categoryId"] = @(self.modelInfo.categoryId);
+    }
+    if (_qualityId&&_colorId) {
+        params[@"qualityId"] = @(_qualityId);
+        params[@"purityId"] = @(_colorId);
+    }
+    if (self.lasCell.textView.text.length>0) {
+        params[@"remarks"] = self.lasCell.textView.text;
+    }
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            if (self.isEdit) {
+                OrderListInfo *listI = [OrderListInfo objectWithKeyValues:response.data];
+                if (self.orderBack) {
+                    self.orderBack(listI);
+                }
+                [self.navigationController popViewControllerAnimated:YES];
+                return;
+            }
+            [MBProgressHUD showSuccess:@"添加订单成功"];
+        }else{
+            [MBProgressHUD showError:response.message];
+        }
+    }requestURL:regiUrl params:params];
+}
+
+@end

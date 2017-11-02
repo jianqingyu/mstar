@@ -1,0 +1,147 @@
+//
+//  CusTomLoginView.m
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/11/3.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import "CusTomLoginView.h"
+@interface CusTomLoginView()
+@property (weak, nonatomic) IBOutlet UITextField *nameFie;
+@property (weak, nonatomic) IBOutlet UITextField *passWordFie;
+@property (weak, nonatomic) IBOutlet UITextField *keyField;
+@property (weak, nonatomic) IBOutlet UIView *loginView;
+@property (weak, nonatomic) IBOutlet UIButton *loginBtn;
+@property (weak, nonatomic) IBOutlet UIButton *codeBtn;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *logWid;
+@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *lines;
+@property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *lineHeights;
+@property (nonatomic, assign) int clockNum;
+@property (nonatomic, assign) BOOL m_isNeedQuit;
+@property (nonatomic,   copy) NSString *code;
+@end
+
+@implementation CusTomLoginView
+
++ (CusTomLoginView *)createLoginView{
+    static CusTomLoginView *_loginView = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _loginView = [[CusTomLoginView alloc]init];
+    });
+    return _loginView;
+}
+
+- (id)init{
+    self = [super init];
+    if (self) {
+        self = [[NSBundle mainBundle]loadNibNamed:
+                               @"CusTomLoginView" owner:nil options:nil][0];
+        [self setupBaseView];
+    }
+    return self;
+}
+
+- (void)setupBaseView{
+    self.clockNum = 60;
+    NSString *name = [AccountTool account].userName;
+    NSString *password = [AccountTool account].password;
+    _nameFie.text = name;
+    _passWordFie.text = password;
+    [_nameFie setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_passWordFie setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_keyField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    
+    self.loginView.layer.cornerRadius = 5;
+    self.loginView.layer.masksToBounds = YES;
+    self.codeBtn.layer.cornerRadius = 5;
+    self.loginView.layer.masksToBounds = YES;
+    self.loginBtn.layer.cornerRadius = 5;
+    self.loginBtn.layer.masksToBounds = YES;
+    for (NSLayoutConstraint *wid in self.lineHeights) {
+        wid.constant = SDevHeight *10/640;
+    }
+    self.logWid.constant = SDevWidth *220/320;
+    for (UIView *line in self.lines) {
+        CAGradientLayer *layer = [CAGradientLayer new];
+        layer.colors = @[(__bridge id)[UIColor blackColor].CGColor,
+                         (__bridge id)[UIColor lightGrayColor].CGColor,
+                         (__bridge id)[UIColor blackColor].CGColor];
+        layer.startPoint = CGPointMake(0, 0);
+        layer.endPoint = CGPointMake(1, 0);
+        layer.frame = (CGRect){CGPointZero, CGSizeMake(SDevWidth *220/320, 0.8)};
+        [line.layer addSublayer:layer];
+    }
+}
+
+- (IBAction)getCode:(UIButton *)btn {
+    //发送命令
+    [self requestCheckWord];
+    self.m_isNeedQuit = NO;
+    //获取短信验证码
+    [self performSelector:@selector(changeStatus) withObject:self afterDelay:1.0];
+}
+
+- (void)requestCheckWord{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"pageType"] = @"SEND";
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            self.code = response.message;
+        }
+    } requestURL:getCodeUrl params:params];
+}
+
+- (void)changeStatus{
+    self.clockNum --;
+    if (self.clockNum != 0)
+    {
+        self.codeBtn.enabled = NO;
+        [self.codeBtn setTitle:[NSString stringWithFormat:@"%ds后获取", self.clockNum]
+                      forState:UIControlStateDisabled];
+    }else{
+        self.codeBtn.enabled = YES;
+        [self.codeBtn setTitle:[NSString stringWithFormat:@"获取验证码"]
+                      forState:UIControlStateNormal];
+        self.m_isNeedQuit = YES;
+        self.clockNum = 60;
+    }
+    if (!self.m_isNeedQuit)
+    {
+        [self performSelector:@selector(changeStatus) withObject:self afterDelay:1.0];
+    }
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.nameFie resignFirstResponder];
+    [self.keyField resignFirstResponder];
+    [self.passWordFie resignFirstResponder];
+}
+
+- (IBAction)loginClick:(id)sender {
+    [self.nameFie resignFirstResponder];
+    [self.keyField resignFirstResponder];
+    [self.passWordFie resignFirstResponder];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"userName"] = self.nameFie.text;
+    params[@"password"] = self.passWordFie.text;
+    params[@"phoneCode"] = @"123456";
+    [BaseApi login:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            params[@"tokenKey"] = response.data[@"tokenKey"];
+            Account *account = [Account accountWithDict:params];
+            //自定义类型存储用NSKeyedArchiver
+            [AccountTool saveAccount:account];
+            [self removeFromSuperview];
+            if (self.btnBack) {
+                self.btnBack(YES);
+            }
+        }else{
+            NSString *str = response.message?response.message:@"登录失败";
+            SHOWALERTVIEW(str);
+        }
+    } params:params];
+}
+
+@end

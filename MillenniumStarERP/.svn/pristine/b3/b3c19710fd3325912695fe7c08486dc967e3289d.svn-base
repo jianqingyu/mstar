@@ -1,0 +1,15 @@
+//
+//  AppDelegate.h
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/5.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+typedef void (^DelegateNetBack)(BOOL isSel);
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@property (strong, nonatomic) UIWindow *window;
+@property (nonatomic,copy)DelegateNetBack loadBack;
+@end
+

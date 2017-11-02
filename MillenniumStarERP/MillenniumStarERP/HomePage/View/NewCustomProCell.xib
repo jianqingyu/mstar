@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="NewCustomProCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="主石" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="LZX-yx-kUG">
+                        <rect key="frame" x="72" y="15" width="30" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="800" verticalCompressionResistancePriority="800" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r95-x5-kV4">
+                        <rect key="frame" x="262" y="16" width="48" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <state key="normal" title="封石" image="icon_select4">
+                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <state key="disabled" title=" " image="icon_right"/>
+                        <state key="selected" title="封石" image="icon_select3"/>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="主   石" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rZY-X1-Hip">
+                        <rect key="frame" x="15" y="16" width="42" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Hb-Bc-okg">
+                        <rect key="frame" x="15" y="48" width="305" height="1"/>
+                        <color key="backgroundColor" red="0.92941176469999998" green="0.92156862750000001" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="YmT-qb-HIz"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ViZ-qD-T0z">
+                        <rect key="frame" x="110" y="15" width="100" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="BUJ-fa-aLS"/>
+                            <constraint firstAttribute="width" constant="100" id="dTQ-VG-IRu"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <state key="normal" title="添加主石" image="icon_+">
+                            <color key="titleColor" red="0.94509803920000002" green="0.16862745100000001" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="r95-x5-kV4" secondAttribute="trailing" constant="10" id="1Sz-v8-mmo"/>
+                    <constraint firstItem="LZX-yx-kUG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="21c-6h-GVb"/>
+                    <constraint firstAttribute="bottom" secondItem="6Hb-Bc-okg" secondAttribute="bottom" id="DwJ-l3-NqJ"/>
+                    <constraint firstItem="ViZ-qD-T0z" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="E5f-CB-bVw"/>
+                    <constraint firstItem="6Hb-Bc-okg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="G9f-k6-Nn4"/>
+                    <constraint firstAttribute="trailing" secondItem="6Hb-Bc-okg" secondAttribute="trailing" id="GAb-7z-85h"/>
+                    <constraint firstItem="rZY-X1-Hip" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="V3a-6n-7SJ"/>
+                    <constraint firstItem="ViZ-qD-T0z" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="VqK-ea-t04"/>
+                    <constraint firstItem="LZX-yx-kUG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="72" id="feJ-YZ-Pzs"/>
+                    <constraint firstItem="r95-x5-kV4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LZX-yx-kUG" secondAttribute="trailing" priority="900" constant="15" id="s7F-ZG-qk8"/>
+                    <constraint firstItem="LZX-yx-kUG" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="sxa-vm-aoN"/>
+                    <constraint firstItem="rZY-X1-Hip" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="xAW-pO-F1X"/>
+                    <constraint firstItem="r95-x5-kV4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="xWm-Fx-SiH"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="addBtn" destination="ViZ-qD-T0z" id="lDP-Vo-EZD"/>
+                <outlet property="infoLab" destination="LZX-yx-kUG" id="Cfb-Ai-qKB"/>
+                <outlet property="nextBtn" destination="r95-x5-kV4" id="Ecm-np-L2L"/>
+                <outlet property="titleLab" destination="rZY-X1-Hip" id="7Ln-cR-43r"/>
+            </connections>
+            <point key="canvasLocation" x="565" y="324"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="icon_+" width="17" height="17"/>
+        <image name="icon_right" width="9" height="16"/>
+        <image name="icon_select3" width="20" height="16"/>
+        <image name="icon_select4" width="20" height="16"/>
+    </resources>
+</document>

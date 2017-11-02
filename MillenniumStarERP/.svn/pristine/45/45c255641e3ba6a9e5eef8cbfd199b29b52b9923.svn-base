@@ -1,0 +1,18 @@
+//
+//  CusDetailHeadView.h
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/14.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+@interface CusDetailHeadView : UIView
+@property (nonatomic,strong)NSArray *photos;
+@property (nonatomic,strong)UILabel *titleLab;
+@property (nonatomic,strong)UILabel *priceLab;
+@property (nonatomic,strong)UILabel *ptLab;
+@property (nonatomic,assign)CGFloat height;
+@property (nonatomic,copy) void (^ClickDrilBlock)(NSUInteger index);
++ (id)creatCustomDeHeadView;
+@end

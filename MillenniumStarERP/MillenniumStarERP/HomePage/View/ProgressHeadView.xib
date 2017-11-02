@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment version="2048" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ProgressHeadView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="98"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="订单编号：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zkg-gT-e4F">
+                    <rect key="frame" x="15" y="10" width="75" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂无数据" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dk1-df-TKH">
+                    <rect key="frame" x="90" y="10" width="60" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="确认日期：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="697-7D-6kd">
+                    <rect key="frame" x="15" y="34" width="75" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂无数据" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LBg-d2-DTW">
+                    <rect key="frame" x="90" y="34" width="60" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xzu-re-SP6">
+                    <rect key="frame" x="15" y="57" width="290" height="36"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂无数据" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sht-N7-Qdv">
+                            <rect key="frame" x="0.0" y="9" width="290" height="18"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="sht-N7-Qdv" firstAttribute="leading" secondItem="xzu-re-SP6" secondAttribute="leading" id="MVI-RD-o4a"/>
+                        <constraint firstItem="sht-N7-Qdv" firstAttribute="centerY" secondItem="xzu-re-SP6" secondAttribute="centerY" id="Wls-Ph-FFF"/>
+                        <constraint firstAttribute="trailing" secondItem="sht-N7-Qdv" secondAttribute="trailing" priority="750" id="jE5-aF-ui6"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Dk1-df-TKH" firstAttribute="centerY" secondItem="Zkg-gT-e4F" secondAttribute="centerY" id="7fo-fT-1Bb"/>
+                <constraint firstItem="LBg-d2-DTW" firstAttribute="leading" secondItem="697-7D-6kd" secondAttribute="trailing" id="Ndo-rT-Edr"/>
+                <constraint firstItem="xzu-re-SP6" firstAttribute="leading" secondItem="Zkg-gT-e4F" secondAttribute="leading" id="QQd-vf-ggz"/>
+                <constraint firstItem="697-7D-6kd" firstAttribute="leading" secondItem="Zkg-gT-e4F" secondAttribute="leading" id="Qfu-1v-bmf"/>
+                <constraint firstItem="Zkg-gT-e4F" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="RTN-cr-rBq"/>
+                <constraint firstItem="Dk1-df-TKH" firstAttribute="leading" secondItem="Zkg-gT-e4F" secondAttribute="trailing" id="Ubw-ZS-Spu"/>
+                <constraint firstAttribute="bottom" secondItem="xzu-re-SP6" secondAttribute="bottom" constant="5" id="cEf-GF-e46"/>
+                <constraint firstItem="697-7D-6kd" firstAttribute="top" secondItem="Zkg-gT-e4F" secondAttribute="bottom" constant="6" id="dKY-5J-LSX"/>
+                <constraint firstAttribute="trailing" secondItem="xzu-re-SP6" secondAttribute="trailing" priority="750" constant="15" id="jGX-9s-Raf"/>
+                <constraint firstItem="xzu-re-SP6" firstAttribute="top" secondItem="LBg-d2-DTW" secondAttribute="bottom" constant="5" id="kPn-c5-Twa"/>
+                <constraint firstItem="Zkg-gT-e4F" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="qjr-ed-U7I"/>
+                <constraint firstItem="LBg-d2-DTW" firstAttribute="centerY" secondItem="697-7D-6kd" secondAttribute="centerY" id="smd-pV-SD3"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="conDataLab" destination="LBg-d2-DTW" id="KKF-eL-2nt"/>
+                <outlet property="orderLab" destination="Dk1-df-TKH" id="91i-tc-WXu"/>
+                <outlet property="otherLab" destination="sht-N7-Qdv" id="Lrl-ls-QwK"/>
+            </connections>
+            <point key="canvasLocation" x="517" y="268"/>
+        </view>
+    </objects>
+</document>

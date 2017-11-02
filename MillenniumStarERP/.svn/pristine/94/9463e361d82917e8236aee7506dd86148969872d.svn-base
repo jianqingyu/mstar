@@ -1,0 +1,34 @@
+//
+//  CustomLastCell.m
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/14.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import "CustomLastCell.h"
+
+@implementation CustomLastCell
+
++ (id)cellWithTableView:(UITableView *)tableView{
+    static NSString *Id = @"customCell";
+    CustomLastCell *addCell = [tableView dequeueReusableCellWithIdentifier:Id];
+    if (addCell==nil) {
+        addCell = [[CustomLastCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Id];
+        addCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [addCell.btn setLayerWithW:3.0 andColor:DefaultColor andBackW:0.001];
+        [addCell.textView setLayerWithW:3.0 andColor:DefaultColor andBackW:0.5];
+        addCell.textView.placehoder = @"填写备注";
+    }
+    return addCell;
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self = [[NSBundle mainBundle]loadNibNamed:@"CustomLastCell" owner:nil options:nil][0];
+    }
+    return self;
+}
+
+@end

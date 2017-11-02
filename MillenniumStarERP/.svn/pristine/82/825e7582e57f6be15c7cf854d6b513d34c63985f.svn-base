@@ -1,0 +1,35 @@
+//
+//  CustomFirstCell.m
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/14.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import "CustomFirstCell.h"
+
+@implementation CustomFirstCell
+
++ (id)cellWithTableView:(UITableView *)tableView{
+    static NSString *Id = @"firstCell";
+    CustomFirstCell *addCell = [tableView dequeueReusableCellWithIdentifier:Id];
+    if (addCell==nil) {
+        addCell = [[CustomFirstCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Id];
+        addCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [addCell.btn setLayerWithW:3.0 andColor:DefaultColor andBackW:0.001];
+        [addCell.fie1 setLayerWithW:3.0 andColor:DefaultColor andBackW:0.001];
+        [addCell.fie2 setLayerWithW:3.0 andColor:DefaultColor andBackW:0.001];
+    }
+    return addCell;
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self = [[NSBundle mainBundle]loadNibNamed:@"CustomFirstCell" owner:nil options:nil][0];
+    }
+    return self;
+}
+
+
+@end

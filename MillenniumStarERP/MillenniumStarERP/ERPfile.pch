@@ -1,0 +1,39 @@
+//
+//  ERPfile.pch
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/5.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#ifndef ERPfile_pch
+#define ERPfile_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#import "AppDelegate.h"
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "Md5PassWord.h"
+#import "StorageDataTool.h"
+#import "Macro.h"
+#import "CommonUtils.h"
+#import "AFNetworking.h"
+#import "MJExtension.h"
+#import "AccountTool.h"
+#import "ReactiveCocoa.h"
+#import "MBProgressHUD+MJ.h"
+#import "MBProgressHUD.h"
+#import "MWPhotoBrowser.h"
+#import "UIView+Extension.h"
+#import "MJRefresh.h"
+#import "OrderNumTool.h"
+#import "SVProgressHUD.h"
+#import "UIImageView+WebCache.h"
+#import "Masonry.h"
+#import "BaseApi.h"
+#import "BaseResponse.h"
+#import "BaseViewController.h"
+#import "YQObjectBool.h"
+#import "NewUIAlertTool.h"
+#endif /* ERPfile_pch */

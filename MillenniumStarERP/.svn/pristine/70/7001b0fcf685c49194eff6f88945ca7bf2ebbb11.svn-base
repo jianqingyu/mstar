@@ -1,0 +1,91 @@
+//
+//  CusDetailHeadView.m
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/14.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import "CusDetailHeadView.h"
+#import "CustomDetailView.h"
+#define viewWidth SDevWidth
+#define marHeight 10
+#define topHeight 30
+@interface CusDetailHeadView()
+@property (nonatomic,strong)CustomDetailView *photosView;
+@end
+@implementation CusDetailHeadView
++ (id)creatCustomDeHeadView{
+    CusDetailHeadView *detail = [[CusDetailHeadView alloc]init];
+    return detail;
+}
+
+- (id)init{
+    self = [super init];
+    if (self) {
+        self.backgroundColor = [UIColor whiteColor];
+        self.layer.cornerRadius = 3;
+        self.layer.masksToBounds = YES;
+        
+        self.photosView = [[CustomDetailView alloc]init];
+        [self addSubview:self.photosView];
+        
+        self.titleLab = [[UILabel alloc]init];
+        self.titleLab.numberOfLines = 0;
+        self.titleLab.font = [UIFont systemFontOfSize:16];
+        [self addSubview:self.titleLab];
+        
+        self.priceLab = [[UILabel alloc]init];
+        self.priceLab.font = [UIFont systemFontOfSize:12];
+        [self addSubview:self.priceLab];
+        
+        self.ptLab = [[UILabel alloc]init];
+        self.ptLab.font = [UIFont systemFontOfSize:12];
+        [self addSubview:self.ptLab];
+    }
+    return self;
+}
+
+- (void)setPhotos:(NSArray *)photos{
+    _photos = photos;
+    if (photos.count>0) {
+        self.photosView.photos = _photos;
+        self.photosView.y = 10;
+        self.photosView.size = [CustomDetailView sizeWithCount:_photos.count];
+        self.photosView.x = (viewWidth-self.photosView.size.width)/2;
+        
+        __weak __typeof(&*self)weakSelf = self;
+        self.photosView.ClickDrilBlock = ^(NSUInteger idx) {
+            if(_ClickDrilBlock != nil) {
+                weakSelf.ClickDrilBlock(idx);
+            }
+        };
+        [self setupBaseView];
+    }
+}
+
+- (void)setupBaseView{
+    CGRect rect = CGRectMake(0, 0, DevWidth-20, 999);
+    rect = [self.titleLab textRectForBounds:rect limitedToNumberOfLines:0];
+    
+    self.titleLab.x = 10;
+    
+    self.titleLab.size = rect.size;
+    self.titleLab.y = CGRectGetMaxY(self.photosView.frame)+20;
+    
+    self.ptLab.x = 10;
+    self.ptLab.width = 80;
+    self.ptLab.height = 17;
+    self.ptLab.y = CGRectGetMaxY(self.titleLab.frame)+20;
+    
+    self.priceLab.x = CGRectGetMaxX(self.ptLab.frame)+2;
+    self.priceLab.width = 90;
+    self.priceLab.height = 17;
+    self.priceLab.y = CGRectGetMaxY(self.titleLab.frame)+20;
+}
+
+- (CGFloat)height{
+    return CGRectGetMaxY(self.priceLab.frame)+20;
+}
+
+@end

@@ -1,0 +1,41 @@
+//
+//  OrderListTableCell.m
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/10/26.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import "OrderListTableCell.h"
+@interface OrderListTableCell()
+@property (weak, nonatomic) IBOutlet UILabel *numLab;
+@property (weak, nonatomic) IBOutlet UILabel *staueLab;
+@property (weak, nonatomic) IBOutlet UILabel *nameLab;
+@property (weak, nonatomic) IBOutlet UILabel *upDateLab;
+@property (weak, nonatomic) IBOutlet UILabel *editDateLab;
+@property (weak, nonatomic) IBOutlet UILabel *detailLab;
+@property (weak, nonatomic) IBOutlet UILabel *priceLab;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *shopImages;
+@end
+
+@implementation OrderListTableCell
+
++ (id)cellWithTableView:(UITableView *)tableView{
+    static NSString *Id = @"orderListCell";
+    OrderListTableCell *addCell = [tableView dequeueReusableCellWithIdentifier:Id];
+    if (addCell==nil) {
+        addCell = [[OrderListTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Id];
+        addCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    return addCell;
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self = [[NSBundle mainBundle]loadNibNamed:@"OrderListTableCell" owner:nil options:nil][0];
+    }
+    return self;
+}
+
+@end

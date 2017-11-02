@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment version="2048" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="94" id="KGk-i7-Jjw" customClass="InformationCell">
+            <rect key="frame" x="0.0" y="0.0" width="330" height="94"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="330" height="93"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="下单系统使用疑问" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jmz-Y3-c4O">
+                        <rect key="frame" x="15" y="15" width="136" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="16-6-1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Kq-j7-ped">
+                        <rect key="frame" x="268" y="16" width="46" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="下单系统使用疑问" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SDZ-eW-grR">
+                        <rect key="frame" x="15" y="39" width="112" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="jmz-Y3-c4O" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="BFK-XR-kxj"/>
+                    <constraint firstItem="jmz-Y3-c4O" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="NnT-KE-rZq"/>
+                    <constraint firstItem="6Kq-j7-ped" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="Rf7-9M-PCq"/>
+                    <constraint firstItem="SDZ-eW-grR" firstAttribute="top" secondItem="jmz-Y3-c4O" secondAttribute="bottom" constant="3" id="cMx-ve-BvW"/>
+                    <constraint firstItem="SDZ-eW-grR" firstAttribute="leading" secondItem="jmz-Y3-c4O" secondAttribute="leading" id="dbe-HX-YTX"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="SDZ-eW-grR" secondAttribute="bottom" constant="3" id="gZr-MX-75t"/>
+                    <constraint firstAttribute="trailing" secondItem="6Kq-j7-ped" secondAttribute="trailing" constant="16" id="t1K-Do-9SJ"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="dateLab" destination="6Kq-j7-ped" id="jrj-Ju-Nsu"/>
+                <outlet property="detailLab" destination="SDZ-eW-grR" id="Vvy-57-B5d"/>
+                <outlet property="titleLab" destination="jmz-Y3-c4O" id="U7S-Rm-4Zb"/>
+            </connections>
+            <point key="canvasLocation" x="382" y="495"/>
+        </tableViewCell>
+    </objects>
+</document>

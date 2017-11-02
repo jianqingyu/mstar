@@ -1,0 +1,32 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "59ff6036-c6ce-4146-bb76-968ea519240f++1948",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "59ff6036-c6ce-4146-bb76-968ea519240f++1948" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "59ff6036-c6ce-4146-bb76-968ea519240f++1948" : 0,
+    "A027BA3BDDA21BB7560E630694AB8060B97ADE17" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "A1F69F7E-6FA5-41DC-944B-5C7A8E25B50E",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "59ff6036-c6ce-4146-bb76-968ea519240f++1948" : "MillenniumStarERP\/",
+    "A027BA3BDDA21BB7560E630694AB8060B97ADE17" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "MillenniumStarERP",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "MillenniumStarERP.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/192.168.1.248\/svn\/IOS",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "59ff6036-c6ce-4146-bb76-968ea519240f++1948"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jianqingyu\/New_Millenniums.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "A027BA3BDDA21BB7560E630694AB8060B97ADE17"
+    }
+  ]
+}

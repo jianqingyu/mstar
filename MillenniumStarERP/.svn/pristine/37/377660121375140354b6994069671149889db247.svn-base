@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="" id="gTV-IL-0wX" customClass="HomePageCollectionCell">
+            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wqb-4P-4de">
+                        <rect key="frame" x="10" y="10" width="80" height="80"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_dd" translatesAutoresizingMaskIntoConstraints="NO" id="5G7-MN-9eG">
+                                <rect key="frame" x="15" y="5" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="5G7-MN-9eG" secondAttribute="height" multiplier="1:0.5" id="MSC-fd-1Kd"/>
+                                    <constraint firstAttribute="width" secondItem="5G7-MN-9eG" secondAttribute="height" multiplier="1:1" id="Me1-29-T5W"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="MSC-fd-1Kd"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="成品订单" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UWD-Cb-Mit">
+                                <rect key="frame" x="8" y="60" width="64" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="Cnu-ZS-SeE"/>
+                                    <constraint firstAttribute="width" constant="64" id="vNS-fW-uQC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="5G7-MN-9eG" firstAttribute="centerX" secondItem="Wqb-4P-4de" secondAttribute="centerX" id="4BS-5o-F4I"/>
+                            <constraint firstAttribute="bottom" secondItem="UWD-Cb-Mit" secondAttribute="bottom" id="JLq-3v-zOg"/>
+                            <constraint firstItem="5G7-MN-9eG" firstAttribute="leading" secondItem="Wqb-4P-4de" secondAttribute="leading" constant="5" id="OiW-51-aMg"/>
+                            <constraint firstItem="UWD-Cb-Mit" firstAttribute="centerX" secondItem="Wqb-4P-4de" secondAttribute="centerX" id="WvS-nA-NG1"/>
+                            <constraint firstItem="UWD-Cb-Mit" firstAttribute="top" secondItem="5G7-MN-9eG" secondAttribute="bottom" constant="5" id="qzQ-ew-sqy"/>
+                            <constraint firstAttribute="trailing" secondItem="5G7-MN-9eG" secondAttribute="trailing" constant="5" id="sAj-8H-bSa"/>
+                            <constraint firstItem="5G7-MN-9eG" firstAttribute="top" secondItem="Wqb-4P-4de" secondAttribute="top" constant="5" id="z6j-xk-RFl"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="OiW-51-aMg"/>
+                                <exclude reference="sAj-8H-bSa"/>
+                            </mask>
+                        </variation>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstItem="Wqb-4P-4de" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="8pY-LO-xSR"/>
+                <constraint firstAttribute="bottom" secondItem="Wqb-4P-4de" secondAttribute="bottom" constant="10" id="9Rc-sy-Juf"/>
+                <constraint firstAttribute="trailing" secondItem="Wqb-4P-4de" secondAttribute="trailing" constant="10" id="RPW-2i-qK2"/>
+                <constraint firstItem="Wqb-4P-4de" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="Yvu-Xn-3Tt"/>
+            </constraints>
+            <size key="customSize" width="100" height="104"/>
+            <connections>
+                <outlet property="image" destination="5G7-MN-9eG" id="cNM-MJ-g1a"/>
+                <outlet property="title" destination="UWD-Cb-Mit" id="Duv-WJ-0np"/>
+            </connections>
+            <point key="canvasLocation" x="28" y="-5"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="icon_dd" width="24" height="24"/>
+    </resources>
+</document>

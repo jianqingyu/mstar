@@ -1,0 +1,18 @@
+//
+//  ChooseAddressTableCell.h
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/10/24.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "AddressInfo.h"
+@interface ChooseAddressTableCell : UITableViewCell
++ (instancetype)cellWithTableView:(UITableView *)tableView;
+@property (nonatomic,retain)AddressInfo *userAddInfo;
+@property (nonatomic,retain)UIButton *defaultBtn;
+@property (nonatomic,retain)UILabel *nameLabel;
+@property (nonatomic,retain)UILabel *phoneLabel;
+@property (nonatomic,retain)UILabel *addressLabel;
+@end

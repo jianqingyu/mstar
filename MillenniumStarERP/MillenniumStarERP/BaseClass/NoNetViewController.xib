@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment version="2048" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NoNetViewController">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="请设置你的网络" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="umQ-vS-Voa">
+                    <rect key="frame" x="30" y="30" width="119" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2.打开设备的&quot;系统设置&quot;&gt;&quot;WLAN&quot;,&quot;启动WLAN&quot;后从中选择一个可用的热点连接" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rKI-FY-fcV">
+                    <rect key="frame" x="30" y="122" width="248" height="34"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.打开设备的&quot;系统设置&quot;&gt;&quot;无线和网络&quot;&gt;&quot;移动网络&quot;。" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X1A-d3-ZqD">
+                    <rect key="frame" x="30" y="73" width="268" height="34"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="rKI-FY-fcV" firstAttribute="leading" secondItem="X1A-d3-ZqD" secondAttribute="leading" id="2kx-v8-72l"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rKI-FY-fcV" secondAttribute="trailing" constant="20" id="4jx-gj-y1K"/>
+                <constraint firstItem="X1A-d3-ZqD" firstAttribute="top" secondItem="umQ-vS-Voa" secondAttribute="bottom" constant="22" id="JPd-Tz-KkM"/>
+                <constraint firstItem="umQ-vS-Voa" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="30" id="LFq-kX-EUw"/>
+                <constraint firstItem="X1A-d3-ZqD" firstAttribute="leading" secondItem="umQ-vS-Voa" secondAttribute="leading" id="Pko-vP-3yb"/>
+                <constraint firstItem="umQ-vS-Voa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="30" id="SPo-KR-f7Z"/>
+                <constraint firstItem="rKI-FY-fcV" firstAttribute="top" secondItem="X1A-d3-ZqD" secondAttribute="bottom" constant="15" id="fae-kE-hel"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="X1A-d3-ZqD" secondAttribute="trailing" constant="20" id="ibg-Vp-LMm"/>
+            </constraints>
+            <point key="canvasLocation" x="391" y="352"/>
+        </view>
+    </objects>
+</document>

@@ -1,0 +1,97 @@
+//
+//  CustomProCell.m
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/13.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import "CustomProCell.h"
+#import "DetailStone.h"
+#import "DetailTypeInfo.h"
+@interface CustomProCell()
+
+@end
+@implementation CustomProCell
++ (id)cellWithTableView:(UITableView *)tableView{
+    static NSString *Id = @"customCell";
+    CustomProCell *addCell = [tableView dequeueReusableCellWithIdentifier:Id];
+    if (addCell==nil) {
+        addCell = [[CustomProCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Id];
+        addCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    return addCell;
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:
+                        (NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self = [[NSBundle mainBundle]loadNibNamed:@"CustomProCell" owner:nil options:nil][0];
+        for (UIButton *btn in self.btns) {
+            [btn setLayerWithW:3.0 andColor:DefaultColor andBackW:0.001];
+        }
+        [self.priceLab setLayerWithW:3.0 andColor:DefaultColor andBackW:0.001];
+        [self.priceLab setAdjustsFontSizeToFitWidth:YES];
+    }
+    return self;
+}
+
+- (void)setList:(NSArray *)list{
+    if (list.count>0) {
+        _list = list;
+        for (int i=0; i<_list.count; i++) {
+            if ([_list[i]isKindOfClass:[DetailTypeInfo class]]) {
+                UIButton *btn = self.btns[i];
+                DetailTypeInfo *info = _list[i];
+                if (info.title.length>0) {
+                    [btn setTitle:info.title forState:UIControlStateNormal];
+                    [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                }
+                if ([self boolWithArr:list]) {
+                    [self setupPrice];
+                }
+            }
+        }
+    }
+}
+
+- (BOOL)boolWithArr:(NSArray *)arr{
+    for (DetailTypeInfo *info in arr) {
+        if (info.title.length==0) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+- (void)setupPrice{
+    NSString *regiUrl = [NSString stringWithFormat:@"%@getStonePrice",baseUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    params[@"categoryId"] = @([self infoWith:0].id);
+    params[@"specId"] = @([self infoWith:1].id);
+    params[@"colorId"] = @([self infoWith:3].id);
+    params[@"purityId"] = @([self infoWith:4].id);
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            self.priceLab.text = response.data[@"price"];
+        }else{
+            [MBProgressHUD showError:response.message];
+        }
+    }requestURL:regiUrl params:params];
+}
+
+- (DetailTypeInfo *)infoWith:(NSInteger)index{
+    DetailTypeInfo *info = self.list[index];
+    return info;
+}
+
+- (IBAction)btnClick:(UIButton *)sender {
+    NSInteger index = [self.btns indexOfObject:sender];
+    if (self.tableBack) {
+        self.tableBack(index);
+    }
+}
+
+@end

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment version="2048" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="NetworkView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_wifi_small" translatesAutoresizingMaskIntoConstraints="NO" id="fuA-Gb-yNJ">
+                    <rect key="frame" x="15" y="12" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="jqj-hi-h4i"/>
+                        <constraint firstAttribute="width" constant="20" id="sMI-8O-0Ac"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="网络请求失败，请检查您的网络设置" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IsK-Ie-YdO">
+                    <rect key="frame" x="48" y="14" width="224" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="95Y-Zb-k3I">
+                    <rect key="frame" x="285" y="12" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="7Qw-wj-E4A"/>
+                        <constraint firstAttribute="width" constant="20" id="nqa-yh-BRq"/>
+                    </constraints>
+                    <state key="normal" image="icon_right">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ll3-mr-ZIE">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <state key="normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="gotoCLick:" destination="iN0-l3-epB" eventType="touchUpInside" id="AUq-ep-RTe"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="fuA-Gb-yNJ" firstAttribute="centerY" secondItem="IsK-Ie-YdO" secondAttribute="centerY" id="5Jw-y6-X6G"/>
+                <constraint firstAttribute="bottom" secondItem="Ll3-mr-ZIE" secondAttribute="bottom" id="9Nw-0T-MbL"/>
+                <constraint firstAttribute="trailing" secondItem="Ll3-mr-ZIE" secondAttribute="trailing" id="B4s-A1-5a5"/>
+                <constraint firstItem="Ll3-mr-ZIE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="HTj-09-6mg"/>
+                <constraint firstItem="IsK-Ie-YdO" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Q41-94-AYc"/>
+                <constraint firstItem="95Y-Zb-k3I" firstAttribute="centerY" secondItem="fuA-Gb-yNJ" secondAttribute="centerY" id="VfS-lp-gd4"/>
+                <constraint firstItem="Ll3-mr-ZIE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="bxl-r1-vE9"/>
+                <constraint firstAttribute="trailing" secondItem="95Y-Zb-k3I" secondAttribute="trailing" constant="15" id="mb7-aN-fs8"/>
+                <constraint firstItem="fuA-Gb-yNJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="n9u-Tx-3nA"/>
+                <constraint firstItem="fuA-Gb-yNJ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="tLi-PX-3OR"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="478" y="339"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_right" width="9" height="16"/>
+        <image name="icon_wifi_small" width="17" height="17"/>
+    </resources>
+</document>

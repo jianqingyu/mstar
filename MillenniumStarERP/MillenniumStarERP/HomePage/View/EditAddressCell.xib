@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment version="2048" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="145" id="KGk-i7-Jjw" customClass="EditAddressCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="145"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="144"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="联系人" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Db-cz-xeA">
+                        <rect key="frame" x="10" y="10" width="48" height="20"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="13000000000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IyM-dU-dyp">
+                        <rect key="frame" x="10" y="78" width="105" height="20"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="osH-xe-jKE">
+                        <rect key="frame" x="10" y="103" width="300" height="1"/>
+                        <color key="backgroundColor" red="0.92156862750000001" green="0.91764705879999997" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="YzQ-rG-uRD"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBd-YV-AME">
+                        <rect key="frame" x="256" y="112" width="54" height="24"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <state key="normal" title="删除" image="icon_del">
+                            <color key="titleColor" red="0.52549019610000003" green="0.52941176469999995" blue="0.53333333329999999" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="btnClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="IDY-KE-n4a"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S6H-6d-SxV">
+                        <rect key="frame" x="177" y="112" width="54" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="54" id="89l-GD-Tka"/>
+                            <constraint firstAttribute="height" constant="24" id="QWE-GX-xuQ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <state key="normal" title="编辑" image="icon_edit">
+                            <color key="titleColor" red="0.52549019607843139" green="0.52941176470588236" blue="0.53333333333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="btnClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="znt-4S-wvd"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lqv-S2-Vdv">
+                        <rect key="frame" x="15" y="114" width="109" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="TOU-2N-bI3"/>
+                            <constraint firstAttribute="width" constant="80" id="wRp-Gz-iON"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <state key="normal" title="设为默认地址" image="iocn_lsel2">
+                            <color key="titleColor" red="0.52549019610000003" green="0.52941176469999995" blue="0.53333333329999999" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                        <state key="selected" title="默认地址" image="iocn_lsel">
+                            <color key="titleColor" red="0.52549019610000003" green="0.52941176469999995" blue="0.53333333329999999" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="TOU-2N-bI3"/>
+                                <exclude reference="wRp-Gz-iON"/>
+                            </mask>
+                        </variation>
+                        <connections>
+                            <action selector="btnClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="iRO-4X-KSd"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="广东省深圳市罗湖区翠竹街道布心2039号输变电大厦" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KYb-Sd-Bbl">
+                        <rect key="frame" x="10" y="34" width="300" height="39"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="iBd-YV-AME" firstAttribute="leading" secondItem="S6H-6d-SxV" secondAttribute="trailing" constant="25" id="41b-l4-dCu"/>
+                    <constraint firstItem="lqv-S2-Vdv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="73s-pb-hvM"/>
+                    <constraint firstItem="osH-xe-jKE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="7HA-X1-n0f"/>
+                    <constraint firstItem="KYb-Sd-Bbl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="Bjb-Rl-4Q1"/>
+                    <constraint firstItem="4Db-cz-xeA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="ErG-rj-jJi"/>
+                    <constraint firstItem="KYb-Sd-Bbl" firstAttribute="top" secondItem="4Db-cz-xeA" secondAttribute="bottom" constant="4" id="I3R-M3-KAF"/>
+                    <constraint firstAttribute="trailing" secondItem="KYb-Sd-Bbl" secondAttribute="trailing" constant="10" id="JuO-hA-eDE"/>
+                    <constraint firstAttribute="trailing" secondItem="osH-xe-jKE" secondAttribute="trailing" constant="10" id="QeL-Ci-Fqy"/>
+                    <constraint firstItem="S6H-6d-SxV" firstAttribute="centerY" secondItem="lqv-S2-Vdv" secondAttribute="centerY" id="RWa-pm-x5c"/>
+                    <constraint firstItem="osH-xe-jKE" firstAttribute="top" secondItem="IyM-dU-dyp" secondAttribute="bottom" constant="5" id="UPo-oh-4cr"/>
+                    <constraint firstItem="iBd-YV-AME" firstAttribute="height" secondItem="S6H-6d-SxV" secondAttribute="height" id="VfC-19-AdY"/>
+                    <constraint firstItem="IyM-dU-dyp" firstAttribute="leading" secondItem="4Db-cz-xeA" secondAttribute="leading" id="Xvv-a7-hbl"/>
+                    <constraint firstItem="IyM-dU-dyp" firstAttribute="top" secondItem="KYb-Sd-Bbl" secondAttribute="bottom" constant="5" id="aA5-uc-EXX"/>
+                    <constraint firstItem="S6H-6d-SxV" firstAttribute="top" secondItem="osH-xe-jKE" secondAttribute="bottom" constant="13" id="bee-Ib-7s8"/>
+                    <constraint firstAttribute="trailing" secondItem="iBd-YV-AME" secondAttribute="trailing" constant="10" id="jua-XF-H27"/>
+                    <constraint firstItem="4Db-cz-xeA" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="qz9-Ro-Avk"/>
+                    <constraint firstItem="iBd-YV-AME" firstAttribute="centerY" secondItem="lqv-S2-Vdv" secondAttribute="centerY" id="tJR-96-K1L"/>
+                    <constraint firstItem="iBd-YV-AME" firstAttribute="width" secondItem="S6H-6d-SxV" secondAttribute="width" id="tWS-uk-4cu"/>
+                    <constraint firstItem="lqv-S2-Vdv" firstAttribute="top" secondItem="osH-xe-jKE" secondAttribute="bottom" constant="10" id="wIa-eb-Y7h"/>
+                    <constraint firstAttribute="bottom" secondItem="lqv-S2-Vdv" secondAttribute="bottom" constant="10" id="xpH-XO-rid"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="bee-Ib-7s8"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="addressLab" destination="KYb-Sd-Bbl" id="4gt-hZ-ibT"/>
+                <outlet property="chooseBtn" destination="lqv-S2-Vdv" id="XFv-Zp-pAl"/>
+                <outlet property="deleteBtn" destination="iBd-YV-AME" id="ZEy-Dy-piZ"/>
+                <outlet property="editBtn" destination="S6H-6d-SxV" id="67Q-b2-rYG"/>
+                <outlet property="nameLab" destination="4Db-cz-xeA" id="rxa-Cm-WTM"/>
+                <outlet property="phoneLab" destination="IyM-dU-dyp" id="11R-Sz-ArV"/>
+            </connections>
+            <point key="canvasLocation" x="289" y="463.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="icon_del" width="17" height="17"/>
+        <image name="icon_edit" width="17" height="17"/>
+        <image name="iocn_lsel" width="13" height="13"/>
+        <image name="iocn_lsel2" width="13" height="13"/>
+    </resources>
+</document>

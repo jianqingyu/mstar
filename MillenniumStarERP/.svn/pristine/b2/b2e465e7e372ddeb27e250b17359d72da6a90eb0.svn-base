@@ -1,0 +1,117 @@
+//
+//  PassWordViewController.m
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/7.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import "PassWordViewController.h"
+#import "YQItemTool.h"
+@interface PassWordViewController ()
+@property (weak, nonatomic) IBOutlet UITextField *phoneFie;
+@property (weak, nonatomic) IBOutlet UITextField *codeFie;
+@property (weak, nonatomic) IBOutlet UIButton *codeBtn;
+@property (weak, nonatomic) IBOutlet UITextField *passWord;
+@property (weak, nonatomic) IBOutlet UITextField *passWord2;
+@property (weak, nonatomic) IBOutlet UIButton *confirmBtn;
+@property (assign,nonatomic) int clockNum;
+@property (nonatomic, assign) BOOL m_isNeedQuit;
+@property (nonatomic, copy) NSString *code;
+@end
+
+@implementation PassWordViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"icon_return"] style:UIBarButtonItemStyleDone target:self action:@selector(back)];
+    [self setBaseView];
+    self.clockNum = 60;
+}
+
+- (void)setBaseView{
+    self.codeBtn.layer.cornerRadius = 5;
+    self.codeBtn.layer.masksToBounds = YES;
+    
+    self.confirmBtn.layer.cornerRadius = 5;
+    self.confirmBtn.layer.masksToBounds = YES;
+}
+
+- (void)back{
+    if (self.isForgot) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+- (IBAction)getCode:(id)sender {
+    if (self.phoneFie.text.length!=11) {
+        SHOWALERTVIEW(@"您输入的手机号有误");
+    }else{
+        //发送命令
+        [self requestCheckWord];
+        self.m_isNeedQuit = NO;
+        //获取短信验证码
+        [self performSelector:@selector(changeStatus) withObject:self afterDelay:1.0];
+    }
+}
+
+- (void)requestCheckWord
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"pageType"] = @"SEND";
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==1) {
+            self.code = response.message;
+        }
+    } requestURL:getCodeUrl params:params];
+}
+
+- (void)changeStatus
+{
+    self.clockNum --;
+    if (self.clockNum != 0)
+    {
+        self.codeBtn.enabled = NO;
+        [self.codeBtn setTitle:[NSString stringWithFormat:@"%ds后获取", self.clockNum]
+                      forState:UIControlStateDisabled];
+    }
+    else
+    {
+        self.codeBtn.enabled = YES;
+        [self.codeBtn setTitle:[NSString stringWithFormat:@"获取验证码"]
+                      forState:UIControlStateNormal];
+        self.m_isNeedQuit = YES;
+        self.clockNum = 60;
+    }
+    if (!self.m_isNeedQuit)
+    {
+        [self performSelector:@selector(changeStatus) withObject:self afterDelay:1.0];
+    }
+}
+
+- (IBAction)confirmClick:(id)sender {
+//    if (![self.codeFie.text isEqualToString:self.code]) {
+//        SHOWALERTVIEW(@"验证码输入有误");
+//    }else
+        if (![self.passWord.text isEqualToString:self.passWord2.text]||self.passWord.text.length<5){
+        SHOWALERTVIEW(@"密码输入错误");
+    }else{
+        NSString *regiUrl = [NSString stringWithFormat:@"%@userModifyPasswordDo",baseUrl];
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        params[@"password"] = self.passWord.text;
+        params[@"phoneCode"] = self.codeFie.text;
+        params[@"tokenKey"] = [AccountTool account].tokenKey;
+        [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+            if ([response.error intValue]==0) {
+                
+            }else{
+                SHOWALERTVIEW(response.message);
+            }
+            [SVProgressHUD dismiss];
+        } requestURL:regiUrl params:params];
+    }
+}
+
+@end

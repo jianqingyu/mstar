@@ -1,0 +1,22 @@
+//
+//  CustomProCell.h
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/13.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+typedef void (^CustomProBack)(NSInteger index);
+@interface CustomProCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *titleLab;
+@property (weak, nonatomic) IBOutlet UITextField *numFie;
+@property (weak, nonatomic) IBOutlet UILabel *priceLab;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *btns;
+
+@property (nonatomic,  copy)CustomProBack tableBack;
+@property (nonatomic,strong)NSDictionary *dict;
+@property (nonatomic,strong)NSArray *list;
+@property (nonatomic,assign)NSInteger seIndex;
++ (id)cellWithTableView:(UITableView *)tableView;
+@end

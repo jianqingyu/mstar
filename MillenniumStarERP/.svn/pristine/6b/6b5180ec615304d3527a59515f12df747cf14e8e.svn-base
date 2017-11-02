@@ -1,0 +1,96 @@
+//
+//  BaseApi.m
+//  MillenniumStar08.07
+//
+//  Created by rogers on 15-8-13.
+//  Copyright (c) 2015年 qxzx.com. All rights reserved.
+//
+
+#import "BaseApi.h"
+#import "RequestClient.h"
+#import "CusTomLoginView.h"
+#import "ShowLoginViewTool.h"
+@implementation BaseApi
+//登录接口
++ (void)login:(REQUEST_CALLBACK)callback params:(NSMutableDictionary*)params{
+    NSString *logUrl = [NSString stringWithFormat:@"%@userLoginDo",baseUrl];
+    [[RequestClient sharedClient] GET:logUrl parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        BaseResponse*result = [[BaseResponse alloc]init];
+        result.error = responseObject[@"error"];
+        result.data = responseObject[@"data"];
+        result.message = responseObject[@"message"];
+        callback(result,nil);
+        [SVProgressHUD dismiss];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [SVProgressHUD dismiss];
+        if(callback){
+            callback(nil,error);
+        }
+    }];
+}
+//更新数据接口
++ (void)upData:(REQUEST_CALLBACK)callback URL:(NSString*)URL params:(NSMutableDictionary*)params{
+    [[RequestClient sharedClient] GET:URL parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        BaseResponse*result = [[BaseResponse alloc]init];
+        result.error = responseObject[@"error"];
+        result.data = responseObject[@"data"];
+        result.message = responseObject[@"message"];
+        callback(result,nil);
+        [SVProgressHUD dismiss];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [SVProgressHUD dismiss];
+        if(callback){
+            callback(nil,error);
+        }
+    }];
+}
+/*通用接口
+ */
++ (void)getGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL params:(NSMutableDictionary*)params{
+    [[RequestClient sharedClient] GET:requestURL parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        BaseResponse*result = [[BaseResponse alloc]init];
+        result.error = responseObject[@"error"];
+        result.data = responseObject[@"data"];
+        result.message = responseObject[@"message"];
+        if ([result.error intValue]==2) {
+            ShowLoginViewTool *login = [ShowLoginViewTool creatTool];
+            login.url = requestURL;
+            login.dict = params;
+            login.toBack = ^(id res){
+                callback(res,nil);
+            };
+            [login showLoginView];
+            return ;
+        }
+        callback(result,nil);
+        [SVProgressHUD dismiss];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [SVProgressHUD dismiss];
+        if(callback){
+            callback(nil,error);
+        }
+    }];
+}
+/*通用接口
+ */
++ (void)postGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL params:(NSMutableDictionary*)params{
+    [[RequestClient sharedClient] POST:requestURL parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        BaseResponse*result = [[BaseResponse alloc]init];
+        result.error = responseObject[@"error"];
+        result.data = responseObject[@"data"];
+        result.message = responseObject[@"message"];
+        callback(result,nil);
+        [SVProgressHUD dismiss];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [SVProgressHUD dismiss];
+        if(callback){
+            callback(nil,error);
+        }
+    }];
+}
+//清楚队列
++ (void)cancelAllOperation{
+    [[RequestClient sharedClient].operationQueue cancelAllOperations];
+}
+
+@end

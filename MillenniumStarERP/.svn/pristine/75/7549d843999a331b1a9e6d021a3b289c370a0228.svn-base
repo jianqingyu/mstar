@@ -1,0 +1,127 @@
+//
+//  ChooseAddressVC.m
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/10/24.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import "ChooseAddressVC.h"
+#import "ChooseAddressTableCell.h"
+#import "EditAddressVC.h"
+@interface ChooseAddressVC ()<UITableViewDataSource,UITableViewDelegate>
+@property (nonatomic,strong)UITableView *addressTab;
+@property (nonatomic,strong)NSArray *addressArray;
+@end
+
+@implementation ChooseAddressVC
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"选择地址";
+    self.view.backgroundColor = DefaultColor;
+    [self setupTableView];
+    [self setupFootView];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self loadReqData];
+}
+
+- (void)setupTableView{
+    self.addressTab = [[UITableView alloc]init];
+    self.addressTab.backgroundColor = DefaultColor;
+    [self.view addSubview:self.addressTab];
+    [self.addressTab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(0);
+        make.right.equalTo(self.view).offset(0);
+        make.bottom.equalTo(self.view).offset(-48);
+        make.top.equalTo(self.view).offset(0);
+    }];
+    self.addressTab.dataSource = self;
+    self.addressTab.delegate = self;
+    self.addressTab.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+}
+
+- (void)setupFootView{
+    UIView * backView = [UIView new];
+    backView.backgroundColor = DefaultColor;
+    [self.view addSubview:backView];
+    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(0);
+        make.right.equalTo(self.view).offset(0);
+        make.bottom.equalTo(self.view).offset(0);
+        make.height.mas_equalTo(@60);
+    }];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.layer.cornerRadius = 3.0;
+    btn.clipsToBounds = YES;
+    [btn setTitle:@"管理收货地址" forState:UIControlStateNormal];
+    btn.titleLabel.font = [UIFont systemFontOfSize:15];
+    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    btn.backgroundColor = MAIN_COLOR;
+    [btn addTarget:self action:@selector(gotoEditAddVc) forControlEvents:UIControlEventTouchUpInside];
+    [backView addSubview:btn];
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(backView);
+        make.width.mas_equalTo(160);
+        make.height.mas_equalTo(35);
+    }];
+}
+
+- (void)gotoEditAddVc{
+    EditAddressVC *editVc = [[EditAddressVC alloc]init];
+    [self.navigationController pushViewController:editVc animated:YES];
+}
+
+- (void)loadReqData
+{
+    [SVProgressHUD show];
+    NSString *regiUrl = [NSString stringWithFormat:@"%@AddressListPage",baseUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            self.addressArray = [AddressInfo objectArrayWithKeyValuesArray:response.data[@"addressList"]];
+            [self.addressTab reloadData];
+        }else{
+            [MBProgressHUD showError:response.message];
+        }
+        [SVProgressHUD dismiss];
+    } requestURL:regiUrl params:params];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.addressArray.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 10;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell.frame.size.height;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    ChooseAddressTableCell *chooseCell = [ChooseAddressTableCell cellWithTableView:tableView];
+    AddressInfo *addInfo = self.addressArray[indexPath.row];
+    chooseCell.userAddInfo = addInfo;
+    return chooseCell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    AddressInfo *addInfo = self.addressArray[indexPath.row];
+    if (self.addBack) {
+        self.addBack(addInfo);
+    }
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+@end

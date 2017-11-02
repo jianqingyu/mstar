@@ -1,0 +1,22 @@
+//
+//  OrderListDetailVC.m
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/10/26.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import "OrderListDetailVC.h"
+
+@interface OrderListDetailVC ()
+
+@end
+
+@implementation OrderListDetailVC
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"订单详情";
+}
+
+@end

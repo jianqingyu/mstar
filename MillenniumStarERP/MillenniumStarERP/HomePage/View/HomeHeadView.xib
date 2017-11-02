@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="HomeHeadView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_back" translatesAutoresizingMaskIntoConstraints="NO" id="9KB-Qk-c4I">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s84-fo-ANn">
+                    <rect key="frame" x="80" y="20" width="160" height="160"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo2" translatesAutoresizingMaskIntoConstraints="NO" id="ds2-rc-M1Z">
+                            <rect key="frame" x="30" y="0.0" width="100" height="100"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="5Vu-x2-XOU"/>
+                                <constraint firstAttribute="width" secondItem="ds2-rc-M1Z" secondAttribute="height" multiplier="1:1" id="VaY-gn-3x4"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="定制用户" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8kB-hH-Qb6">
+                            <rect key="frame" x="42" y="131" width="76" height="22"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="22" id="b9T-Lm-0tQ"/>
+                                <constraint firstAttribute="width" constant="76" id="bck-6n-ZCf"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.92156862750000001" green="0.91764705879999997" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="千禧之星" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uyg-fc-OSF">
+                            <rect key="frame" x="48" y="108" width="64" height="20"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <color key="textColor" red="0.92156862750000001" green="0.91764705879999997" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="uyg-fc-OSF" firstAttribute="top" secondItem="ds2-rc-M1Z" secondAttribute="bottom" constant="8" id="ElI-ct-30j"/>
+                        <constraint firstAttribute="height" constant="160" id="H5e-VR-BY0"/>
+                        <constraint firstAttribute="width" constant="160" id="NH1-gG-tiF"/>
+                        <constraint firstItem="8kB-hH-Qb6" firstAttribute="centerX" secondItem="s84-fo-ANn" secondAttribute="centerX" id="U2E-Nb-GIb"/>
+                        <constraint firstItem="ds2-rc-M1Z" firstAttribute="centerX" secondItem="s84-fo-ANn" secondAttribute="centerX" id="Ush-zb-xgw"/>
+                        <constraint firstItem="8kB-hH-Qb6" firstAttribute="top" secondItem="uyg-fc-OSF" secondAttribute="bottom" constant="3" id="eah-27-UO6"/>
+                        <constraint firstItem="uyg-fc-OSF" firstAttribute="centerX" secondItem="s84-fo-ANn" secondAttribute="centerX" id="oet-Tp-EKf"/>
+                        <constraint firstItem="ds2-rc-M1Z" firstAttribute="top" secondItem="s84-fo-ANn" secondAttribute="top" id="wr6-gJ-tmr"/>
+                    </constraints>
+                </view>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kWp-GR-rb4">
+                    <rect key="frame" x="270" y="0.0" width="50" height="50"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="N6E-Sz-PLO"/>
+                        <constraint firstAttribute="height" constant="50" id="SJP-1b-2eR"/>
+                    </constraints>
+                    <state key="normal" image="icon_seting"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="9KB-Qk-c4I" secondAttribute="bottom" id="2bi-XN-HET"/>
+                <constraint firstItem="kWp-GR-rb4" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="JOb-0j-67c"/>
+                <constraint firstItem="s84-fo-ANn" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="VJy-MW-vbf"/>
+                <constraint firstItem="9KB-Qk-c4I" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Vcw-Fo-yBX"/>
+                <constraint firstItem="9KB-Qk-c4I" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="cTd-CD-tGb"/>
+                <constraint firstAttribute="trailing" secondItem="kWp-GR-rb4" secondAttribute="trailing" id="cnv-fi-Eki"/>
+                <constraint firstAttribute="trailing" secondItem="9KB-Qk-c4I" secondAttribute="trailing" id="fXp-qD-uxd"/>
+                <constraint firstItem="s84-fo-ANn" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="qBu-eC-8tG"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="custom" destination="8kB-hH-Qb6" id="dWr-F7-CyV"/>
+                <outlet property="name" destination="uyg-fc-OSF" id="x0K-ve-hph"/>
+                <outlet property="setBtn" destination="kWp-GR-rb4" id="l6e-0z-yFs"/>
+                <outlet property="titleImg" destination="ds2-rc-M1Z" id="FB3-rF-epH"/>
+            </connections>
+            <point key="canvasLocation" x="599" y="283"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_seting" width="22" height="22"/>
+        <image name="img_back" width="749" height="433"/>
+        <image name="logo2" width="155" height="200"/>
+    </resources>
+</document>

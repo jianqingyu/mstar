@@ -1,0 +1,16 @@
+//
+//  CustomFirstCell.h
+//  MillenniumStarERP
+//
+//  Created by yjq on 16/9/14.
+//  Copyright © 2016年 com.millenniumStar. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface CustomFirstCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIButton *btn;
+@property (weak, nonatomic) IBOutlet UITextField *fie1;
+@property (weak, nonatomic) IBOutlet UITextField *fie2;
++ (id)cellWithTableView:(UITableView *)tableView;
+@end
