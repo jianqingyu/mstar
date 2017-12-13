@@ -123,14 +123,20 @@
 }
 
 - (void)setNakedHeadView{
-    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SDevWidth, 250)];
+    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SDevWidth, 260)];
     headView.backgroundColor = DefaultColor;
     NakedDriLibHeadView *headV = [[NakedDriLibHeadView alloc]initWithFrame:
-                                  CGRectMake(0, 0, SDevWidth, 250)];
+                                  CGRectZero];
     headV.back = ^(id mess){
         self.dict = mess;
     };
     [headView addSubview:headV];
+    [headV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(headView).offset(0);
+        make.top.equalTo(headView).offset(10);
+        make.bottom.equalTo(headView).offset(0);
+        make.right.equalTo(headView).offset(0);
+    }];
     self.tableView.tableHeaderView = headView;
     self.headView = headV;
 }

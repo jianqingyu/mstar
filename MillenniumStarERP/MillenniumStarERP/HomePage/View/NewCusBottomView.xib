@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="NewCusBottomView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wom-hT-oJE">
+                    <rect key="frame" x="0.0" y="0.0" width="187.5" height="40"/>
+                    <state key="normal" image="icon_x"/>
+                    <connections>
+                        <action selector="close:" destination="iN0-l3-epB" eventType="touchUpInside" id="oQ7-Kq-LTq"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DDk-a4-Qb9">
+                    <rect key="frame" x="187.5" y="0.0" width="187.5" height="40"/>
+                    <state key="normal" image="icon_true"/>
+                    <connections>
+                        <action selector="sureClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="ubm-BG-QNd"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Wom-hT-oJE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0Jn-iB-fa2"/>
+                <constraint firstAttribute="bottom" secondItem="DDk-a4-Qb9" secondAttribute="bottom" id="Aso-N5-mV2"/>
+                <constraint firstItem="DDk-a4-Qb9" firstAttribute="height" secondItem="Wom-hT-oJE" secondAttribute="height" id="Gis-Fw-fbf"/>
+                <constraint firstItem="DDk-a4-Qb9" firstAttribute="leading" secondItem="Wom-hT-oJE" secondAttribute="trailing" id="ObK-je-nRP"/>
+                <constraint firstItem="DDk-a4-Qb9" firstAttribute="width" secondItem="Wom-hT-oJE" secondAttribute="width" id="Ooj-Cf-KKV"/>
+                <constraint firstAttribute="bottom" secondItem="Wom-hT-oJE" secondAttribute="bottom" id="Uv4-wC-5iF"/>
+                <constraint firstItem="DDk-a4-Qb9" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="XWU-YR-ric"/>
+                <constraint firstItem="Wom-hT-oJE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="jwz-qU-Po3"/>
+                <constraint firstAttribute="trailing" secondItem="DDk-a4-Qb9" secondAttribute="trailing" id="of8-aT-KSi"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_true" width="20" height="16"/>
+        <image name="icon_x" width="20" height="16"/>
+    </resources>
+</document>

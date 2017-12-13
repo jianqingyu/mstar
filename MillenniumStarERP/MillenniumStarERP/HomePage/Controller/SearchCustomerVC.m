@@ -10,6 +10,7 @@
 #import "CustomerInfo.h"
 #import "StrWithIntTool.h"
 #import "CustomTextField.h"
+#import "CustomTitleView.h"
 @interface SearchCustomerVC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>{
     int curPage;
     int pageCount;
@@ -31,8 +32,8 @@
 
 #pragma mark -- 创建导航按钮-头视图
 - (void)setupSearchBar{
-    CGFloat width = SDevWidth*0.8;
-    UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, width, 30)];
+    CGFloat width = SDevWidth*0.65;
+    CustomTitleView *titleView = [[CustomTitleView alloc]initWithFrame:CGRectMake(0, 0, width, 30)];
     titleView.backgroundColor = [UIColor clearColor];
     CustomTextField *titleFie = [[CustomTextField alloc]initWithFrame:CGRectMake(0, 0, width-40, 30)];
     titleFie.text = _searchMes;

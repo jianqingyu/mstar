@@ -14,6 +14,7 @@
 #import "OrderNumTool.h"
 #import "HYBLoopScrollView.h"
 #import "CusHauteCoutureView.h"
+#import "NewCustomizationVC.h"
 #import "NakedDriLibViewController.h"
 @interface NewHomeBannerVC ()<UINavigationControllerDelegate>
 @property (nonatomic,  weak)UIView *baView;
@@ -133,7 +134,7 @@
 }
 
 - (void)creatBottomBtn{
-    CGFloat width = MIN(SDevWidth,SDevHeight)*0.7;
+    CGFloat width = MIN(SDevWidth,SDevHeight)*0.9;
     UIView *bottomV = [UIView new];
     [self.view addSubview:bottomV];
     [bottomV mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -141,9 +142,9 @@
         make.bottom.equalTo(self.view).with.offset(-15);
         make.size.mas_equalTo(CGSizeMake(width, 80));
     }];
-    CGFloat mar = (width-4*60)/3;
-    NSArray *arr = @[@"p_11-1",@"p_03-1",@"p_06-1",@"p_08-1"];
-    NSArray *arrS = @[@"快速定制",@"产品",@"裸钻库",@"个人中心"];
+    NSArray *arr = @[@"p_11-1",@"p_03-1",@"p_06-1",@"p_06-1",@"p_08-1"];
+    NSArray *arrS = @[@"快速定制",@"产品",@"个性定制",@"裸钻库",@"个人中心"];
+    CGFloat mar = (width-arr.count*60)/(arr.count-1);
     for (int i=0; i<arr.count; i++) {
         CustomTopBtn *right = [CustomTopBtn creatCustomView];
         right.bBtn.tag = i;
@@ -184,6 +185,10 @@
         ProductListVC *list = [ProductListVC new];
         [self.navigationController pushViewController:list animated:YES];
     }else if(btn.tag==2){
+        [self resetWindow];
+        NewCustomizationVC *cusVc = [NewCustomizationVC new];
+        [self.navigationController pushViewController:cusVc animated:YES];
+    }else if(btn.tag==3){
         [self resetWindow];
         NakedDriLibViewController *list = [NakedDriLibViewController new];
         [self.navigationController pushViewController:list animated:YES];
@@ -241,7 +246,7 @@
             make.width.mas_equalTo(height-30);
             make.height.mas_equalTo(height);
         }];
-        [aView layoutIfNeeded];//强制绘制
+        [window layoutIfNeeded];//强制绘制
     }];
     self.cusView = aView;
     self.keyWin = window;

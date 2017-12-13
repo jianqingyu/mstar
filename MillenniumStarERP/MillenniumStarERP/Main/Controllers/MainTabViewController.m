@@ -11,8 +11,8 @@
 #import "InformationVC.h"
 #import "HelpMenuVC.h"
 #import "EditUserInfoVC.h"
-#import "LoginViewController.h"
 #import "HomePageVC.h"
+#import "LoginViewController.h"
 #import "NetworkDetermineTool.h"
 @interface MainTabViewController ()<UITabBarControllerDelegate>{
     InformationVC *infoVC;

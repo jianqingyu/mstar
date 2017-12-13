@@ -87,6 +87,7 @@
     [mScrollPageView moveScrollowViewAthIndex:_index];
     [menuHorizontalView changeButtonStateAtIndex:_index];
     [self.view addSubview:mainContentView];
+    
     [mainContentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(self.view);
     }];

@@ -266,7 +266,6 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     if (self.mutArr.count>0) {
         [self.mutArr removeAllObjects];
     }
-    [SVProgressHUD show];
     NSString *detail;
     if (self.isEdit==1) {
         detail = @"ModelDetailPageForCurrentOrderEditPage";
@@ -921,11 +920,6 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     float price = [self.proNum floatValue]*_modelInfo.price;
     if (self.driPrice.length>0) {
         price = price + [self.driPrice floatValue];
-    }else{
-//        StorageDataTool *data = [StorageDataTool shared];
-//        if (data.BaseSeaInfo&&self.isCus){
-//            price = price + [data.BaseSeaInfo.Price floatValue];
-//        }
     }
     self.priceLab.text = [OrderNumTool strWithPrice:price];
 }

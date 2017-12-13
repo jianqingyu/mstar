@@ -22,7 +22,7 @@
 @property(strong,nonatomic) UserInfo *userInfo;
 @property(nonatomic,  weak) HomeHeadView *headView;
 @property(nonatomic,  copy) NSDictionary *versionDic;
-@property (nonatomic, copy) NSString *openUrl;
+@property(nonatomic,  copy) NSString *openUrl;
 @end
 
 @implementation HomePageVC
@@ -32,7 +32,7 @@
     self.view.backgroundColor = DefaultColor;
     [self setHeaderView];
     [self setupFootBtn];
-    [self  loadHomeData];
+    [self loadHomeData];
     self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeHeadImg:) name:NotificationImg object:nil];

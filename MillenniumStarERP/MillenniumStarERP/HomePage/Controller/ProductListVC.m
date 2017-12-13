@@ -176,7 +176,7 @@
 
 - (void)setupSearchBar{
     CGFloat width = SDevWidth*0.65;
-    CustomTitleView *titleView = [[CustomTitleView alloc]initWithFrame:CGRectMake(0, 0, width, 30)];
+    CustomTitleView *titleView= [[CustomTitleView alloc]initWithFrame:CGRectMake(0, 0, width, 30)];
     [titleView setLayerWithW:5 andColor:BordColor andBackW:0.5];
     titleView.backgroundColor = [UIColor clearColor];
     CustomTextField *titleFie = [[CustomTextField alloc]initWithFrame:CGRectZero];

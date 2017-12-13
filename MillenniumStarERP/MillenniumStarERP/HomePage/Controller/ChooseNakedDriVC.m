@@ -8,6 +8,7 @@
 
 #import "ChooseNakedDriVC.h"
 #import "EditCustomDriView.h"
+#import "CustomTitleView.h"
 #import "NakedDriLibCustomView.h"
 @interface ChooseNakedDriVC ()
 @property (nonatomic,  weak)UIButton *editBtn;
@@ -37,16 +38,16 @@
 }
 
 - (void)orientChange:(NSNotification *)notification{
-    CGFloat height = SDevWidth>SDevHeight?38:44;
+    CGFloat height = SDevWidth>SDevHeight?31:37;
     [self.editBtn mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(height);
     }];
 }
 
 - (void)creatNaviTitleView{
-    CGFloat width = SDevWidth*0.60;
-    CGFloat height = SDevWidth>SDevHeight?38:44;
-    UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,  width, 44)];
+    CGFloat width = SDevWidth*0.65;
+    CGFloat height = SDevWidth>SDevHeight?31:37;
+    CustomTitleView *titleView = [[CustomTitleView alloc]initWithFrame:CGRectMake(0, 0,  width, 30)];
     UIButton *sureBtn = [self setB:@"选择主石规格" andS:65 andV:titleView];
     UIButton *cancelBtn = [self setB:@"裸钻库挑选" andS:66 andV:titleView];
     [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -129,12 +129,13 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"textCell"];
+    NSString *Id = @"classCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:Id];
     if (!cell) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"textCell"];
-        cell.textLabel.font = [UIFont systemFontOfSize:14];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Id];
         cell.textLabel.numberOfLines = 2;
         cell.backgroundColor = DefaultColor;
+        cell.textLabel.font = [UIFont systemFontOfSize:14];
         cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
         cell.selectedBackgroundView.backgroundColor = [UIColor whiteColor];
     }

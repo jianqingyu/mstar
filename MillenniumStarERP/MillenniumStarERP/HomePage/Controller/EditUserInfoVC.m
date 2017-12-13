@@ -22,6 +22,7 @@
 #import "PassWordViewController.h"
 #import <ShareSDKUI/ShareSDK+SSUI.h>
 #import <ShareSDKConnector/ShareSDKConnector.h>
+
 @interface EditUserInfoVC ()<UITableViewDelegate,UITableViewDataSource,
                  UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property (nonatomic,strong)UITableView *tableView;
