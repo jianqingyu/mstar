@@ -26,6 +26,7 @@
 #import "CustomPickView.h"
 #import "OrderListController.h"
 #import "NewCustomProDetailVC.h"
+#import "NewCustomizationVC.h"
 @interface ConfirmOrderVC ()<UITableViewDelegate,UITableViewDataSource,
                             ConfirmOrdHeadViewDelegate,ConfirmOrdCellDelegate>{
     int curPage;
@@ -842,6 +843,10 @@
     {
         collectInfo = self.dataArray[index];
     }
+    if (collectInfo.showPageType) {
+        [self gotoNewCustomizationVC:collectInfo idx:index];
+        return;
+    }
     if ([[AccountTool account].isNorm intValue]==0) {
         NewCustomProDetailVC *newVc = [NewCustomProDetailVC new];
         newVc.isCus = NO;
@@ -860,6 +865,16 @@
         };
         [self.navigationController pushViewController:detailVc animated:YES];
     }
+}
+
+- (void)gotoNewCustomizationVC:(OrderListInfo *)info idx:(NSInteger)index{
+    NewCustomizationVC *detailVc = [NewCustomizationVC new];
+    detailVc.isEd = 2;
+    detailVc.proId = info.id;
+    detailVc.back = ^(OrderListInfo *dict){
+        [self detailOrderBack:dict andIdx:index];
+    };
+    [self.navigationController pushViewController:detailVc animated:YES];
 }
 
 - (void)detailOrderBack:(OrderListInfo *)dict andIdx:(NSInteger)index{
@@ -1061,7 +1076,7 @@
                 app.shopNum = [response.data[@"waitOrderCount"]intValue];
             }
             [self gotoNextViewConter:response.data];
-            [self.tableView.header beginRefreshing];
+            [self.tableView.mj_header beginRefreshing];
         }else{
             [MBProgressHUD showError:response.message];
         }

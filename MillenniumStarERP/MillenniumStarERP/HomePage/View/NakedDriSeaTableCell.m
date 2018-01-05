@@ -73,7 +73,7 @@
 }
 
 - (NSArray *)arrWithModel{
-    NSString *str = self.isCus?@"定制":@"";
+    NSString *str = self.cusType>1?@"定制":@"";
     NSArray *arr = @[str,[self str:_seaInfo.Weight],[self str:_seaInfo.Price],
                      [self str:_seaInfo.Shape],[self str:_seaInfo.Color],[self str:_seaInfo.Purity],
                      [self str:_seaInfo.Cut],[self str:_seaInfo.Polishing],

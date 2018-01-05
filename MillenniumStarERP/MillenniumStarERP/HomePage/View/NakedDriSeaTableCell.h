@@ -11,9 +11,8 @@
 typedef void (^NakedDriSeaBack)(BOOL isSel);
 @interface NakedDriSeaTableCell : UITableViewCell
 + (id)cellWithTableView:(UITableView *)tableView;
-@property (nonatomic,assign)BOOL isCus;
 @property (nonatomic,assign)BOOL isShow;
-@property (nonatomic,assign)BOOL isPro;
+@property (nonatomic,assign)int cusType;
 @property (nonatomic,  copy)NakedDriSeaBack back;
 @property (nonatomic,strong)NakedDriSeaListInfo *seaInfo;
 @end

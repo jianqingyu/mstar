@@ -26,7 +26,6 @@
               @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8"};
     self.androidDic = @{@"image":@"mStar2",@"url":
              @"https://itunes.apple.com/cn/app/千禧之星珠宝2/id1244977034?mt=8"};
-//    self.androidDic = @{@"image":@"android",@"url":@"https://www.pgyer.com/IGab"};
     self.codeImg.image = [UIImage imageNamed:self.iOSDic[@"image"]];
     self.codeAndroidImg.image = [UIImage imageNamed:self.androidDic[@"image"]];
     self.backScr.contentSize = CGSizeMake(240, 460);

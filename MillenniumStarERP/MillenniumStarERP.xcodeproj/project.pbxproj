@@ -16,6 +16,8 @@
 		292106AD1FD915DD00A67D74 /* NewCustomizationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 292106AB1FD915DD00A67D74 /* NewCustomizationVC.xib */; };
 		292106B01FD91A3000A67D74 /* NewCustomizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 292106AF1FD91A3000A67D74 /* NewCustomizationView.m */; };
 		2941482A1FAB00BB00F12782 /* CustomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294148291FAB00BB00F12782 /* CustomTitleView.m */; };
+		2941E3AE1FE1273F00D672A8 /* NewCustomizationSureVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941E3AC1FE1273F00D672A8 /* NewCustomizationSureVC.m */; };
+		2941E3AF1FE1273F00D672A8 /* NewCustomizationSureVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2941E3AD1FE1273F00D672A8 /* NewCustomizationSureVC.xib */; };
 		296079931FA039C100F7D515 /* ShowPriceHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 296079921FA039C100F7D515 /* ShowPriceHeadView.xib */; };
 		299923DD1FDE37390048A38A /* NewCusBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 299923DC1FDE37390048A38A /* NewCusBottomView.m */; };
 		299923DF1FDE37570048A38A /* NewCusBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 299923DE1FDE37570048A38A /* NewCusBottomView.xib */; };
@@ -455,6 +457,9 @@
 		292106AF1FD91A3000A67D74 /* NewCustomizationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewCustomizationView.m; sourceTree = "<group>"; };
 		294148281FAB00BB00F12782 /* CustomTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomTitleView.h; sourceTree = "<group>"; };
 		294148291FAB00BB00F12782 /* CustomTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomTitleView.m; sourceTree = "<group>"; };
+		2941E3AB1FE1273F00D672A8 /* NewCustomizationSureVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCustomizationSureVC.h; sourceTree = "<group>"; };
+		2941E3AC1FE1273F00D672A8 /* NewCustomizationSureVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewCustomizationSureVC.m; sourceTree = "<group>"; };
+		2941E3AD1FE1273F00D672A8 /* NewCustomizationSureVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewCustomizationSureVC.xib; sourceTree = "<group>"; };
 		296079921FA039C100F7D515 /* ShowPriceHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowPriceHeadView.xib; sourceTree = "<group>"; };
 		299923DB1FDE37390048A38A /* NewCusBottomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCusBottomView.h; sourceTree = "<group>"; };
 		299923DC1FDE37390048A38A /* NewCusBottomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewCusBottomView.m; sourceTree = "<group>"; };
@@ -1824,6 +1829,9 @@
 				292106A91FD915DD00A67D74 /* NewCustomizationVC.h */,
 				292106AA1FD915DD00A67D74 /* NewCustomizationVC.m */,
 				292106AB1FD915DD00A67D74 /* NewCustomizationVC.xib */,
+				2941E3AB1FE1273F00D672A8 /* NewCustomizationSureVC.h */,
+				2941E3AC1FE1273F00D672A8 /* NewCustomizationSureVC.m */,
+				2941E3AD1FE1273F00D672A8 /* NewCustomizationSureVC.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2450,6 +2458,7 @@
 				790C2C2A1E092914006D9DCF /* ProgressHeadView.xib in Resources */,
 				79B4B8391DA8DD3A00B97070 /* OrderHeadView.xib in Resources */,
 				797688A11EE023B7001C6711 /* NakedDriPirceTableCell.xib in Resources */,
+				2941E3AF1FE1273F00D672A8 /* NewCustomizationSureVC.xib in Resources */,
 				79E8B23B1D800063009D7296 /* EditAddressVC.xib in Resources */,
 				79E177921E6910AA00318916 /* DeliveryOrderHeadView.xib in Resources */,
 				79B4B8311DA8C5F100B97070 /* OrderBottomTableCell.xib in Resources */,
@@ -2834,6 +2843,7 @@
 				792B85D81DBEF20E00A71635 /* OrderListInfo.m in Sources */,
 				794F28AA1EDEF903003EC54D /* NakedDriLibBLabCell.m in Sources */,
 				79E177871E690F6400318916 /* DeliveryOrderVC.m in Sources */,
+				2941E3AE1FE1273F00D672A8 /* NewCustomizationSureVC.m in Sources */,
 				797556421EE6457F004BD417 /* UIAlertController+supportedinterface.m in Sources */,
 				79B4B83C1DA8F0B100B97070 /* StrWithIntTool.m in Sources */,
 				2941482A1FAB00BB00F12782 /* CustomTitleView.m in Sources */,

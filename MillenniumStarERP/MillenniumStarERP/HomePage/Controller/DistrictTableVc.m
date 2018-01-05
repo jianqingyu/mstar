@@ -26,7 +26,6 @@
 }
 
 - (void)loadRequest{
-
     [SVProgressHUD show];
     NSString *regiUrl = [NSString stringWithFormat:@"%@getArea",baseUrl];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
@@ -41,10 +40,9 @@
         [SVProgressHUD dismiss];
     } requestURL:regiUrl params:params];
 }
-#pragma mark - Table view data source
 
+#pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    
     return 2;
 }
 

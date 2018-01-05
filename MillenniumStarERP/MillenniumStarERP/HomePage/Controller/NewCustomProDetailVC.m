@@ -158,7 +158,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 }
 
 - (void)addStoneWithDic:(NSDictionary *)data{
-    CustomJewelInfo *CusInfo = [CustomJewelInfo objectWithKeyValues:data];
+    CustomJewelInfo *CusInfo = [CustomJewelInfo mj_objectWithKeyValues:data];
     NSArray *infoArr = @[@"钻石",CusInfo.jewelStoneWeight,[self modelWith:2 and:CusInfo.jewelStoneShape],[self modelWith:3 and:CusInfo.jewelStoneColor],[self modelWith:4 and:CusInfo.jewelStonePurity]];
     NSMutableArray *mutA = [NSMutableArray new];
     for (int i=0; i<5; i++) {
@@ -294,11 +294,11 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
                     self.colorInfo = data.colorInfo;
                 }
                 if (self.puritys.count==0) {
-                    self.colorInfo = [DetailTypeInfo objectWithKeyValues:self.puritys[0]];
+                    self.colorInfo = [DetailTypeInfo mj_objectWithKeyValues:self.puritys[0]];
                 }
             }
             if ([YQObjectBool boolForObject:response.data[@"model"]]) {
-                DetailModel *modelIn = [DetailModel objectWithKeyValues:
+                DetailModel *modelIn = [DetailModel mj_objectWithKeyValues:
                                                        response.data[@"model"]];
                 [self setupBaseListData:modelIn];
                 [self creatCusTomHeadView];
@@ -906,7 +906,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 }
 
 - (void)loadEditType:(NSDictionary *)data{
-    OrderListInfo *listI = [OrderListInfo objectWithKeyValues:data];
+    OrderListInfo *listI = [OrderListInfo mj_objectWithKeyValues:data];
     if (self.orderBack) {
         self.orderBack(listI);
     }

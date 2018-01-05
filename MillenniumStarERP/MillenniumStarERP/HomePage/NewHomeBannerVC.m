@@ -66,10 +66,10 @@
             StorageDataTool *data = [StorageDataTool shared];
             data.isMain = [response.data[@"IsMasterAccount"]boolValue];
             if ([YQObjectBool boolForObject:response.data[@"address"]]){
-                data.addInfo = [AddressInfo objectWithKeyValues:response.data[@"address"]];
+                data.addInfo = [AddressInfo mj_objectWithKeyValues:response.data[@"address"]];
             }
             if ([YQObjectBool boolForObject:response.data[@"DefaultCustomer"]]){
-                data.cusInfo = [CustomerInfo objectWithKeyValues:response.data[@"DefaultCustomer"]];
+                data.cusInfo = [CustomerInfo mj_objectWithKeyValues:response.data[@"DefaultCustomer"]];
             }
         }
     } requestURL:url params:params];
@@ -142,7 +142,7 @@
         make.bottom.equalTo(self.view).with.offset(-15);
         make.size.mas_equalTo(CGSizeMake(width, 80));
     }];
-    NSArray *arr = @[@"p_11-1",@"p_03-1",@"p_06-1",@"p_06-1",@"p_08-1"];
+    NSArray *arr = @[@"p_11-1",@"p_03-1",@"p_04-1",@"p_06-1",@"p_08-1"];
     NSArray *arrS = @[@"快速定制",@"产品",@"个性定制",@"裸钻库",@"个人中心"];
     CGFloat mar = (width-arr.count*60)/(arr.count-1);
     for (int i=0; i<arr.count; i++) {

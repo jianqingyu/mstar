@@ -14,4 +14,6 @@ typedef void (^NewCusDidBack)(BOOL isDef,id model);
 @property (nonatomic,assign)BOOL isH;
 @property (nonatomic,strong)NSArray *dataArr;
 @property (nonatomic,strong)NSArray *dataNum;
+@property (nonatomic,  weak)UIButton *btn;
+@property (nonatomic,  copy)NSString *drillInfo;
 @end

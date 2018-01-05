@@ -7,7 +7,9 @@
 //
 
 #import "BaseViewController.h"
-
+typedef void (^NewCusEdDateBack)(id model);
 @interface NewCustomizationVC : BaseViewController
-
+@property (nonatomic,assign)int isEd;
+@property (nonatomic,assign)int proId;
+@property (nonatomic,  copy)NewCusEdDateBack back;
 @end

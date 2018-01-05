@@ -778,7 +778,7 @@
 }
 
 - (void)loadEditType:(NSDictionary *)data{
-    OrderListInfo *listI = [OrderListInfo objectWithKeyValues:data];
+    OrderListInfo *listI = [OrderListInfo mj_objectWithKeyValues:data];
     if (self.orderBack) {
         self.orderBack(listI);
     }

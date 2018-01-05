@@ -19,5 +19,5 @@
 + (NSString *)strWithArr:(NSArray *)array With:(NSString *)str;
 + (NSString *)strWithArr:(NSArray *)array;
 + (NSString *)strWithIntOrStrArr:(NSArray *)array;
-+ (NSData *)dataWithData:(UIImage *)image;
++ (NSData   *)dataWithData:(UIImage *)image;
 @end

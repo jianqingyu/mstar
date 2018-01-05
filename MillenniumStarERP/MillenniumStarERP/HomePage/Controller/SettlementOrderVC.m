@@ -28,6 +28,11 @@
     self.title = @"结算单";
     [self setBaseView];
     [self loadSetmentData];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+}
+
+- (void)orientChange:(NSNotification *)notification{
+    [self.settlementTab reloadData];
 }
 
 - (void)setBaseView{
@@ -148,6 +153,10 @@
     SettlementListInfo *sInfo = self.listArr[indexPath.section];
     cell.info = sInfo;
     return cell;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

@@ -348,14 +348,14 @@
         }
     }
     if (driVc) {
-        driVc.isCus = YES;
+        driVc.cusType = 3;
         if (data.BaseInfo) {
             driVc.seaDic = data.BaseInfo.stoneWeightRange;
         }
         [cur.navigationController popToViewController:driVc animated:YES];
     }else{
         driVc = [NakedDriLibViewController new];
-        driVc.isCus = YES;
+        driVc.cusType = 3;
         if (data.BaseInfo) {
             driVc.seaDic = data.BaseInfo.stoneWeightRange;
         }

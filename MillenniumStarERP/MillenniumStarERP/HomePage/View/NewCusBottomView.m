@@ -14,15 +14,21 @@
     return [[NSBundle mainBundle]loadNibNamed:@"NewCusBottomView" owner:nil options:nil][0];
 }
 
-- (IBAction)close:(id)sender {
+- (IBAction)backClick:(id)sender {
     if (self.back) {
         self.back(0);
     }
 }
 
-- (IBAction)sureClick:(id)sender {
+- (IBAction)deleteClick:(id)sender {
     if (self.back) {
         self.back(1);
+    }
+}
+
+- (IBAction)sureClick:(id)sender {
+    if (self.back) {
+        self.back(2);
     }
 }
 

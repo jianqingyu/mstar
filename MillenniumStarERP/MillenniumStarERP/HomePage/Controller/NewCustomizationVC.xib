@@ -11,14 +11,62 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewCustomizationVC">
             <connections>
+                <outlet property="bottomSureBtn" destination="rZ7-K7-OJC" id="5vV-G3-BXJ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outletCollection property="bottomBtns" destination="Ard-HK-43G" id="KGY-Ne-OzQ"/>
+                <outletCollection property="bottomBtns" destination="g9H-E9-l5l" id="xLF-xC-rig"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rZ7-K7-OJC">
+                    <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ard-HK-43G">
+                            <rect key="frame" x="0.0" y="0.0" width="187.5" height="40"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <state key="normal" title="选择手寸">
+                                <color key="titleColor" red="0.15686274509803921" green="0.15686274509803921" blue="0.15686274509803921" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="bottomClick:" destination="-1" eventType="touchUpInside" id="N7z-Ul-dC0"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g9H-E9-l5l">
+                            <rect key="frame" x="187.5" y="0.0" width="187.5" height="40"/>
+                            <color key="backgroundColor" red="0.95686274509803915" green="0.16862745098039217" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <state key="normal" title="购买"/>
+                            <connections>
+                                <action selector="bottomClick:" destination="-1" eventType="touchUpInside" id="sSv-e7-wUg"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="g9H-E9-l5l" firstAttribute="leading" secondItem="Ard-HK-43G" secondAttribute="trailing" id="1fC-RL-yr8"/>
+                        <constraint firstItem="g9H-E9-l5l" firstAttribute="top" secondItem="rZ7-K7-OJC" secondAttribute="top" id="IuK-dF-SP3"/>
+                        <constraint firstItem="Ard-HK-43G" firstAttribute="leading" secondItem="rZ7-K7-OJC" secondAttribute="leading" id="QE4-34-0oo"/>
+                        <constraint firstAttribute="height" constant="40" id="Qe6-bs-Fbh"/>
+                        <constraint firstItem="Ard-HK-43G" firstAttribute="top" secondItem="rZ7-K7-OJC" secondAttribute="top" id="WM5-Cp-6i8"/>
+                        <constraint firstAttribute="trailing" secondItem="g9H-E9-l5l" secondAttribute="trailing" id="iA2-bm-bpy"/>
+                        <constraint firstItem="g9H-E9-l5l" firstAttribute="width" secondItem="Ard-HK-43G" secondAttribute="width" id="sxd-pt-3p6"/>
+                        <constraint firstAttribute="bottom" secondItem="g9H-E9-l5l" secondAttribute="bottom" id="uc2-HS-cal"/>
+                        <constraint firstAttribute="bottom" secondItem="Ard-HK-43G" secondAttribute="bottom" id="zAY-Ke-SGg"/>
+                    </constraints>
+                </view>
+            </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="rZ7-K7-OJC" secondAttribute="bottom" id="9CX-eJ-hgb"/>
+                <constraint firstAttribute="trailing" secondItem="rZ7-K7-OJC" secondAttribute="trailing" id="Kc7-Gg-tUB"/>
+                <constraint firstItem="rZ7-K7-OJC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zN8-fY-xoL"/>
+            </constraints>
+            <point key="canvasLocation" x="33.5" y="53.5"/>
         </view>
     </objects>
 </document>

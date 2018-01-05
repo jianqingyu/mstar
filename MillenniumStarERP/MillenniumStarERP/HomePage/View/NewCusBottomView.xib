@@ -16,37 +16,48 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wom-hT-oJE">
-                    <rect key="frame" x="0.0" y="0.0" width="187.5" height="40"/>
+                    <rect key="frame" x="125" y="0.0" width="125" height="40"/>
                     <state key="normal" image="icon_x"/>
                     <connections>
-                        <action selector="close:" destination="iN0-l3-epB" eventType="touchUpInside" id="oQ7-Kq-LTq"/>
+                        <action selector="deleteClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="VT8-hp-gnj"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DDk-a4-Qb9">
-                    <rect key="frame" x="187.5" y="0.0" width="187.5" height="40"/>
-                    <state key="normal" image="icon_true"/>
+                    <rect key="frame" x="250" y="0.0" width="125" height="40"/>
+                    <state key="normal" image="icon_true-1"/>
                     <connections>
                         <action selector="sureClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="ubm-BG-QNd"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hP6-3d-jN2">
+                    <rect key="frame" x="0.0" y="0.0" width="125" height="40"/>
+                    <state key="normal" image="icon_new_back"/>
+                    <connections>
+                        <action selector="backClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="pj6-s5-Q61"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="Wom-hT-oJE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0Jn-iB-fa2"/>
                 <constraint firstAttribute="bottom" secondItem="DDk-a4-Qb9" secondAttribute="bottom" id="Aso-N5-mV2"/>
-                <constraint firstItem="DDk-a4-Qb9" firstAttribute="height" secondItem="Wom-hT-oJE" secondAttribute="height" id="Gis-Fw-fbf"/>
+                <constraint firstAttribute="bottom" secondItem="hP6-3d-jN2" secondAttribute="bottom" id="Mjg-6T-1C6"/>
                 <constraint firstItem="DDk-a4-Qb9" firstAttribute="leading" secondItem="Wom-hT-oJE" secondAttribute="trailing" id="ObK-je-nRP"/>
                 <constraint firstItem="DDk-a4-Qb9" firstAttribute="width" secondItem="Wom-hT-oJE" secondAttribute="width" id="Ooj-Cf-KKV"/>
                 <constraint firstAttribute="bottom" secondItem="Wom-hT-oJE" secondAttribute="bottom" id="Uv4-wC-5iF"/>
                 <constraint firstItem="DDk-a4-Qb9" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="XWU-YR-ric"/>
+                <constraint firstItem="Wom-hT-oJE" firstAttribute="width" secondItem="hP6-3d-jN2" secondAttribute="width" id="ceT-k0-OY4"/>
+                <constraint firstItem="hP6-3d-jN2" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="fnD-GZ-s0y"/>
+                <constraint firstItem="hP6-3d-jN2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="igw-BG-ZBG"/>
                 <constraint firstItem="Wom-hT-oJE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="jwz-qU-Po3"/>
+                <constraint firstItem="Wom-hT-oJE" firstAttribute="leading" secondItem="hP6-3d-jN2" secondAttribute="trailing" id="mnI-2C-aUu"/>
                 <constraint firstAttribute="trailing" secondItem="DDk-a4-Qb9" secondAttribute="trailing" id="of8-aT-KSi"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
     <resources>
-        <image name="icon_true" width="20" height="16"/>
+        <image name="icon_new_back" width="20" height="16"/>
+        <image name="icon_true-1" width="20" height="16"/>
         <image name="icon_x" width="20" height="16"/>
     </resources>
 </document>

@@ -96,8 +96,8 @@
     [SVProgressHUD show];
     NSString *regiUrl = [NSString stringWithFormat:@"%@userRegisterDo",baseUrl];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"userName"] = self.userFie.text;
-    params[@"password"] = self.keyfie.text;
+    params[@"userName"] = [self.userFie.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    params[@"password"] = [self.keyfie.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     params[@"trueName"] = self.namefie.text;
     params[@"phone"] = self.phonefie.text;
     params[@"phoneCode"] = self.codefie.text;

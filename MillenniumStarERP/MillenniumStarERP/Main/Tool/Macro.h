@@ -46,12 +46,15 @@
 #define SERVER_REQUEST_ERROR 1000000
 #define SHOWALERTVIEW(msg)   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];[alertView show];
 //颜色相关
-#define MAIN_COLOR [UIColor colorWithRed:244/255.0f green:43/255.0f blue:56/255.0f alpha:1]
 #define CUSTOM_COLOR(a,b,c) [UIColor colorWithRed:a/255.0f green:b/255.0f blue:c/255.0f alpha:1]
 #define CUSTOM_COLOR_ALPHA(a,b,c,d) [UIColor colorWithRed:a/255.0f green:b/255.0f blue:c/255.0f alpha:d]
+#define MAIN_COLOR CUSTOM_COLOR(244,43,56)
 #define BarColor CUSTOM_COLOR(245,245,247)
 #define DefaultColor CUSTOM_COLOR(240,239,245)
+#define LineColor CUSTOM_COLOR(243,242,247)
 #define BordColor CUSTOM_COLOR(200,200,200)
+#define TextlColor CUSTOM_COLOR(153,153,153)
+#define TextBColor CUSTOM_COLOR(68,68,68)
 //基础接口
 #define baseNet @"http://appapi1.fanerweb.com/api/"
 //网络接口

@@ -100,12 +100,12 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     NSString *passUrl;
     if (self.isForgot) {
-        params[@"password"] = self.passWord.text;
+        params[@"password"] = [self.passWord.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         params[@"phoneCode"] = self.codeFie.text;
         params[@"phone"] = self.phoneFie.text;
         passUrl = [NSString stringWithFormat:@"%@userForgetPasswordDo",baseUrl];
     }else{
-        params[@"password"] = self.passWord.text;
+        params[@"password"] = [self.passWord.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         params[@"phoneCode"] = self.codeFie.text;
         params[@"tokenKey"] = [AccountTool account].tokenKey;
         passUrl = [NSString stringWithFormat:@"%@userModifyPasswordDo",baseUrl];

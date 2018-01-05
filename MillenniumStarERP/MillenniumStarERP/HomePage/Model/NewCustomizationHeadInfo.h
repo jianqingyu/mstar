@@ -14,6 +14,6 @@
 @property (nonatomic,  copy)NSString *handSize;
 @property (nonatomic,  copy)NSString *title;
 @property (nonatomic,  copy)NSArray *modelPic;
+@property (nonatomic,  copy)NSDictionary *stoneWeightRange;
 @property (nonatomic,assign)float price;
-
 @end

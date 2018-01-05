@@ -148,7 +148,7 @@
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
             if ([YQObjectBool boolForObject:response.data[@"certAuth"]]) {
-                _hedInfo = [NakedDriLiblistInfo objectWithKeyValues:response.data[@"certAuth"]];
+                _hedInfo = [NakedDriLiblistInfo mj_objectWithKeyValues:response.data[@"certAuth"]];
                 self.headView.info = [self lisInfoWith:_hedInfo];
             }
             NSMutableArray *mutH = [NSMutableArray new];
@@ -318,9 +318,7 @@
     }
     [params addEntriesFromDictionary:self.dict];
     NakedDriSearchVC *seaVc = [NakedDriSearchVC new];
-    seaVc.isPro = self.isPro;
-    seaVc.isCus = self.isCus;
-    seaVc.isSel = self.isSel;
+    seaVc.cusType = self.cusType;
     seaVc.seaDic = params;
     [self.supNav pushViewController:seaVc animated:YES];
 }

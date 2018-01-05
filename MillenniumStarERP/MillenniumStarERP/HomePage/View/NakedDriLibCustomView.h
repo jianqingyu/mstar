@@ -10,9 +10,7 @@
 
 @interface NakedDriLibCustomView : UIView
 + (NakedDriLibCustomView *)creatCustomView;
-@property (nonatomic,assign)BOOL isCus;
-@property (nonatomic,assign)BOOL isSel;
-@property (nonatomic,assign)BOOL isPro;
+@property (nonatomic,assign)int cusType;
 @property (nonatomic,strong)UINavigationController *supNav;
 @property (nonatomic,strong)NSDictionary *seaDic;
 @end

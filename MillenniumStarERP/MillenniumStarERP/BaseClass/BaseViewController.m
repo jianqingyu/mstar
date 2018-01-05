@@ -24,7 +24,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = NO;
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
+    [[UIApplication sharedApplication] setStatusBarStyle:
+                           UIStatusBarStyleLightContent animated:NO];
     App;
     app.loadBack = ^(BOOL isYes){
         [NetworkDetermineTool isSView:isYes];

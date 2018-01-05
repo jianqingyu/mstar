@@ -64,11 +64,6 @@
     self.navigationController.delegate = self;
 }
 
-//- (void)viewWillDisappear:(BOOL)animated{
-//    [super viewWillDisappear:animated];
-//    [self removeObserver:self.tabBarController forKeyPath:@"tabCount"];
-//}
-
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     BOOL isShowHomePage = [viewController isKindOfClass:[self class]];
     [self.navigationController setNavigationBarHidden:isShowHomePage animated:YES];
@@ -140,7 +135,7 @@
         if ([response.error intValue]==0) {
             if ([YQObjectBool boolForObject:response.data[@"userInfo"]]) {
                 self.selBtn.hidden = YES;
-                self.userInfo = [UserInfo objectWithKeyValues:response.data[@"userInfo"]];
+                self.userInfo = [UserInfo mj_objectWithKeyValues:response.data[@"userInfo"]];
                 self.headView.userInfo = self.userInfo;
                 self.tabCount = self.userInfo.mesCount;
             }

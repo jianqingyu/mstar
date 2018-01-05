@@ -11,4 +11,6 @@
 @interface NewCustomizationCollCell : UICollectionViewCell
 @property (nonatomic,strong)NewCustomizationInfo *info;
 @property (nonatomic,assign)int number;
+@property (nonatomic,  copy)NSString *drillStr;
+@property (nonatomic,assign)BOOL isDef;
 @end

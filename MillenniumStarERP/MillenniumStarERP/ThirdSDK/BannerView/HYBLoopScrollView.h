@@ -77,6 +77,7 @@ typedef void (^HYBLoopScrollViewDidScrollBlock)(NSInteger toIndex, HYBLoadImageV
  *  @note The default type is kPageControlAlignCenter
  */
 @property (nonatomic, assign) HYBPageControlAlignment alignment;
+@property (nonatomic, assign) UIViewContentMode imgMode;
 
 /**
  *  The interval time for the timer call. It means that you can

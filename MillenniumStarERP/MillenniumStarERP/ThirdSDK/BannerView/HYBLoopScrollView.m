@@ -170,7 +170,7 @@ NSString * const kCellIdentifier = @"ReuseCellIdentifier";
   
   [self bringSubviewToFront:self.pageControl];
   self.pageControl.numberOfPages = self.imageUrls.count;
- CGSize size = [self.pageControl sizeForNumberOfPages:self.imageUrls.count];
+  CGSize size = [self.pageControl sizeForNumberOfPages:self.imageUrls.count];
   self.pageControl.size = size;
   
   if (self.alignment == kPageControlAlignCenter) {
@@ -255,17 +255,23 @@ NSString * const kCellIdentifier = @"ReuseCellIdentifier";
   }
 }
 
+- (void)setImgMode:(UIViewContentMode)imgMode{
+    if (imgMode) {
+        _imgMode = imgMode;
+        [self.collectionView reloadData];
+    }
+}
+
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView
      numberOfItemsInSection:(NSInteger)section {
-  return self.totalPageCount;
+   return self.totalPageCount;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
   HYBCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellIdentifier
                                                                       forIndexPath:indexPath];
-  
   NSInteger itemIndex = indexPath.item % self.imageUrls.count;
   if (itemIndex < self.imageUrls.count) {
         NSString *urlString = self.imageUrls[itemIndex];
@@ -283,7 +289,9 @@ NSString * const kCellIdentifier = @"ReuseCellIdentifier";
     cell.titleLabel.text = [NSString stringWithFormat:@"   %@", self.adTitles[itemIndex]];
     cell.titleLabel.textColor = MAIN_COLOR;
   }
-  
+    if (self.imgMode) {
+        cell.imageView.contentMode = _imgMode;
+    }
   return cell;
 }
 

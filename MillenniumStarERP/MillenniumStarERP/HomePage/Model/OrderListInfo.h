@@ -10,6 +10,7 @@
 
 @interface OrderListInfo : NSObject
 @property (nonatomic,assign)BOOL isSel;
+@property (nonatomic,assign)BOOL showPageType;
 @property (nonatomic,assign)int id;
 @property (nonatomic,assign)int modelId;
 @property (nonatomic,copy)NSString *title;

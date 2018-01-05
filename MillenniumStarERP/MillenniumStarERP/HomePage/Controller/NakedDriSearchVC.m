@@ -46,7 +46,7 @@
     [self setupHeaderRefresh];
     [self setRightNaviBar];
     //其他页面选裸钻
-    if (self.isCus||self.isSel) {
+    if (self.cusType) {
         self.bottomV.hidden = YES;
         self.chooseBtn.hidden = YES;
         self.sureBtn.hidden = NO;
@@ -316,7 +316,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NakedDriSeaTableCell *cell = [NakedDriSeaTableCell cellWithTableView:tableView];
-    cell.isCus = self.isCus;
+    cell.cusType = self.cusType;
     cell.isShow = self.isShow;
     cell.back = ^(BOOL isSel){
         if (isSel) {
@@ -333,14 +333,6 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    if (self.isPro) {
-//        for (int i=0; i<_dataArray.count; i++) {
-//            NakedDriSeaListInfo *dInfo = _dataArray[i];
-//            if (i!=indexPath.row) {
-//                dInfo.isSel = NO;
-//            }
-//        }
-//    }
     NakedDriSeaListInfo *listInfo;
     if (indexPath.row<_dataArray.count) {
         listInfo = _dataArray[indexPath.row];
@@ -365,11 +357,11 @@
     }
     [self.tableView reloadData];
 }
-
+//选择裸钻
 - (IBAction)sureClick:(id)sender {
     [self chooseCustomDri];
 }
-//选择裸钻
+
 - (void)chooseCustomDri{
     NSArray *arr = [self arrWithInfo];
     if (arr.count==0) {
@@ -387,18 +379,18 @@
     }
     [[NSNotificationCenter defaultCenter]postNotificationName:NotificationDriName
                                 object:nil userInfo:@{UserInfoDriName:listInfo}];
-    if (self.isCus) {//定制
+    if (self.cusType==3) {//定制
         return;
     }
     NSInteger count = self.navigationController.viewControllers.count;
     BaseViewController *baseVc = self.navigationController.viewControllers[count-3];
     [self.navigationController popToViewController:baseVc animated:YES];
 }
-
+//选择戒托
 - (IBAction)chooseProClick:(id)sender {
     [self chooseCustomPro];
 }
-//选择戒托
+
 - (void)chooseCustomPro{
     NSArray *arr = [self arrWithInfo];
     if (arr.count==0) {
@@ -420,7 +412,7 @@
     listVc.backDict = @{dic[@"key"]:dic[@"value"]}.mutableCopy;
     [self.navigationController pushViewController:listVc animated:YES];
 }
-
+//报价
 - (IBAction)priceClick:(id)sender {
     NSArray *arr = [self arrWithIsSel];
     if (arr.count==0) {
@@ -434,7 +426,7 @@
     nakedVc.orderId = [StrWithIntTool strWithArr:arr With:@","];
     [self.navigationController pushViewController:nakedVc animated:YES];
 }
-
+//裸钻下单
 - (IBAction)orderCliCk:(id)sender {
     if (!self.isShow) {
         return;

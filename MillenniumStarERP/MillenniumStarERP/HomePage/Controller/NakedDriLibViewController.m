@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"裸钻库";
-    if (![[AccountTool account].isNoDriShow intValue]) {
+    if (!([[AccountTool account].isNoDriShow intValue]||self.cusType)){
         [self setRightNaviBar];
     }
     [self creatNakedDriView];
@@ -55,8 +55,7 @@
 
 - (void)creatNakedDriView{
     NakedDriLibCustomView *NakedDriView = [NakedDriLibCustomView creatCustomView];
-    NakedDriView.isCus = self.isCus;
-    NakedDriView.isPro = self.isPro;
+    NakedDriView.cusType = self.cusType;
     if (self.seaDic) {
         NakedDriView.seaDic = self.seaDic;
     }
