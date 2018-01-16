@@ -119,10 +119,14 @@
     }];
     //设置当数据小于一屏幕时也能滚动
     self.rightCollection.alwaysBounceVertical = YES;
-    UINib *nib = [UINib nibWithNibName:@"ProductCollectionCell" bundle:nil];
-    [self.rightCollection registerNib:nib
-           forCellWithReuseIdentifier:@"ProductCollectionCell"];
+    NSString *cellStr = @"ProductCollectionCell";
+    UINib *nib = [UINib nibWithNibName:cellStr bundle:nil];
+    [self.rightCollection registerNib:nib forCellWithReuseIdentifier:cellStr];
     
+    [self createBottomNumView];
+}
+
+- (void)createBottomNumView{
     UIView *bView = [UIView new];
     bView.backgroundColor = CUSTOM_COLOR_ALPHA(0, 0, 0, 0.5);
     bView.hidden = YES;
@@ -192,8 +196,10 @@
     titleFie.delegate = self;
     
     UIButton *seaBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [seaBtn addTarget:self action:@selector(searchClick) forControlEvents:UIControlEventTouchUpInside];
-    [seaBtn setImage:[UIImage imageNamed:@"icon_search"] forState:UIControlStateNormal];
+    [seaBtn addTarget:self action:@selector(searchClick) forControlEvents:
+                                                   UIControlEventTouchUpInside];
+    [seaBtn setImage:[UIImage imageNamed:@"icon_search"] forState:
+                                                   UIControlStateNormal];
     [titleView addSubview:seaBtn];
     [seaBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleView).offset(0);
@@ -208,6 +214,7 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     [textField selectAll:nil];
 }
+
 - (void)textFieldDidEndEditing:(UITextField *)textField{
     [self searchClick];
 }

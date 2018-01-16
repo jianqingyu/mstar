@@ -15,9 +15,12 @@
 		292106AC1FD915DD00A67D74 /* NewCustomizationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 292106AA1FD915DD00A67D74 /* NewCustomizationVC.m */; };
 		292106AD1FD915DD00A67D74 /* NewCustomizationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 292106AB1FD915DD00A67D74 /* NewCustomizationVC.xib */; };
 		292106B01FD91A3000A67D74 /* NewCustomizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 292106AF1FD91A3000A67D74 /* NewCustomizationView.m */; };
+		29215194200DE7EE00DD368F /* ChooseAddressCusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29215193200DE7EE00DD368F /* ChooseAddressCusView.m */; };
+		29215196200DE8CC00DD368F /* ChooseAddressCusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29215195200DE8CC00DD368F /* ChooseAddressCusView.xib */; };
 		2941482A1FAB00BB00F12782 /* CustomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294148291FAB00BB00F12782 /* CustomTitleView.m */; };
 		2941E3AE1FE1273F00D672A8 /* NewCustomizationSureVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941E3AC1FE1273F00D672A8 /* NewCustomizationSureVC.m */; };
 		2941E3AF1FE1273F00D672A8 /* NewCustomizationSureVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2941E3AD1FE1273F00D672A8 /* NewCustomizationSureVC.xib */; };
+		294CF754200C5058004042B6 /* ShareSDKTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 294CF753200C5058004042B6 /* ShareSDKTool.m */; };
 		296079931FA039C100F7D515 /* ShowPriceHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 296079921FA039C100F7D515 /* ShowPriceHeadView.xib */; };
 		299923DD1FDE37390048A38A /* NewCusBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 299923DC1FDE37390048A38A /* NewCusBottomView.m */; };
 		299923DF1FDE37570048A38A /* NewCusBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 299923DE1FDE37570048A38A /* NewCusBottomView.xib */; };
@@ -455,11 +458,17 @@
 		292106AB1FD915DD00A67D74 /* NewCustomizationVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewCustomizationVC.xib; sourceTree = "<group>"; };
 		292106AE1FD91A3000A67D74 /* NewCustomizationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCustomizationView.h; sourceTree = "<group>"; };
 		292106AF1FD91A3000A67D74 /* NewCustomizationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewCustomizationView.m; sourceTree = "<group>"; };
+		29215192200DE7EE00DD368F /* ChooseAddressCusView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseAddressCusView.h; sourceTree = "<group>"; };
+		29215193200DE7EE00DD368F /* ChooseAddressCusView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChooseAddressCusView.m; sourceTree = "<group>"; };
+		29215195200DE8CC00DD368F /* ChooseAddressCusView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseAddressCusView.xib; sourceTree = "<group>"; };
 		294148281FAB00BB00F12782 /* CustomTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomTitleView.h; sourceTree = "<group>"; };
 		294148291FAB00BB00F12782 /* CustomTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomTitleView.m; sourceTree = "<group>"; };
 		2941E3AB1FE1273F00D672A8 /* NewCustomizationSureVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCustomizationSureVC.h; sourceTree = "<group>"; };
 		2941E3AC1FE1273F00D672A8 /* NewCustomizationSureVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewCustomizationSureVC.m; sourceTree = "<group>"; };
 		2941E3AD1FE1273F00D672A8 /* NewCustomizationSureVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewCustomizationSureVC.xib; sourceTree = "<group>"; };
+		294CF751200C4AD8004042B6 /* MillenniumStarERP.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MillenniumStarERP.entitlements; sourceTree = "<group>"; };
+		294CF752200C5058004042B6 /* ShareSDKTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareSDKTool.h; sourceTree = "<group>"; };
+		294CF753200C5058004042B6 /* ShareSDKTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareSDKTool.m; sourceTree = "<group>"; };
 		296079921FA039C100F7D515 /* ShowPriceHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowPriceHeadView.xib; sourceTree = "<group>"; };
 		299923DB1FDE37390048A38A /* NewCusBottomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCusBottomView.h; sourceTree = "<group>"; };
 		299923DC1FDE37390048A38A /* NewCusBottomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewCusBottomView.m; sourceTree = "<group>"; };
@@ -1311,6 +1320,7 @@
 		79655D801D7D0668006B90FC /* MillenniumStarERP */ = {
 			isa = PBXGroup;
 			children = (
+				294CF751200C4AD8004042B6 /* MillenniumStarERP.entitlements */,
 				79655D841D7D0668006B90FC /* AppDelegate.h */,
 				79655D851D7D0668006B90FC /* AppDelegate.m */,
 				79655E021D7D0E53006B90FC /* BaseClass */,
@@ -1420,14 +1430,14 @@
 				79655DD41D7D0AAA006B90FC /* AccountTool.m */,
 				7937D36F1DF5238300FE7844 /* YQObjectBool.h */,
 				7937D3701DF5238300FE7844 /* YQObjectBool.m */,
+				294CF752200C5058004042B6 /* ShareSDKTool.h */,
+				294CF753200C5058004042B6 /* ShareSDKTool.m */,
 				79B4B83A1DA8F0B100B97070 /* StrWithIntTool.h */,
 				79B4B83B1DA8F0B100B97070 /* StrWithIntTool.m */,
 				793FC6751E4C15C8009F6296 /* PackagingTool.h */,
 				793FC6761E4C15C8009F6296 /* PackagingTool.m */,
 				79655DD61D7D0AAA006B90FC /* CommonUtils.h */,
 				79655DD71D7D0AAA006B90FC /* CommonUtils.m */,
-				79655DD91D7D0AAA006B90FC /* MBProgressHUD+MJ.h */,
-				79655DDA1D7D0AAA006B90FC /* MBProgressHUD+MJ.m */,
 				79655DDB1D7D0AAA006B90FC /* Md5PassWord.h */,
 				79655DDC1D7D0AAA006B90FC /* Md5PassWord.m */,
 				79655DDD1D7D0AAA006B90FC /* YQItemTool.h */,
@@ -1444,6 +1454,8 @@
 				793BD0951E7240C700E32389 /* ArrayWithDict.m */,
 				7912BC5D1F41810C00D22EBA /* StorageDataTool.h */,
 				7912BC5E1F41810C00D22EBA /* StorageDataTool.m */,
+				79655DD91D7D0AAA006B90FC /* MBProgressHUD+MJ.h */,
+				79655DDA1D7D0AAA006B90FC /* MBProgressHUD+MJ.m */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -1471,6 +1483,9 @@
 				79CD6B9C1E77E8D700492463 /* CustomTextField.m */,
 				7928A97F1F287F3E00BE69C0 /* CustomTopBtn.h */,
 				7928A9801F287F3E00BE69C0 /* CustomTopBtn.m */,
+				29215192200DE7EE00DD368F /* ChooseAddressCusView.h */,
+				29215193200DE7EE00DD368F /* ChooseAddressCusView.m */,
+				29215195200DE8CC00DD368F /* ChooseAddressCusView.xib */,
 				7959A8D61D814F23009CAA02 /* SKTagView */,
 			);
 			path = Views;
@@ -2320,6 +2335,14 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = BFL2K257T7;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					79655D961D7D0668006B90FC = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -2454,6 +2477,7 @@
 				7959A8BF1D80FC03009CAA02 /* HomePageCollectionCell.xib in Resources */,
 				79655E211D7D0F1D006B90FC /* HelpMenuVC.xib in Resources */,
 				79ED9EE31DC0531A00257454 /* OrderListController.xib in Resources */,
+				29215196200DE8CC00DD368F /* ChooseAddressCusView.xib in Resources */,
 				79B2549D1EE6946300BBD7A5 /* WeiboSDK.bundle in Resources */,
 				790C2C2A1E092914006D9DCF /* ProgressHeadView.xib in Resources */,
 				79B4B8391DA8DD3A00B97070 /* OrderHeadView.xib in Resources */,
@@ -2865,6 +2889,7 @@
 				795C946D1F2082BE00D2C044 /* NakedDriSeaTableCell.m in Sources */,
 				7959A8DF1D814F23009CAA02 /* SKTagView.m in Sources */,
 				79B4B8301DA8C5F100B97070 /* OrderBottomTableCell.m in Sources */,
+				29215194200DE7EE00DD368F /* ChooseAddressCusView.m in Sources */,
 				790C70AC1DCC21C5007343BA /* Reachability.m in Sources */,
 				79ED9EE21DC0531A00257454 /* OrderListController.m in Sources */,
 				790D224C1EE136A700EB6450 /* NakedDriConfirmInfo.m in Sources */,
@@ -2888,6 +2913,7 @@
 				7933D9241D9CA879006C0356 /* DistrictTableVc.m in Sources */,
 				7933E2EB1EE012A600C6247F /* NakedDriOrderDetailCell.m in Sources */,
 				796FD18A1E6E41BB00A50DDC /* SettlementListCell.m in Sources */,
+				294CF754200C5058004042B6 /* ShareSDKTool.m in Sources */,
 				79655DEF1D7D0AAA006B90FC /* MainNavViewController.m in Sources */,
 				790376021EDFE30400344FCD /* NakedDriSeaListInfo.m in Sources */,
 				7959A8D51D814A71009CAA02 /* SearchInfo.m in Sources */,
@@ -3068,6 +3094,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = MillenniumStarERP/MillenniumStarERP.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -3108,6 +3135,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = MillenniumStarERP/MillenniumStarERP.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;

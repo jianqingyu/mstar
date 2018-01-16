@@ -142,56 +142,83 @@
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         self.isWait = YES;
         if ([response.error intValue]==0) {
-            if ([YQObjectBool boolForObject:response.data[@"modelItem"]]) {
-                self.headInfo = [NewCustomizationHeadInfo mj_objectWithKeyValues:response.data[@"modelItem"]];
-                [self creatCusTomHeadView:self.headInfo.modelPic];
-                [self changeTableHeadView];
-                [self setupHeadView];
-                [self creatBaseView];
-                if ([self.headInfo.id intValue]>0) {
-                    [self setHandSizeForStr:self.headInfo.handSize];
-                }
-            }
-            if ([YQObjectBool boolForObject:response.data[@"modelParts"]]) {
-                NSArray *arr = [NewCustomizationInfo mj_objectArrayWithKeyValuesArray:response.data[@"modelParts"]];
-                [self.chooseArr addObjectsFromArray:arr];
-                self.chooseV.dataArr = self.chooseArr;
-                for (NewCustomizationInfo *info in arr) {
-                    if ([self.headInfo.id intValue]>0) {
-                        [self.searchPids addObject:info.pid];
-                    }else{
-                        [self.searchPids addObject:@""];
-                    }
-                }
-            }
-            if ([YQObjectBool boolForObject:response.data[@"jewelStone"]]) {
-                [self addStoneWithDic:response.data[@"jewelStone"]];
-            }else{
-                self.driInfo[@"info"] = @"选择裸钻";
-                self.driInfo[@"codeId"] = @"";
-                self.driInfo[@"price"] = @"";
-                self.chooseV.drillInfo = self.driInfo[@"info"];
-            }
-            if ([YQObjectBool boolForObject:response.data[@"modelpartCount"]]) {
-                self.dataNum = response.data[@"modelpartCount"];
-                self.chooseV.dataNum = self.dataNum;
-            }
-            if ([YQObjectBool boolForObject:response.data[@"modelPuritys"]]) {
-                self.puritys = response.data[@"modelPuritys"];
-            }
-            if ([YQObjectBool boolForObject:response.data[@"handSizeData"]]) {
-                NSMutableArray *mutA = [NSMutableArray new];
-                for (NSString *title in response.data[@"handSizeData"]) {
-                    [mutA addObject:@{@"title":title}];
-                }
-                self.handArr = mutA.copy;
-            }
+            [self setNewCustomDataWith:response.data and:NO];
         }
     } requestURL:netUrl params:params];
+}
+//删除单个部件返回数据
+- (void)loadDefalutData{
+    self.chooseArr  = @[].mutableCopy;
+    [SVProgressHUD show];
+    NSString *detail = @"CustomDetailPageForGetSelectReturnPage";
+    NSString *netUrl = [NSString stringWithFormat:@"%@%@",baseUrl,detail];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    if (self.proId>0) {
+        params[@"itemId"] = @(self.proId);
+    }
+    params[@"selectPids"] = [StrWithIntTool strWithArr:self.searchPids With:@","];
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            [self setNewCustomDataWith:response.data and:YES];
+        }
+    } requestURL:netUrl params:params];
+}
+
+- (void)setNewCustomDataWith:(NSDictionary *)dic and:(BOOL)isDelete{
+    if ([YQObjectBool boolForObject:dic[@"modelItem"]]) {
+        self.headInfo = [NewCustomizationHeadInfo mj_objectWithKeyValues:
+                         dic[@"modelItem"]];
+        [self creatCusTomHeadView:self.headInfo.modelPic];
+        [self changeTableHeadView];
+        [self setupHeadView];
+        [self creatBaseView];
+        if ([self.headInfo.id intValue]>0) {
+            [self setHandSizeForStr:self.headInfo.handSize];
+        }
+    }
+    if ([YQObjectBool boolForObject:dic[@"modelParts"]]) {
+        NSArray *arr = [NewCustomizationInfo mj_objectArrayWithKeyValuesArray:
+                        dic[@"modelParts"]];
+        [self.chooseArr addObjectsFromArray:arr];
+        self.chooseV.dataArr = self.chooseArr;
+        if (!isDelete) {
+            for (NewCustomizationInfo *info in arr) {
+                if ([self.headInfo.id intValue]>0) {
+                    [self.searchPids addObject:info.pid];
+                }else{
+                    [self.searchPids addObject:@""];
+                }
+            }
+        }
+    }
+    if ([YQObjectBool boolForObject:dic[@"jewelStone"]]) {
+        [self addStoneWithDic:dic[@"jewelStone"]];
+    }else{
+        self.driInfo[@"info"] = @"选择裸钻";
+        self.driInfo[@"codeId"] = @"";
+        self.driInfo[@"price"] = @"";
+        self.chooseV.drillInfo = self.driInfo[@"info"];
+    }
+    if ([YQObjectBool boolForObject:dic[@"modelpartCount"]]) {
+        self.dataNum = dic[@"modelpartCount"];
+        self.chooseV.dataNum = self.dataNum;
+    }
+    if ([YQObjectBool boolForObject:dic[@"modelPuritys"]]) {
+        self.puritys = dic[@"modelPuritys"];
+    }
+    if ([YQObjectBool boolForObject:dic[@"handSizeData"]]) {
+        NSMutableArray *mutA = [NSMutableArray new];
+        for (NSString *title in dic[@"handSizeData"]) {
+            [mutA addObject:@{@"title":title}];
+        }
+        self.handArr = mutA.copy;
+    }
 }
 //搜索部件
 - (void)searchCusData{
     [SVProgressHUD show];
+    self.customV.dataArr = @[];
     NewCustomizationInfo *info = self.chooseArr[self.index];
     NSString *detail = @"CustomPartsList";
     NSString *netUrl = [NSString stringWithFormat:@"%@%@",baseUrl,detail];
@@ -356,7 +383,8 @@
         if (!isDef) {
             if ([model isKindOfClass:[NSString class]]){
                 if([model isEqualToString:@"删除"]){
-                    [MBProgressHUD showError:@"点击了删除"];
+                    [self.searchPids setObject:@"" atIndexedSubscript:self.index];
+                    [self loadDefalutData];
                 }
             }else{
                 NewCustomizationInfo *info = (NewCustomizationInfo*)model;

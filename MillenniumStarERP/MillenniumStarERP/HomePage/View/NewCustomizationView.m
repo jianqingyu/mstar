@@ -218,7 +218,6 @@
             self.back(YES,@"选择裸钻");
         }else{
             self.back(YES,@(indexPath.row));
-            
         }
     }
 }

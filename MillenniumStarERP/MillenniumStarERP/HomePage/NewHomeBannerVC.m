@@ -17,7 +17,6 @@
 #import "NewCustomizationVC.h"
 #import "NakedDriLibViewController.h"
 @interface NewHomeBannerVC ()<UINavigationControllerDelegate>
-@property (nonatomic,  weak)UIView *baView;
 @property (nonatomic,  weak)UIWindow *keyWin;
 @property (nonatomic,strong)NSArray *photos;
 @property (nonatomic,strong)NSArray *bPhotos;
@@ -54,7 +53,6 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.delegate = self;
-//    [self resetWindow];
 }
 //加载默认地址
 - (void)loadAddressDataInfo{
@@ -158,12 +156,6 @@
     }
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    if (self.baView.hidden==NO) {
-        self.baView.hidden = YES;
-    }
-}
-
 - (void)openClick:(UIView *)btn{
     if (btn.tag==0) {
         if ([[AccountTool account].isNorm intValue]==1) {
@@ -200,6 +192,9 @@
 }
 
 - (void)openWindowCusHuateView{
+    if (self.cusView) {
+        return;
+    }
     CGFloat wid = MIN(SDevWidth, SDevHeight);
     CGFloat height = 320;
     if (wid>320) {
@@ -208,27 +203,10 @@
     if (!IsPhone) {
         height = 400;
     }
-    if (self.cusView) {
-        return;
-    }
     CusHauteCoutureView *aView = [[CusHauteCoutureView alloc] initWithFrame:CGRectZero];
     aView.driBack = ^(int staue,BOOL isYes){
         if (staue==0) {
-            if (isYes) {
-                [UIView animateWithDuration:0.5 animations:^{
-                    [self.cusView mas_updateConstraints:^(MASConstraintMaker *make) {
-                          make.width.mas_equalTo(@22);
-                    }];
-                    [self.cusView layoutIfNeeded];//强制绘制
-                }];
-            }else{
-                [UIView animateWithDuration:0.5 animations:^{
-                    [self.cusView mas_updateConstraints:^(MASConstraintMaker *make) {
-                        make.width.mas_equalTo(height-30);
-                    }];
-                    [self.cusView layoutIfNeeded];//强制绘制
-                }];
-            }
+            [self cusHauteViewBlock:isYes and:height];
         }else{
             [self resetWindow];
         }
@@ -246,10 +224,28 @@
             make.width.mas_equalTo(height-30);
             make.height.mas_equalTo(height);
         }];
-        [window layoutIfNeeded];//强制绘制
+        [aView layoutIfNeeded];//强制绘制
     }];
     self.cusView = aView;
     self.keyWin = window;
+}
+//change快速定制frame
+- (void)cusHauteViewBlock:(BOOL)isYes and:(CGFloat)height{
+    if (isYes) {
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.cusView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.width.mas_equalTo(@22);
+            }];
+            [self.cusView layoutIfNeeded];//强制绘制
+        }];
+    }else{
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.cusView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.width.mas_equalTo(height-30);
+            }];
+            [self.cusView layoutIfNeeded];//强制绘制
+        }];
+    }
 }
 
 - (void)dealloc {

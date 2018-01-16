@@ -34,18 +34,22 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self = [[NSBundle mainBundle]loadNibNamed:@"CustomFirstCell" owner:nil options:nil][0];
-        self.titleFie.tag = 1;
-        self.titleFie.delegate = self;
-        
-        self.fie1.tag = 2;
-        self.fie1.delegate = self;
-        
-        self.handFie.tag = 3;
-        self.handFie.delegate = self;
-        self.handFie.inputView = [[UIView alloc]initWithFrame:CGRectZero];
-        self.handFie.inputAccessoryView = [[UIView alloc] init];
+        [self setBaseView];
     }
     return self;
+}
+
+- (void)setBaseView{
+    self.titleFie.tag = 1;
+    self.titleFie.delegate = self;
+    
+    self.fie1.tag = 2;
+    self.fie1.delegate = self;
+    
+    self.handFie.tag = 3;
+    self.handFie.delegate = self;
+    self.handFie.inputView = [[UIView alloc]initWithFrame:CGRectZero];
+    self.handFie.inputAccessoryView = [[UIView alloc] init];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField{

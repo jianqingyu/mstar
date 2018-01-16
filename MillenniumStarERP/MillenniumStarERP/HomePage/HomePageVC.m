@@ -29,11 +29,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = DefaultColor;
     [self setHeaderView];
     [self setupFootBtn];
     [self loadHomeData];
+    self.view.backgroundColor = DefaultColor;
     self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
+    [self addNotification];
+}
+
+- (void)addNotification{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeHeadImg:) name:NotificationImg object:nil];
 }
@@ -101,9 +105,9 @@
     }];
     //设置当数据小于一屏幕时也能滚动
     self.rightCollection.alwaysBounceVertical = YES;
-    UINib *nib = [UINib nibWithNibName:@"HomePageCollectionCell" bundle:nil];
-    [self.rightCollection registerNib:nib
-                 forCellWithReuseIdentifier:@"HomePageCollectionCell"];
+    NSString *str = @"HomePageCollectionCell";
+    UINib *nib = [UINib nibWithNibName:str bundle:nil];
+    [self.rightCollection registerNib:nib forCellWithReuseIdentifier:str];
 }
 
 - (void)setupFootBtn{

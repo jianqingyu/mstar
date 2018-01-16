@@ -17,14 +17,14 @@
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wom-hT-oJE">
                     <rect key="frame" x="125" y="0.0" width="125" height="40"/>
-                    <state key="normal" image="icon_x"/>
+                    <state key="normal" image="icon_new_d"/>
                     <connections>
                         <action selector="deleteClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="VT8-hp-gnj"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DDk-a4-Qb9">
                     <rect key="frame" x="250" y="0.0" width="125" height="40"/>
-                    <state key="normal" image="icon_true-1"/>
+                    <state key="normal" image="icon_new_true"/>
                     <connections>
                         <action selector="sureClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="ubm-BG-QNd"/>
                     </connections>
@@ -57,7 +57,7 @@
     </objects>
     <resources>
         <image name="icon_new_back" width="20" height="16"/>
-        <image name="icon_true-1" width="20" height="16"/>
-        <image name="icon_x" width="20" height="16"/>
+        <image name="icon_new_d" width="20" height="16"/>
+        <image name="icon_new_true" width="20" height="16"/>
     </resources>
 </document>
