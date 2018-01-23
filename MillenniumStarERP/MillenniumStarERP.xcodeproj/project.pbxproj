@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29191CB42011A6EB00966FF4 /* SaveDataTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 29191CB32011A6EB00966FF4 /* SaveDataTool.m */; };
 		2919DDE51FA0391900F27C17 /* ShowPriceHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2919DDE41FA0391900F27C17 /* ShowPriceHeadView.m */; };
 		291F30381FDFAAFB00E1CEDC /* NewCustomizationCollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F30361FDFAAFB00E1CEDC /* NewCustomizationCollCell.m */; };
 		291F30391FDFAAFB00E1CEDC /* NewCustomizationCollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291F30371FDFAAFB00E1CEDC /* NewCustomizationCollCell.xib */; };
@@ -444,6 +445,8 @@
 
 /* Begin PBXFileReference section */
 		1E127D1426A75FC58C01A7F6 /* Pods-MillenniumStarERPTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MillenniumStarERPTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MillenniumStarERPTests/Pods-MillenniumStarERPTests.release.xcconfig"; sourceTree = "<group>"; };
+		29191CB22011A6EB00966FF4 /* SaveDataTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaveDataTool.h; sourceTree = "<group>"; };
+		29191CB32011A6EB00966FF4 /* SaveDataTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaveDataTool.m; sourceTree = "<group>"; };
 		2919DDE31FA0391800F27C17 /* ShowPriceHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowPriceHeadView.h; sourceTree = "<group>"; };
 		2919DDE41FA0391900F27C17 /* ShowPriceHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowPriceHeadView.m; sourceTree = "<group>"; };
 		291F30351FDFAAFB00E1CEDC /* NewCustomizationCollCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCustomizationCollCell.h; sourceTree = "<group>"; };
@@ -1452,6 +1455,8 @@
 				7979A0281E5BCFAF00604BD5 /* CommonUsedTool.m */,
 				793BD0941E7240C700E32389 /* ArrayWithDict.h */,
 				793BD0951E7240C700E32389 /* ArrayWithDict.m */,
+				29191CB22011A6EB00966FF4 /* SaveDataTool.h */,
+				29191CB32011A6EB00966FF4 /* SaveDataTool.m */,
 				7912BC5D1F41810C00D22EBA /* StorageDataTool.h */,
 				7912BC5E1F41810C00D22EBA /* StorageDataTool.m */,
 				79655DD91D7D0AAA006B90FC /* MBProgressHUD+MJ.h */,
@@ -2583,7 +2588,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-MillenniumStarERP/Pods-MillenniumStarERP-resources.sh",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/MWPhotoBrowser/MWPhotoBrowser.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/MWPhotoBrowser/MWPhotoBrowser.bundle,
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -2768,6 +2773,7 @@
 				7912BC5B1F41760E00D22EBA /* ChangeUserInfoVC.m in Sources */,
 				795B5FBF1DD5B0F10031FF00 /* OrderListNewInfo.m in Sources */,
 				794EDBE31DDD38CD0018DDF3 /* IQKeyboardReturnKeyHandler.m in Sources */,
+				29191CB42011A6EB00966FF4 /* SaveDataTool.m in Sources */,
 				79CF35F11F21905600BD3242 /* EditCustomDriView.m in Sources */,
 				79C76F541F3412470012A883 /* CustomInputPassView.m in Sources */,
 				7948B3411E78F4C100909601 /* YQDropdownMenu.m in Sources */,

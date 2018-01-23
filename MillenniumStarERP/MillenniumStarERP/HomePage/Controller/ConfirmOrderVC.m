@@ -942,14 +942,17 @@
 - (void)syncPriceLabel{
     double value = 0.0;
     if (!self.editId) {
+        NSString *conStr = @"确定";
         if (_selectDataArray.count){
             for (OrderListInfo *collectInfo in _selectDataArray)
             {
                 value = value+collectInfo.price;
             }
+            conStr = [NSString stringWithFormat:@"%@(%lu)",conStr,(unsigned long)_selectDataArray.count];
         }
         NSString *price = [OrderNumTool strWithPrice:value];
         self.priceLab.text = [NSString stringWithFormat:@"参考总价:%@",price];
+        [self.conBtn setTitle:conStr forState:UIControlStateNormal];
     }else{
         double needValue = 0.0;
         if (_dataArray.count){
@@ -1007,7 +1010,8 @@
 
 - (void)changeButtonStatus{
     self.conBtn.enabled =YES;
-}//提交订单
+}
+//提交订单
 - (void)confirmOrder{
     if (!self.addressInfo) {
         [MBProgressHUD showError:@"请选择地址"];

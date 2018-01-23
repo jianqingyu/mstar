@@ -11,5 +11,4 @@ typedef void (^ChAddInfoBack)(NSDictionary *store,BOOL isSel);
 @interface ChooseAddressCusView : UIView
 + (ChooseAddressCusView *)createLoginView;
 @property (nonatomic, copy)ChAddInfoBack storeBack;
-@property (nonatomic, copy)NSString *areaCode;
 @end

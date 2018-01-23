@@ -26,6 +26,7 @@
 @property (nonatomic, weak) UIView *baView;
 @property (nonatomic, copy) NSString *code;
 @property (nonatomic,assign) int userType;
+@property (nonatomic,assign) int addId;
 @property (nonatomic,assign) float addHeight;
 @end
 
@@ -71,6 +72,11 @@
     ChooseAddressCusView *infoV = [ChooseAddressCusView createLoginView];
     [self.view addSubview:infoV];
     infoV.storeBack = ^(NSDictionary *store,BOOL isYes){
+        if (isYes) {
+            self.addLab.textColor = [UIColor blackColor];
+            self.addLab.text = store[@"title"];
+            self.addId = [store[@"id"]intValue];
+        }
         [self changeAddView:YES];
     };
     [infoV mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -141,20 +147,7 @@
 }
 
 - (IBAction)nextClick:(id)sender {
-    if ([PackagingTool stringContainsEmoji:self.userFie.text]) {
-        SHOWALERTVIEW(@"不能输入特殊符号");
-        return;
-    }
-    if (self.keyfie.text.length<6) {
-        [MBProgressHUD showError:@"密码不足6位"];
-        return;
-    }
-    if (![self.keyfie.text isEqualToString:self.keyfie2.text]){
-        SHOWALERTVIEW(@"两次密码输入不符");
-        return;
-    }
-    if (self.codefie.text.length==0) {
-        SHOWALERTVIEW(@"请输入验证码");
+    if ([self showMessage]){
         return;
     }
     [SVProgressHUD show];
@@ -166,6 +159,7 @@
     params[@"phone"] = self.phonefie.text;
     params[@"phoneCode"] = self.codefie.text;
     params[@"userType"] = @(self.userType);
+    params[@"memberAreaId"] = @(self.addId);
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
             params[@"isNoShow"] = [AccountTool account].isNoShow;
@@ -181,6 +175,30 @@
         }
         [SVProgressHUD dismiss];
     } requestURL:regiUrl params:params];
+}
+
+- (BOOL)showMessage{
+    if ([PackagingTool stringContainsEmoji:self.userFie.text]) {
+        SHOWALERTVIEW(@"不能输入特殊符号");
+        return YES;
+    }
+    if (self.keyfie.text.length<6) {
+        [MBProgressHUD showError:@"密码不足6位"];
+        return YES;
+    }
+    if (![self.keyfie.text isEqualToString:self.keyfie2.text]){
+        SHOWALERTVIEW(@"两次密码输入不符");
+        return YES;
+    }
+    if (self.codefie.text.length==0) {
+        SHOWALERTVIEW(@"请输入验证码");
+        return YES;
+    }
+    if (self.addId==0) {
+        SHOWALERTVIEW(@"请选择区域");
+        return YES;
+    }
+    return NO;
 }
 
 @end

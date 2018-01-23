@@ -8,6 +8,7 @@
 
 #import "CusTomLoginView.h"
 #import "ZBButten.h"
+#import "SaveDataTool.h"
 #import "NetworkDetermineTool.h"
 @interface CusTomLoginView()<UITextFieldDelegate>
 @property (weak, nonatomic) UITextField *codeField;
@@ -324,7 +325,7 @@
     [self loginHome];
     sender.enabled = YES;
 }
-
+//登录login
 - (void)loginHome{
     if (self.codeField.text.length==0){
         [MBProgressHUD showMessage:@"请输入验证码"];
@@ -340,6 +341,8 @@
     params[@"userName"] = self.nameFie.text;
     params[@"password"] = self.passWordFie.text;
     params[@"phoneCode"] = self.codeField.text;
+    params[@"jRegid"] = [SaveDataTool shared].pushToken;
+    params[@"system"] = @"iOS";
     NSString *logUrl = [NSString stringWithFormat:@"%@userLoginDo",baseUrl];
     [BaseApi getNoGeneralData:^(BaseResponse *response, NSError *error) {
         if (response !=nil&&[response.error intValue]==0) {

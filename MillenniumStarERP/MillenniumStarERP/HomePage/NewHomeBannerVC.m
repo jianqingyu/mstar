@@ -15,6 +15,7 @@
 #import "HYBLoopScrollView.h"
 #import "CusHauteCoutureView.h"
 #import "NewCustomizationVC.h"
+#import "ChooseAddressCusView.h"
 #import "NakedDriLibViewController.h"
 @interface NewHomeBannerVC ()<UINavigationControllerDelegate>
 @property (nonatomic,  weak)UIWindow *keyWin;
@@ -29,8 +30,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self loadNewHomeData];
     self.automaticallyAdjustsScrollViewInsets = NO;
+    [self loadNewHomeData];
     [self creatBottomBtn];
     [self loadNSNotification];
     [self loadAddressDataInfo];
@@ -61,6 +62,9 @@
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
+            if ([response.data[@"IsHaveSelectArea"]intValue]==0) {
+                [self creatAddView];
+            }
             StorageDataTool *data = [StorageDataTool shared];
             data.isMain = [response.data[@"IsMasterAccount"]boolValue];
             if ([YQObjectBool boolForObject:response.data[@"address"]]){
@@ -111,6 +115,44 @@
                 [self setLoopScrollView:self.bPhotos];
             }
         }
+    } requestURL:url params:params];
+}
+
+- (void)creatAddView{
+    UIView *bView = [UIView new];
+    bView.backgroundColor = CUSTOM_COLOR_ALPHA(0, 0, 0, 0.5);
+    [self.view addSubview:bView];
+    [bView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(0);
+        make.left.equalTo(self.view).offset(0);
+        make.right.equalTo(self.view).offset(0);
+        make.bottom.equalTo(self.view).offset(0);
+    }];
+    
+    __weak ChooseAddressCusView *infoV = [ChooseAddressCusView createLoginView];
+    [self.view addSubview:infoV];
+    infoV.storeBack = ^(NSDictionary *store,BOOL isYes){
+        [self submitAddressInfo:store[@"id"]];
+        [infoV removeFromSuperview];
+        [bView removeFromSuperview];
+    };
+    [UIView animateWithDuration:0.5 animations:^{
+        [infoV mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(self.view);
+            make.width.mas_equalTo(225);
+            make.height.mas_equalTo(225);
+        }];
+        [infoV setNeedsLayout];
+    }];
+}
+
+- (void)submitAddressInfo:(id)addId{
+    NSString *url = [NSString stringWithFormat:@"%@userModifyuserAreaDo",baseUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    params[@"memberAreaId"] = addId;
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        [MBProgressHUD showError:response.message];
     } requestURL:url params:params];
 }
 

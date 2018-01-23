@@ -10,6 +10,7 @@
 @interface ChooseAddressCusView()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, copy) NSArray *list;
+@property (nonatomic, copy) NSDictionary * dic;
 @end
 @implementation ChooseAddressCusView
 
@@ -27,17 +28,24 @@
     if (self) {
         NSString *cell = @"ChooseAddressCusView";
         self = [[NSBundle mainBundle]loadNibNamed:cell owner:nil options:nil][0];
+        [self setLayerWithW:3 andColor:BordColor andBackW:0.0001];
         self.tableView.tableFooterView = [UIView new];
         self.tableView.bounces = NO;
+        [self loadHomeData];
     }
     return self;
 }
 
 - (void)loadHomeData{
-    NSString *url = [NSString stringWithFormat:@"%@api/shop/all",baseNet];
+    self.list = @[];
+    self.dic = @{};
+    NSString *url = [NSString stringWithFormat:@"%@userRegisterPage",baseUrl];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        [self.tableView reloadData];
+        if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data[@"memberArealist"]]) {
+            self.list = response.data[@"memberArealist"];
+            [self.tableView reloadData];
+        }
     } requestURL:url params:params];
 }
 
@@ -66,23 +74,21 @@
     if (indexPath.row<self.list.count) {
         dic = self.list[indexPath.row];
     }
-    cell.textLabel.text = dic[@"shopName"];
+    cell.textLabel.text = dic[@"title"];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSDictionary *dic;
+    NSDictionary *chooseD;
     if (indexPath.row<self.list.count) {
-        dic = self.list[indexPath.row];
+        chooseD = self.list[indexPath.row];
     }
-    if (self.storeBack) {
-        self.storeBack(dic,YES);
-    }
+    self.dic = chooseD;
 }
 
 - (IBAction)cancelClick:(id)sender {
-    if (self.storeBack) {
-        self.storeBack(@{},NO);
+    if (self.storeBack&&self.dic) {
+        self.storeBack(self.dic,YES);
     }
 }
 

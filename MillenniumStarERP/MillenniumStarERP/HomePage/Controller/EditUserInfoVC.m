@@ -16,6 +16,7 @@
 #import "MasterCountInfo.h"
 #import "EditShowPriceVC.h"
 #import "OrderPassVC.h"
+#import "ChooseAddressCusView.h"
 #import <ShareSDK/ShareSDK.h>
 #import "CustomInputPassView.h"
 #import "LoginViewController.h"
@@ -29,7 +30,10 @@
 @property (nonatomic,strong)UIImage *image;
 @property (nonatomic,  copy)NSArray *textArr;
 @property (nonatomic,  copy)NSString *url;
+@property (nonatomic,  weak)UIView *baView;
+@property (nonatomic,assign)CGFloat addHeight;
 @property (nonatomic,  weak)CustomInputPassView *putView;
+@property (nonatomic,  weak)ChooseAddressCusView *infoView;
 @property (nonatomic,strong)NSMutableDictionary *mutDic;
 @property (nonatomic,  copy)NSDictionary *shareDic;
 @property (nonatomic,strong)MasterCountInfo *masterInfo;
@@ -40,8 +44,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"我的";
+    self.addHeight = 270;
     self.mutDic = [NSMutableDictionary new];
     [self setBaseViewData];
+    [self creatAddView];
 }
 
 //- (void)setShareDicData{
@@ -53,9 +59,7 @@
 //}
 
 - (void)setBaseViewData{
-//    self.textArr = @[@[@"用户名",@"修改头像"],@[@"设置",@"版本详情",@"修改密码",
-//                          @"修改手机号码",@"管理地址",@"清理缓存",@"分享该应用"]];
-    self.textArr = @[@[@"用户名",@"修改头像"],@[@"设置",@"修改密码",@"管理地址",@"清理缓存",@"订单审核"]];
+    self.textArr = @[@[@"用户名",@"修改头像"],@[@"设置",@"修改密码",@"管理地址",@"清理缓存",@"订单审核",@"修改区域"]];
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -77,30 +81,7 @@
         self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     }
     
-    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SDevWidth, 100)];
-    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGFloat width = MIN(SDevWidth, SDevHeight)*0.8;
-    cancelBtn.backgroundColor = MAIN_COLOR;
-    cancelBtn.layer.masksToBounds = YES;
-    cancelBtn.layer.cornerRadius = 5;
-    [cancelBtn addTarget:self action:@selector(cancelClick) forControlEvents:UIControlEventTouchUpInside];
-    [cancelBtn setTitle:@"退出登录" forState:UIControlStateNormal];
-    [footView addSubview:cancelBtn];
-    [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(footView);
-        make.size.mas_equalTo(CGSizeMake(width, 44));
-    }];
-    
-    UILabel *lab = [UILabel new];
-    lab.textColor = CUSTOM_COLOR(40, 40, 40);
-    lab.font = [UIFont systemFontOfSize:14];
-    lab.text = appVer;
-    [footView addSubview:lab];
-    [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(footView).offset(-10);
-        make.bottom.equalTo(footView).offset(-3);
-    }];
-    self.tableView.tableFooterView = footView;
+    [self creatloginOutView];
     
     CustomInputPassView *pass = [CustomInputPassView new];
     pass.hidden = YES;
@@ -121,6 +102,32 @@
         make.bottom.equalTo(self.view).offset(0);
     }];
     self.putView = pass;
+}
+
+- (void)creatloginOutView{
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SDevWidth, 100)];
+    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGFloat width = MIN(SDevWidth, SDevHeight)*0.8;
+    cancelBtn.backgroundColor = MAIN_COLOR;
+    [cancelBtn setLayerWithW:5 andColor:BordColor andBackW:0.0001];
+    [cancelBtn addTarget:self action:@selector(cancelClick) forControlEvents:UIControlEventTouchUpInside];
+    [cancelBtn setTitle:@"退出登录" forState:UIControlStateNormal];
+    [footView addSubview:cancelBtn];
+    [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(footView);
+        make.size.mas_equalTo(CGSizeMake(width, 44));
+    }];
+    
+    UILabel *lab = [UILabel new];
+    lab.textColor = CUSTOM_COLOR(40, 40, 40);
+    lab.font = [UIFont systemFontOfSize:14];
+    lab.text = appVer;
+    [footView addSubview:lab];
+    [lab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(footView).offset(-10);
+        make.bottom.equalTo(footView).offset(-3);
+    }];
+    self.tableView.tableFooterView = footView;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -149,19 +156,30 @@
                 if ([YQObjectBool boolForObject:response.data[@"address"]]) {
                     self.mutDic[@"管理地址"] = response.data[@"address"];
                 }
+                if ([YQObjectBool boolForObject:response.data[@"userArea"]]) {
+                    self.mutDic[@"修改区域"] = response.data[@"userArea"];
+                }
                 [self.tableView reloadData];
             }
         }
-        [SVProgressHUD dismiss];
     } requestURL:regiUrl params:params];
 }
 
 - (void)cancelClick{
-    StorageDataTool *data = [StorageDataTool shared];
-    data.addInfo = nil;
-    data.cusInfo = nil;
-    UIWindow *window = [UIApplication sharedApplication].keyWindow;
-    window.rootViewController = [[LoginViewController alloc]init];
+    NSString *regiUrl = [NSString stringWithFormat:@"%@userLoginOutDo",baseUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            StorageDataTool *data = [StorageDataTool shared];
+            data.addInfo = nil;
+            data.cusInfo = nil;
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            window.rootViewController = [[LoginViewController alloc]init];
+        }else{
+            [MBProgressHUD showError:@"操作失败"];
+        }
+    } requestURL:regiUrl params:params];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -211,7 +229,7 @@
             }
          }
             break;
-            default:
+        default:
             tableCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
     }
@@ -258,9 +276,11 @@
                 [self.navigationController pushViewController:addVc animated:YES];
             }else if(indexPath.row==3){
                 [self clearTmpPics];
-            }else{
+            }else if(indexPath.row==4){
                 OrderPassVC *orderList = [OrderPassVC new];
                 [self.navigationController pushViewController:orderList animated:YES];
+            }else{
+                [self changeAddView:NO];
             }
             break;
         default:
@@ -268,6 +288,74 @@
     }
 }
 
+- (void)creatAddView{
+    UIView *bView = [UIView new];
+    bView.backgroundColor = CUSTOM_COLOR_ALPHA(0, 0, 0, 0.5);
+    bView.hidden = YES;
+    [self.view addSubview:bView];
+    [bView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(0);
+        make.left.equalTo(self.view).offset(0);
+        make.right.equalTo(self.view).offset(0);
+        make.bottom.equalTo(self.view).offset(0);
+    }];
+    self.baView = bView;
+    
+    ChooseAddressCusView *infoV = [ChooseAddressCusView createLoginView];
+    [self.view addSubview:infoV];
+    infoV.storeBack = ^(NSDictionary *store,BOOL isYes){
+        if (isYes) {
+            [self submitAddressInfo:store];
+        }
+        [self changeAddView:YES];
+    };
+    [infoV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(0);
+        make.bottom.equalTo(self.view).offset(self.addHeight);
+        make.right.equalTo(self.view).offset(0);
+        make.height.mas_equalTo(270);
+    }];
+    self.infoView = infoV;
+}
+
+- (void)submitAddressInfo:(NSDictionary *)dic{
+    NSString *url = [NSString stringWithFormat:@"%@userModifyuserAreaDo",baseUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    params[@"memberAreaId"] = dic[@"id"];
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            self.mutDic[@"修改区域"] = dic[@"title"];
+            [self.tableView reloadData];
+        }
+        [MBProgressHUD showError:response.message];
+    } requestURL:url params:params];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self changeAddView:YES];
+}
+
+- (void)changeAddView:(BOOL)isClose{
+    BOOL isHi = YES;
+    if (self.addHeight==270) {
+        if (isClose) {
+            return;
+        }
+        self.addHeight = 0;
+        isHi = NO;
+    }else{
+        self.addHeight = 270;
+        isHi = YES;
+    }
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.infoView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.view).offset(self.addHeight);
+        }];
+        [self.infoView layoutIfNeeded];//强制绘制
+        self.baView.hidden = isHi;
+    }];
+}
 //- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 //    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 //    switch (indexPath.section) {
