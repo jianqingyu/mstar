@@ -80,7 +80,7 @@
         [btn2 mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(bottom).offset(0);
             make.left.equalTo(bottom).offset(0);
-            make.width.mas_equalTo(bottom .mas_width).multipliedBy(0.5);
+            make.width.mas_equalTo(bottom.mas_width).multipliedBy(0.5);
             make.bottom.equalTo(bottom).offset(0);
         }];
         UIButton *btn1 = [self creatNormalBtn:[UIColor whiteColor] andTi:@"完成" and:0];

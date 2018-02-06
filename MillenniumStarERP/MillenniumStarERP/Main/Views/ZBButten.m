@@ -41,7 +41,8 @@
 }
 
 - (void)AddTimerFormesage{
-    NSTimer *timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(ChangeTimer) userInfo:nil repeats:YES];
+    NSTimer *timer = [NSTimer timerWithTimeInterval:1 target:self
+                       selector:@selector(ChangeTimer) userInfo:nil repeats:YES];
     self.zbtimer = timer;
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     [self.zbtimer setFireDate:[NSDate distantFuture]];

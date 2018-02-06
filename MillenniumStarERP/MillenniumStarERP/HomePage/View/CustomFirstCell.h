@@ -22,5 +22,6 @@ typedef void (^CustomFirBack)(BOOL isSel,NSString*messArr);
 @property (nonatomic,  copy) DisBack dBack;
 @property (nonatomic,strong) DetailModel *modelInfo;
 @property (assign,nonatomic) BOOL editId;
+@property (nonatomic,  copy) NSString *colur;
 + (id)cellWithTableView:(UITableView *)tableView;
 @end

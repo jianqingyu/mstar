@@ -251,9 +251,41 @@
 - (void)scan:(id)sender{
     ScanViewController *scan = [ScanViewController new];
     scan.scanBack = ^(id message){
-        [self changeTextFieKeyWord:message];
+        [self scanMessageSearch:message];
     };
     [self.navigationController pushViewController:scan animated:YES];
+}
+
+- (void)scanMessageSearch:(NSString *)message{
+    [_dataArray removeAllObjects];
+    NSMutableDictionary *params = @{}.mutableCopy;
+    NSString *url = [NSString stringWithFormat:@"%@modelListPageForScanCode",baseUrl];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    params[@"keyword"] = message;
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        [self.rightCollection.mj_header endRefreshing];
+        [self.rightCollection.mj_footer endRefreshing];
+        if ([response.error intValue]==0) {
+            if ([YQObjectBool boolForObject:response.data]){
+                [self scanCodeWithDict:response.data];
+                [self.rightCollection reloadData];
+            }
+        }
+    } requestURL:url params:params];
+}
+//扫描数据
+- (void)scanCodeWithDict:(NSDictionary *)data{
+    if([YQObjectBool boolForObject:data[@"model"][@"modelList"]]){
+        NSArray *seaArr = [ProductInfo mj_objectArrayWithKeyValuesArray:data[@"model"][@"modelList"]];
+        [_dataArray addObjectsFromArray:seaArr];
+        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.rightCollection.mj_footer;
+        [footer setTitle:@"没有更多了" forState:MJRefreshStateNoMoreData];
+        self.rightCollection.mj_footer.state = MJRefreshStateNoMoreData;
+    }else{
+        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.rightCollection.mj_footer;
+        [footer setTitle:@"暂时没有商品" forState:MJRefreshStateNoMoreData];
+        self.rightCollection.mj_footer.state = MJRefreshStateNoMoreData;
+    }
 }
 
 - (void)changeTextFieKeyWord:(NSString *)searchWord{
@@ -470,15 +502,18 @@
         self.rightCollection.mj_footer.state = MJRefreshStateIdle;
         curPage++;
         totalCount = [data[@"model"][@"list_count"]intValue];
-        NSArray *seaArr = [ProductInfo mj_objectArrayWithKeyValuesArray:data[@"model"][@"modelList"]];
+        NSArray *seaArr = [ProductInfo mj_objectArrayWithKeyValuesArray:
+                           data[@"model"][@"modelList"]];
         [_dataArray addObjectsFromArray:seaArr];
         if(_dataArray.count>=totalCount){
-            MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.rightCollection.mj_footer;
+            MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)
+            self.rightCollection.mj_footer;
             [footer setTitle:@"没有更多了" forState:MJRefreshStateNoMoreData];
             self.rightCollection.mj_footer.state = MJRefreshStateNoMoreData;
         }
     }else{
-        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.rightCollection.mj_footer;
+        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)
+        self.rightCollection.mj_footer;
         [footer setTitle:@"暂时没有商品" forState:MJRefreshStateNoMoreData];
         self.rightCollection.mj_footer.state = MJRefreshStateNoMoreData;
     }
@@ -490,14 +525,18 @@
     return 1;
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView
+     numberOfItemsInSection:(NSInteger)section
 {
     return self.dataArray.count;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    ProductCollectionCell *collcell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ProductCollectionCell" forIndexPath:indexPath];
+    NSString *cellId = @"ProductCollectionCell";
+    ProductCollectionCell *collcell = [collectionView
+       dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
     collcell.isShow = !self.isShowPrice;
     ProductInfo *proInfo;
     if (indexPath.row<self.dataArray.count) {
@@ -507,7 +546,9 @@
     return collcell;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout*)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat rowH = self.isShowPrice?64:33;
     int num = SDevWidth>SDevHeight?4:2;
     CGFloat width = (SDevWidth-(num+1)*5)/num;

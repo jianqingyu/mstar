@@ -59,14 +59,19 @@
         make.height.mas_equalTo(@60);
     }];
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backView addSubview:btn];
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(backView).offset(10);
+        make.left.equalTo(backView).offset(20);
+        make.right.equalTo(backView).offset(-20);
+        make.height.mas_equalTo(@40);
+    }];
     btn.backgroundColor = [UIColor whiteColor];
     [btn setImage:[UIImage imageNamed:@"icon_+"] forState:UIControlStateNormal];
     [btn setTitle:@"新增" forState:UIControlStateNormal];
-    btn.frame = CGRectMake(SDevWidth*0.1, 10, SDevWidth*0.8, 40);
     [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [btn setLayerWithW:5.0 andColor:DefaultColor andBackW:1];
     [btn addTarget:self action:@selector(addBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [backView addSubview:btn];
 }
 
 - (void)loadReqData:(BOOL)isYes{
@@ -77,7 +82,7 @@
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
             if ([YQObjectBool boolForObject:response.data[@"addressList"]]) {
-                self.addressArray = [AddressInfo objectArrayWithKeyValuesArray:
+                self.addressArray = [AddressInfo mj_objectArrayWithKeyValuesArray:
                                      response.data[@"addressList"]];
                 [self.addressTab reloadData];
                 if (isYes) {

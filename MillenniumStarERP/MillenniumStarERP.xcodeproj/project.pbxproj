@@ -18,6 +18,10 @@
 		292106B01FD91A3000A67D74 /* NewCustomizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 292106AF1FD91A3000A67D74 /* NewCustomizationView.m */; };
 		29215194200DE7EE00DD368F /* ChooseAddressCusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29215193200DE7EE00DD368F /* ChooseAddressCusView.m */; };
 		29215196200DE8CC00DD368F /* ChooseAddressCusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29215195200DE8CC00DD368F /* ChooseAddressCusView.xib */; };
+		292939112021BD92009FEC56 /* QuickScanOrderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2929390F2021BD92009FEC56 /* QuickScanOrderVC.m */; };
+		292939122021BD92009FEC56 /* QuickScanOrderVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 292939102021BD92009FEC56 /* QuickScanOrderVC.xib */; };
+		292939162021C2DB009FEC56 /* QuickScanTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 292939142021C2DB009FEC56 /* QuickScanTableCell.m */; };
+		292939172021C2DB009FEC56 /* QuickScanTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 292939152021C2DB009FEC56 /* QuickScanTableCell.xib */; };
 		2941482A1FAB00BB00F12782 /* CustomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294148291FAB00BB00F12782 /* CustomTitleView.m */; };
 		2941E3AE1FE1273F00D672A8 /* NewCustomizationSureVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941E3AC1FE1273F00D672A8 /* NewCustomizationSureVC.m */; };
 		2941E3AF1FE1273F00D672A8 /* NewCustomizationSureVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2941E3AD1FE1273F00D672A8 /* NewCustomizationSureVC.xib */; };
@@ -464,6 +468,12 @@
 		29215192200DE7EE00DD368F /* ChooseAddressCusView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChooseAddressCusView.h; sourceTree = "<group>"; };
 		29215193200DE7EE00DD368F /* ChooseAddressCusView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChooseAddressCusView.m; sourceTree = "<group>"; };
 		29215195200DE8CC00DD368F /* ChooseAddressCusView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseAddressCusView.xib; sourceTree = "<group>"; };
+		2929390E2021BD92009FEC56 /* QuickScanOrderVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuickScanOrderVC.h; sourceTree = "<group>"; };
+		2929390F2021BD92009FEC56 /* QuickScanOrderVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuickScanOrderVC.m; sourceTree = "<group>"; };
+		292939102021BD92009FEC56 /* QuickScanOrderVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickScanOrderVC.xib; sourceTree = "<group>"; };
+		292939132021C2DB009FEC56 /* QuickScanTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuickScanTableCell.h; sourceTree = "<group>"; };
+		292939142021C2DB009FEC56 /* QuickScanTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuickScanTableCell.m; sourceTree = "<group>"; };
+		292939152021C2DB009FEC56 /* QuickScanTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickScanTableCell.xib; sourceTree = "<group>"; };
 		294148281FAB00BB00F12782 /* CustomTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomTitleView.h; sourceTree = "<group>"; };
 		294148291FAB00BB00F12782 /* CustomTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomTitleView.m; sourceTree = "<group>"; };
 		2941E3AB1FE1273F00D672A8 /* NewCustomizationSureVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCustomizationSureVC.h; sourceTree = "<group>"; };
@@ -1383,20 +1393,20 @@
 		79655DB51D7D0AAA006B90FC /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				79655DBE1D7D0AAA006B90FC /* YQTextView.h */,
+				79655DBF1D7D0AAA006B90FC /* YQTextView.m */,
 				79655DB61D7D0AAA006B90FC /* UIView+Extension.h */,
 				79655DB71D7D0AAA006B90FC /* UIView+Extension.m */,
 				792125AC1F629DA2005F129B /* UIButton+Extension.h */,
 				792125AD1F629DA2005F129B /* UIButton+Extension.m */,
 				79655DB81D7D0AAA006B90FC /* UIWindow+Extension.h */,
 				79655DB91D7D0AAA006B90FC /* UIWindow+Extension.m */,
-				797556401EE6457E004BD417 /* UIAlertController+supportedinterface.h */,
-				797556411EE6457F004BD417 /* UIAlertController+supportedinterface.m */,
 				79655DBA1D7D0AAA006B90FC /* YQStatusPhotosView.h */,
 				79655DBB1D7D0AAA006B90FC /* YQStatusPhotosView.m */,
 				79655DBC1D7D0AAA006B90FC /* YQStatusPhotoView.h */,
 				79655DBD1D7D0AAA006B90FC /* YQStatusPhotoView.m */,
-				79655DBE1D7D0AAA006B90FC /* YQTextView.h */,
-				79655DBF1D7D0AAA006B90FC /* YQTextView.m */,
+				797556401EE6457E004BD417 /* UIAlertController+supportedinterface.h */,
+				797556411EE6457F004BD417 /* UIAlertController+supportedinterface.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1468,26 +1478,26 @@
 		79655DDF1D7D0AAA006B90FC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				793B9F501D91112C00DCFB6E /* CDRTranslucentSideBar.h */,
-				793B9F511D91112C00DCFB6E /* CDRTranslucentSideBar.m */,
-				7922F29A1DCAEF72003E0C8F /* ShowLoginViewTool.h */,
-				7922F29B1DCAEF72003E0C8F /* ShowLoginViewTool.m */,
+				79050ADC1DF7F92B00DCEA69 /* ZBButten.h */,
+				79050ADD1DF7F92B00DCEA69 /* ZBButten.m */,
 				79CD81A31D9E073F00B7BC84 /* CustomInvoice.h */,
 				79CD81A41D9E073F00B7BC84 /* CustomInvoice.m */,
 				795E25471DF11E9000DC0A88 /* YQCustomBtn.h */,
 				795E25481DF11E9000DC0A88 /* YQCustomBtn.m */,
+				7928A97F1F287F3E00BE69C0 /* CustomTopBtn.h */,
+				7928A9801F287F3E00BE69C0 /* CustomTopBtn.m */,
 				7975563D1EE63C46004BD417 /* CustomShapeBtn.h */,
 				7975563E1EE63C46004BD417 /* CustomShapeBtn.m */,
-				79050ADC1DF7F92B00DCEA69 /* ZBButten.h */,
-				79050ADD1DF7F92B00DCEA69 /* ZBButten.m */,
+				79CD6B9B1E77E8D700492463 /* CustomTextField.h */,
+				79CD6B9C1E77E8D700492463 /* CustomTextField.m */,
 				7922F2951DCADD88003E0C8F /* CusTomLoginView.h */,
 				7922F2961DCADD88003E0C8F /* CusTomLoginView.m */,
 				7924C55C1DF8ED1E005B89FA /* BaseCusLoginView.h */,
 				7924C55D1DF8ED1E005B89FA /* BaseCusLoginView.m */,
-				79CD6B9B1E77E8D700492463 /* CustomTextField.h */,
-				79CD6B9C1E77E8D700492463 /* CustomTextField.m */,
-				7928A97F1F287F3E00BE69C0 /* CustomTopBtn.h */,
-				7928A9801F287F3E00BE69C0 /* CustomTopBtn.m */,
+				7922F29A1DCAEF72003E0C8F /* ShowLoginViewTool.h */,
+				7922F29B1DCAEF72003E0C8F /* ShowLoginViewTool.m */,
+				793B9F501D91112C00DCFB6E /* CDRTranslucentSideBar.h */,
+				793B9F511D91112C00DCFB6E /* CDRTranslucentSideBar.m */,
 				29215192200DE7EE00DD368F /* ChooseAddressCusView.h */,
 				29215193200DE7EE00DD368F /* ChooseAddressCusView.m */,
 				29215195200DE8CC00DD368F /* ChooseAddressCusView.xib */,
@@ -1735,6 +1745,9 @@
 				7989B5C41D82422900706F5E /* ScanViewController.h */,
 				7989B5C51D82422900706F5E /* ScanViewController.m */,
 				7989B5C61D82422900706F5E /* ScanViewController.xib */,
+				2929390E2021BD92009FEC56 /* QuickScanOrderVC.h */,
+				2929390F2021BD92009FEC56 /* QuickScanOrderVC.m */,
+				292939102021BD92009FEC56 /* QuickScanOrderVC.xib */,
 				79ED9EDF1DC0531A00257454 /* OrderListController.h */,
 				79ED9EE01DC0531A00257454 /* OrderListController.m */,
 				79ED9EE11DC0531A00257454 /* OrderListController.xib */,
@@ -2067,6 +2080,9 @@
 				795C94541F20662C00D2C044 /* CustomEditTableCell.h */,
 				795C94551F20662C00D2C044 /* CustomEditTableCell.m */,
 				795C94561F20662C00D2C044 /* CustomEditTableCell.xib */,
+				292939132021C2DB009FEC56 /* QuickScanTableCell.h */,
+				292939142021C2DB009FEC56 /* QuickScanTableCell.m */,
+				292939152021C2DB009FEC56 /* QuickScanTableCell.xib */,
 				796F54901DAA3AC000AD7AB2 /* CustomPopView.h */,
 				796F54911DAA3AC000AD7AB2 /* CustomPopView.m */,
 				794F289D1EDEC5EE003EC54D /* CustomPickView.h */,
@@ -2469,6 +2485,7 @@
 				7977212F1F39B18B00B13401 /* CustomDriWordCell.xib in Resources */,
 				79655D8C1D7D0668006B90FC /* Main.storyboard in Resources */,
 				7944C1981DDEB82000F6C15F /* ConfirmEditHeadView.xib in Resources */,
+				292939172021C2DB009FEC56 /* QuickScanTableCell.xib in Resources */,
 				79E8B21E1D7FA894009D7296 /* PassWordViewController.xib in Resources */,
 				79B2549F1EE6946300BBD7A5 /* README.txt in Resources */,
 				7977212A1F395D9200B13401 /* CustomDriFirstCell.xib in Resources */,
@@ -2488,6 +2505,7 @@
 				79B4B8391DA8DD3A00B97070 /* OrderHeadView.xib in Resources */,
 				797688A11EE023B7001C6711 /* NakedDriPirceTableCell.xib in Resources */,
 				2941E3AF1FE1273F00D672A8 /* NewCustomizationSureVC.xib in Resources */,
+				292939122021BD92009FEC56 /* QuickScanOrderVC.xib in Resources */,
 				79E8B23B1D800063009D7296 /* EditAddressVC.xib in Resources */,
 				79E177921E6910AA00318916 /* DeliveryOrderHeadView.xib in Resources */,
 				79B4B8311DA8C5F100B97070 /* OrderBottomTableCell.xib in Resources */,
@@ -2768,7 +2786,9 @@
 				79E1779A1E6924E800318916 /* DeliveryHeadInfo.m in Sources */,
 				796F54921DAA3AC000AD7AB2 /* CustomPopView.m in Sources */,
 				793B9F521D91112C00DCFB6E /* CDRTranslucentSideBar.m in Sources */,
+				292939112021BD92009FEC56 /* QuickScanOrderVC.m in Sources */,
 				796BFF871DE28B11008D78A4 /* ProductionOrderVC.m in Sources */,
+				292939162021C2DB009FEC56 /* QuickScanTableCell.m in Sources */,
 				79CF35F51F21AFD700BD3242 /* EditCustomDriTableCell.m in Sources */,
 				7912BC5B1F41760E00D22EBA /* ChangeUserInfoVC.m in Sources */,
 				795B5FBF1DD5B0F10031FF00 /* OrderListNewInfo.m in Sources */,

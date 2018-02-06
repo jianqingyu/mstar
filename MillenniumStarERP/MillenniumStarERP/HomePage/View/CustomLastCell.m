@@ -8,7 +8,7 @@
 
 #import "CustomLastCell.h"
 @interface CustomLastCell()<UITextViewDelegate>
-
+@property (weak, nonatomic) IBOutlet UIButton *chooseBtn;
 @end
 @implementation CustomLastCell
 
@@ -28,6 +28,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self = [[NSBundle mainBundle]loadNibNamed:@"CustomLastCell" owner:nil options:nil][0];
+        [self.chooseBtn setTitleColor:ChooseColor forState:UIControlStateNormal];
         self.textView.delegate = self;
         self.textView.returnKeyType = UIReturnKeyNext;
     }

@@ -1,48 +1,48 @@
 //
-//  CustomDriFirstCell.m
+//  QuickScanTableCell.m
 //  MillenniumStarERP
 //
-//  Created by yjq on 17/8/8.
-//  Copyright © 2017年 com.millenniumStar. All rights reserved.
+//  Created by 余建清 on 2018/1/31.
+//  Copyright © 2018年 com.millenniumStar. All rights reserved.
 //
 
-#import "CustomDriFirstCell.h"
-@interface CustomDriFirstCell()<UITextFieldDelegate>
+#import "QuickScanTableCell.h"
+@interface QuickScanTableCell()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *titleLab;
 @property (weak, nonatomic) IBOutlet UILabel *ptLab;
 @property (weak, nonatomic) IBOutlet UIButton *accBtn;
 @property (weak, nonatomic) IBOutlet UIButton *addBtn;
+@property (weak, nonatomic) IBOutlet UILabel *colourLab;
+@property (weak, nonatomic) IBOutlet UITextField *numFie;
+@property (weak, nonatomic) IBOutlet UIButton *handbtn;
 @end
-@implementation CustomDriFirstCell
+@implementation QuickScanTableCell
 
 + (id)cellWithTableView:(UITableView *)tableView{
-    static NSString *Id = @"driFirstCell";
-    CustomDriFirstCell *addCell = [tableView dequeueReusableCellWithIdentifier:Id];
-    if (addCell==nil) {
-        addCell = [[CustomDriFirstCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Id];
-        addCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    static NSString *Id = @"cusCell";
+    QuickScanTableCell *customCell = [tableView dequeueReusableCellWithIdentifier:Id];
+    if (customCell==nil) {
+        customCell = [[QuickScanTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Id];
+        customCell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    return addCell;
+    return customCell;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self = [[NSBundle mainBundle]loadNibNamed:@"CustomDriFirstCell" owner:nil options:nil][0];
+        self = [[NSBundle mainBundle]loadNibNamed:@"QuickScanTableCell" owner:nil options:nil][0];
         [self setBaseView];
     }
     return self;
 }
 
 - (void)setBaseView{
-    self.fie1.delegate = self;
-    self.accBtn.enabled = NO;
-    self.addBtn.enabled = NO;
+    self.numFie.delegate = self;
     self.colourLab.textColor = ChooseColor;
     [self.handbtn setTitleColor:ChooseColor forState:UIControlStateSelected];
     [self.handbtn setTitleColor:ChooseColor forState:UIControlStateNormal];
-    self.fie1.textColor = NoChooseColor;
-    self.fie1.userInteractionEnabled = NO;
+    self.numFie.textColor = ChooseColor;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{
@@ -50,7 +50,7 @@
 }
 
 - (IBAction)accClick:(id)sender {
-    float str = [self.fie1.text floatValue];
+    float str = [self.numFie.text floatValue];
     if (str==0.5||str==1) {
         return;
     }
@@ -59,7 +59,7 @@
 }
 
 - (IBAction)addClick:(id)sender {
-    float str = [self.fie1.text floatValue];
+    float str = [self.numFie.text floatValue];
     str++;
     [self backText:str];
 }
@@ -68,21 +68,15 @@
     NSString *string = [NSString stringWithFormat:@"%0.1f",str];
     if (![string isEqualToString:@"0.5"]&&!(fmodf(str, 1)!=0.5)) {
         [MBProgressHUD showError:@"只能填整数或者x.5"];
-        self.fie1.text = @"";
+        self.numFie.text = @"";
     }
     if ([string rangeOfString:@".5"].location != NSNotFound) {
-        self.fie1.text = string;
+        self.numFie.text = string;
     }else{
-        self.fie1.text = [NSString stringWithFormat:@"%0.0f",str];
+        self.numFie.text = [NSString stringWithFormat:@"%0.0f",str];
     }
     if (self.MessBack) {
-        self.MessBack(YES,self.fie1.text);
-    }
-}
-
-- (IBAction)handClick:(id)sender {
-    if (self.MessBack) {
-        self.MessBack(NO,@"");
+        self.MessBack(YES,self.numFie.text);
     }
 }
 
@@ -98,7 +92,7 @@
 - (void)setMessArr:(NSString *)messArr{
     if (messArr) {
         _messArr = messArr;
-        self.fie1.text = _messArr;
+        self.numFie.text = _messArr;
     }
 }
 

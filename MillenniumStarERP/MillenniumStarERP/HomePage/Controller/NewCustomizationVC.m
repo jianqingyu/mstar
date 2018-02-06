@@ -71,12 +71,15 @@
 - (void)addStoneWithDic:(NSDictionary *)data{
     CustomJewelInfo *CusInfo = [CustomJewelInfo mj_objectWithKeyValues:data];
     NSArray *infoArr = @[@"钻石",CusInfo.jewelStoneWeight,CusInfo.jewelStoneShape,
-                         CusInfo.jewelStoneColor,CusInfo.jewelStonePurity,CusInfo.jewelStoneCode];
+                         CusInfo.jewelStoneColor,CusInfo.jewelStonePurity,
+                         CusInfo.jewelStoneCode];
     [self setDefalutCustomViewWith:infoArr andId:CusInfo.jewelStoneId
                            andInfo:CusInfo.jewelStonePrice];
 }
 
-- (void)setDefalutCustomViewWith:(NSArray *)infoArr andId:(NSString *)codeId andInfo:(NSString *)price{
+- (void)setDefalutCustomViewWith:(NSArray *)infoArr
+                           andId:(NSString *)codeId
+                         andInfo:(NSString *)price{
     NSArray *type = @[@"类型:",@"重量:",@"形状:",@"颜色:",@"净度:",@"证书号:"];
     NSMutableArray *mutA = @[].mutableCopy;
     for (int i=0; i<infoArr.count; i++) {

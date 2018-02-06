@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *phoneLab;
 @property (weak, nonatomic) IBOutlet UILabel *addressLab;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *allBtns;
+@property (weak, nonatomic) IBOutlet UIView *baView;
 @property (weak, nonatomic) IBOutlet UIScrollView *backScroll;
 @end
 
@@ -28,6 +29,7 @@
     if (self) {
         self = [[NSBundle mainBundle]loadNibNamed:@"ConfirmOrdHeadView" owner:nil options:nil][0];
         self.backScroll.contentSize = CGSizeMake(0, 375);
+        [self.baView setLayerWithW:3 andColor:BordColor andBackW:0.0001];
         self.noteFie.tag = 7;
         self.wordFie.tag = 6;
         self.customerFie.tag = 5;

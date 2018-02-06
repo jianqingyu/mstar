@@ -9,6 +9,7 @@
 #import "CusTomLoginView.h"
 #import "ZBButten.h"
 #import "SaveDataTool.h"
+#import "JPUSHService.h"
 #import "NetworkDetermineTool.h"
 @interface CusTomLoginView()<UITextFieldDelegate>
 @property (weak, nonatomic) UITextField *codeField;
@@ -337,11 +338,15 @@
     }
     [SVProgressHUD show];
     [self resignViewResponder];
+    NSString *reId = [JPUSHService registrationID];
+    if (reId.length==0) {
+        reId = [JPUSHService registrationID];
+    }
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"userName"] = self.nameFie.text;
     params[@"password"] = self.passWordFie.text;
     params[@"phoneCode"] = self.codeField.text;
-    params[@"jRegid"] = [SaveDataTool shared].pushToken;
+    params[@"jRegid"] = reId;
     params[@"system"] = @"iOS";
     NSString *logUrl = [NSString stringWithFormat:@"%@userLoginDo",baseUrl];
     [BaseApi getNoGeneralData:^(BaseResponse *response, NSError *error) {

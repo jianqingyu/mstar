@@ -21,6 +21,7 @@
 @property (nonatomic,  weak)UIWindow *keyWin;
 @property (nonatomic,strong)NSArray *photos;
 @property (nonatomic,strong)NSArray *bPhotos;
+@property (nonatomic,strong)NSArray *pushVcs;
 @property (nonatomic,  weak)UIView *proDriView;
 @property (nonatomic,  weak)HYBLoopScrollView *loopView;
 @property (nonatomic,strong)CusHauteCoutureView *cusView;
@@ -182,8 +183,14 @@
         make.bottom.equalTo(self.view).with.offset(-15);
         make.size.mas_equalTo(CGSizeMake(width, 80));
     }];
-    NSArray *arr = @[@"p_11-1",@"p_03-1",@"p_04-1",@"p_06-1",@"p_08-1"];
-    NSArray *arrS = @[@"快速定制",@"产品",@"个性定制",@"裸钻库",@"个人中心"];
+//    NSArray *arr = @[@"p_11-1",@"p_03-1",@"p_04-1",@"p_06-1",@"p_08-1"];
+//    NSArray *arrS = @[@"快速定制",@"产品",@"个性定制",@"裸钻库",@"个人中心"];
+//    self.pushVcs = @[@"vc",@"ProductListVC",@"NewCustomizationVC",
+//                     @"NakedDriLibViewController",@"EditUserInfoVC"];
+    NSArray *arr = @[@"p_11-1",@"p_03-1",@"p_06-1",@"p_08-1"];
+    NSArray *arrS = @[@"快速定制",@"产品",@"裸钻库",@"个人中心"];
+    self.pushVcs = @[@"vc",@"ProductListVC",@"NakedDriLibViewController",
+                     @"EditUserInfoVC"];
     CGFloat mar = (width-arr.count*60)/(arr.count-1);
     for (int i=0; i<arr.count; i++) {
         CustomTopBtn *right = [CustomTopBtn creatCustomView];
@@ -214,22 +221,20 @@
         }else{
             [self openWindowCusHuateView];
         }
-    }else if(btn.tag==1){
-        [self resetWindow];
-        ProductListVC *list = [ProductListVC new];
-        [self.navigationController pushViewController:list animated:YES];
-    }else if(btn.tag==2){
-        [self resetWindow];
-        NewCustomizationVC *cusVc = [NewCustomizationVC new];
-        [self.navigationController pushViewController:cusVc animated:YES];
-    }else if(btn.tag==3){
-        [self resetWindow];
-        NakedDriLibViewController *list = [NakedDriLibViewController new];
-        [self.navigationController pushViewController:list animated:YES];
     }else{
         [self resetWindow];
-        EditUserInfoVC *list = [EditUserInfoVC new];
-        [self.navigationController pushViewController:list animated:YES];
+        NSString *class = self.pushVcs[btn.tag];
+        const char *className = [class cStringUsingEncoding:NSASCIIStringEncoding];
+        Class newClass = objc_getClass(className);
+        //如果没有则注册一个类
+        if (!newClass) {
+            Class superClass = [NSObject class];
+            newClass = objc_allocateClassPair(superClass, className, 0);
+            objc_registerClassPair(newClass);
+        }
+        // 创建对象
+        BaseViewController *instance = [[newClass alloc] init];
+        [self.navigationController pushViewController:instance animated:YES];
     }
 }
 

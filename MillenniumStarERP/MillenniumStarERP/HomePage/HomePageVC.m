@@ -68,7 +68,8 @@
     self.navigationController.delegate = self;
 }
 
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     BOOL isShowHomePage = [viewController isKindOfClass:[self class]];
     [self.navigationController setNavigationBarHidden:isShowHomePage animated:YES];
 }
@@ -79,7 +80,7 @@
     [self.view addSubview:headView];
     self.headView = headView;
     [headView.setBtn addTarget:self action:@selector(setClick:)
-                                forControlEvents:UIControlEventTouchUpInside];
+              forControlEvents:UIControlEventTouchUpInside];
     [headView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(0);
         make.left.equalTo(self.view).offset(0);
@@ -87,7 +88,7 @@
         make.height.mas_equalTo(height);
     }];
     
-    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc]init];
+    UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
     flowLayout.minimumInteritemSpacing = 5.0f;//左右间隔
     flowLayout.minimumLineSpacing = 5.0f;//上下间隔
     flowLayout.sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);//边距距
@@ -172,7 +173,8 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    HomePageCollectionCell *collcell = [collectionView dequeueReusableCellWithReuseIdentifier:@"HomePageCollectionCell" forIndexPath:indexPath];
+    NSString *cellId = @"HomePageCollectionCell";
+    HomePageCollectionCell *collcell = [collectionView dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
     [collcell setLayerWithW:0.1 andColor:BordColor andBackW:0.1];
     NSDictionary *dict = self.list[indexPath.row];
     [collcell.image sd_setImageWithURL:dict[@"pic"] placeholderImage:DefaultImage];

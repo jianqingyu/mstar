@@ -8,8 +8,10 @@
 
 #import "ScanViewController.h"
 #import "PureLayout.h"
+#import "QuickScanOrderVC.h"
 @interface ScanViewController ()<AVCaptureMetadataOutputObjectsDelegate,
-                              UIAlertViewDelegate>
+                              UINavigationControllerDelegate,
+                               UIImagePickerControllerDelegate>
 @property (nonatomic, strong) AVCaptureSession *session;
 @property (nonatomic, strong) AVCaptureDevice *device;
 @property (nonatomic, strong) AVCaptureDeviceInput *input;
@@ -24,20 +26,30 @@
     self.title = @"扫一扫";
     [self setupBaseView];
     [self setupCamera];
+    [self creatNaviBtn];
 }
+
+- (void)creatNaviBtn{
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(0, 0, 40, 20);
+    [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [btn setTitle:@"相册" forState:UIControlStateNormal];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"相册"
+                     style:UIBarButtonItemStyleDone target:self action:@selector(choicePhoto)];
+}
+
 #pragma mark -- 设置扫描背景
 - (void)setupBaseView{
     NSString *mediaType = AVMediaTypeVideo;
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
-    
     if(authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied){
-        
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"没有相机权限" message:@"请去设置-隐私-相机中对订单系统授权" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"没有相机权限"
+                     message:@"请去设置-隐私-相机中对订单系统授权" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault
+                                         handler:^(UIAlertAction * _Nonnull action) {
             [self.navigationController popViewControllerAnimated:YES];
         }];
         [alertController addAction:okAction];
-        
         hasCameraRight = NO;
         return;
     }
@@ -102,7 +114,8 @@
         if (_session && ![_session isRunning]) {
             [_session startRunning];
         }
-        timer = [NSTimer scheduledTimerWithTimeInterval:.02 target:self selector:@selector(animation1) userInfo:nil repeats:YES];
+        timer = [NSTimer scheduledTimerWithTimeInterval:.02 target:self
+                       selector:@selector(animation1) userInfo:nil repeats:YES];
     }
 }
 
@@ -136,7 +149,7 @@
             [_session addOutput:self.output];
         }
         // 条码类型 AVMetadataObjectTypeQRCode
-        CGRect inFrame = CGRectMake(164/SDevHeight,(SDevWidth-200)*0.5/SDevWidth,200/SDevHeight,200/SDevWidth);
+        CGRect inFrame = CGRectMake((100+64)/SDevHeight,(SDevWidth-200)*0.5/SDevWidth,200/SDevHeight,200/SDevWidth);
         _output.metadataObjectTypes = @[AVMetadataObjectTypeQRCode,AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code];
         [_output setRectOfInterest:inFrame];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -163,8 +176,50 @@
         [_session stopRunning];
         [timer invalidate];
         if (stringValue.length > 0) {
+//            if (self.scanBack) {
+//                self.scanBack(stringValue);
+//            }
+//            [self.navigationController popViewControllerAnimated:YES];
+            QuickScanOrderVC *quickVc = [QuickScanOrderVC new];
+            quickVc.scanCode = stringValue;
+            [self.navigationController pushViewController:quickVc animated:YES];
+        }
+    }
+}
+#pragma mark --调用相册扫描--
+- (void)choicePhoto{
+    //调用相册
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
+    //UIImagePickerControllerSourceTypePhotoLibrary为相册
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    
+    //设置代理UIImagePickerControllerDelegate和UINavigationControllerDelegate
+    imagePicker.delegate = self;
+    
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
+//选中图片的回调
+- (void)imagePickerController:(UIImagePickerController*)picker
+didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    //取出选中的图片
+    UIImage *pickImage = info[UIImagePickerControllerOriginalImage];
+    NSData *imageData = UIImagePNGRepresentation(pickImage);
+    CIImage *ciImage = [CIImage imageWithData:imageData];
+    
+    //创建探测器
+    //CIDetectorTypeQRCode表示二维码，这里选择CIDetectorAccuracyLow识别速度快
+    CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil
+                                  options:@{CIDetectorAccuracy: CIDetectorAccuracyLow}];
+    NSArray *feature = [detector featuresInImage:ciImage];
+    
+    //取出探测到的数据
+    for (CIQRCodeFeature *result in feature) {
+        NSString *content = result.messageString;// 这个就是我们想要的值
+        if (content.length > 0) {
+            [self dismissViewControllerAnimated:YES completion:nil];
             if (self.scanBack) {
-                self.scanBack(stringValue);
+                self.scanBack(content);
             }
             [self.navigationController popViewControllerAnimated:YES];
         }

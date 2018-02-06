@@ -11,6 +11,7 @@
 @interface CustomPopView()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic,strong)NSArray *types;
+@property (nonatomic,  weak)UILabel *tLab;
 @end
 @implementation CustomPopView
 
@@ -25,22 +26,23 @@
         [self addSubview:self.tableView];
         [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.mas_equalTo(self);
-            make.height.mas_equalTo(@(_typeList.count*44));
-            make.width.mas_equalTo(@(SDevWidth*0.5));
+            make.height.mas_equalTo(self.mas_height).multipliedBy(0.5);
+            make.width.mas_equalTo(self.mas_width).multipliedBy(0.5);
         }];
         
         UILabel *title = [[UILabel alloc]init];
         title.font = [UIFont systemFontOfSize:18];
         title.backgroundColor = DefaultColor;
         title.textAlignment = NSTextAlignmentCenter;
-        title.text = @"请选择类型";
+        title.text = @"请选择成色";
         [self addSubview:title];
         [title mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.mas_equalTo(self.mas_centerX);
             make.bottom.equalTo(self.tableView.mas_top).with.offset(0);
             make.height.mas_equalTo(@44);
-            make.width.mas_equalTo(@(SDevWidth*0.5));
+            make.width.mas_equalTo(self.mas_width).multipliedBy(0.5);
         }];
+        self.tLab = title;
         
         UIButton *cancel = [UIButton buttonWithType:UIButtonTypeCustom];
         [cancel setTitle:@"取消" forState:UIControlStateNormal];
@@ -52,20 +54,23 @@
             make.centerX.mas_equalTo(self.mas_centerX);
             make.top.equalTo(self.tableView.mas_bottom).offset(0);
             make.height.mas_equalTo(@44);
-            make.width.mas_equalTo(@(SDevWidth*0.5));
+            make.width.mas_equalTo(self.mas_width).multipliedBy(0.5);
         }];
     }
     return self;
 }
 
+- (void)reFreshTable{
+    [self.tableView reloadData];
+}
+
 - (void)setTypeList:(NSArray *)typeList{
     if (typeList.count>0) {
         _typeList = typeList;
-        CGFloat height = MIN(5*44, _typeList.count*44);
-        self.types = [DetailTypeInfo objectArrayWithKeyValuesArray:_typeList];
-        [self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(@(height));
-        }];
+        if (_titleStr.length>0) {
+            self.tLab.text = _titleStr;
+        }
+        self.types = [DetailTypeInfo mj_objectArrayWithKeyValuesArray:_typeList];
         [self.tableView reloadData];
     }
 }
@@ -77,18 +82,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cusCell"];
     if (!cell) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cusCell"];
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cusCell"];
         cell.textLabel.font = [UIFont systemFontOfSize:16];
-        cell.detailTextLabel.textColor = [UIColor blackColor];
     }
+    cell.textLabel.textAlignment = NSTextAlignmentCenter;
     DetailTypeInfo *info = self.types[indexPath.row];
     cell.textLabel.text = info.title;
-    if (info.price.length>0) {
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@/g",info.price];
-    }else{
-        cell.detailTextLabel.text = @"";
-    }
     return cell;
 }
 
@@ -105,11 +104,14 @@
 
 - (void)backWithInfo:(DetailTypeInfo *)info{
     NSMutableDictionary *mud = @{}.mutableCopy;
-    mud[self.section] = info;
+    if (self.section) {
+        mud[self.section] = info;
+    }else{
+        mud[@"mess"] = info;
+    }
     if (self.popBack) {
         self.popBack(mud);
     }
-    [self removeFromSuperview];
 }
 
 @end

@@ -92,7 +92,7 @@
         self.secondView.hidden = YES;
         [self setupHeaderRefresh];
         [self creatNearNetView:^(BOOL isWifi) {
-            [self.tableView.header beginRefreshing];
+            [self.tableView.mj_header beginRefreshing];
         }];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -320,7 +320,7 @@
     }
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
-            NSArray *arr = [OrderPriceInfo objectArrayWithKeyValuesArray:response.data[@"priceList"]];
+            NSArray *arr = [OrderPriceInfo mj_objectArrayWithKeyValuesArray:response.data[@"priceList"]];
             if (self.selectDataArray.count) {
                 for (OrderListInfo *selist in self.selectDataArray) {
                     [self changePriceWithArr:arr andInfo:selist];
@@ -385,8 +385,8 @@
     [header setTitle:@"用力往下拉我!!!" forState:MJRefreshStateIdle];
     [header setTitle:@"快放开我!!!" forState:MJRefreshStatePulling];
     [header setTitle:@"努力刷新中..." forState:MJRefreshStateRefreshing];
-    _tableView.header = header;
-    [self.tableView.header beginRefreshing];
+    _tableView.mj_header = header;
+    [self.tableView.mj_header beginRefreshing];
 }
 
 - (void)setupFootRefresh{
@@ -397,7 +397,7 @@
     [footer setTitle:@"加载更多" forState:MJRefreshStateIdle];
     [footer setTitle:@"好了，可以放松一下手指" forState:MJRefreshStatePulling];
     [footer setTitle:@"努力加载中，请稍候" forState:MJRefreshStateRefreshing];
-    _tableView.footer = footer;
+    _tableView.mj_footer = footer;
 }
 #pragma mark - refresh
 - (void)headerRereshing{
@@ -433,8 +433,8 @@
     self.view.userInteractionEnabled = NO;
     NSString *url = [NSString stringWithFormat:@"%@OrderListPage",baseUrl];
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        [self.tableView.header endRefreshing];
-        [self.tableView.footer endRefreshing];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
         if ([response.error intValue]==0) {
             [self setupFootRefresh];
             if ([YQObjectBool boolForObject:response.data]){
@@ -450,11 +450,11 @@
 //更新数据
 - (void)setupDataWithDict:(NSDictionary *)dict{
     if ([YQObjectBool boolForObject:dict[@"address"]]&&!self.addressInfo) {
-        self.addressInfo = [AddressInfo objectWithKeyValues:
+        self.addressInfo = [AddressInfo mj_objectWithKeyValues:
                             dict[@"address"]];
     }
     if (dict[@"customer"]&&!self.cusInfo) {
-        self.cusInfo = [CustomerInfo objectWithKeyValues:
+        self.cusInfo = [CustomerInfo mj_objectWithKeyValues:
                         dict[@"customer"]];
     }
     if (dict[@"modelColor"]) {
@@ -465,18 +465,18 @@
     }
     if ([YQObjectBool boolForObject:dict[@"defaultValue"]]) {
         if (!self.qualityInfo) {
-            self.qualityInfo = [DetailTypeInfo objectWithKeyValues:
+            self.qualityInfo = [DetailTypeInfo mj_objectWithKeyValues:
                                 dict[@"defaultValue"][@"modelQuality"]];
             self.headView.qualityMes = self.qualityInfo.title;
         }
         if (!self.colorInfo) {
-            self.colorInfo = [DetailTypeInfo objectWithKeyValues:
+            self.colorInfo = [DetailTypeInfo mj_objectWithKeyValues:
                               dict[@"defaultValue"][@"modelColor"]];
             self.headView.colorMes = self.colorInfo.title;
         }
     }
     if (self.editId&&dict[@"orderInfo"]&&dict[@"totalPrice"]&&dict[@"totalNeedPayPrice"]) {
-        OrderNewInfo *orderInfo = [OrderNewInfo objectWithKeyValues:dict[@"orderInfo"]];
+        OrderNewInfo *orderInfo = [OrderNewInfo mj_objectWithKeyValues:dict[@"orderInfo"]];
         self.headView.orderInfo = orderInfo;
         self.headEView.staueInfo = orderInfo;
         self.invoInfo = [DetailTypeInfo new];
@@ -492,22 +492,22 @@
 //更新list数据
 - (void)setupListDataWithDict:(NSDictionary *)dicList{
     if([YQObjectBool boolForObject:dicList[@"list"]]){
-        self.tableView.footer.state = MJRefreshStateIdle;
+        self.tableView.mj_footer.state = MJRefreshStateIdle;
         curPage++;
         totalCount = [dicList[@"list_count"]intValue];
-        NSArray *seaArr = [OrderListInfo objectArrayWithKeyValuesArray:dicList[@"list"]];
+        NSArray *seaArr = [OrderListInfo mj_objectArrayWithKeyValuesArray:dicList[@"list"]];
         [_dataArray addObjectsFromArray:seaArr];
         if(_dataArray.count>=totalCount){
             //已加载全部数据
-            MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)_tableView.footer;
+            MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)_tableView.mj_footer;
             [footer setTitle:@"没有更多了" forState:MJRefreshStateNoMoreData];
-            self.tableView.footer.state = MJRefreshStateNoMoreData;
+            self.tableView.mj_footer.state = MJRefreshStateNoMoreData;
         }
     }else{
         //[self.tableView.header removeFromSuperview];
-        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)_tableView.footer;
+        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)_tableView.mj_footer;
         [footer setTitle:@"暂时没有商品" forState:MJRefreshStateNoMoreData];
-        _tableView.footer.state = MJRefreshStateNoMoreData;
+        _tableView.mj_footer.state = MJRefreshStateNoMoreData;
     }
 }
 
@@ -605,7 +605,7 @@
                 self.headView.customerFie.text = @"";
                 self.cusInfo.customerID = 0;
             }else if([response.data[@"state"]intValue]==1){
-                self.cusInfo = [CustomerInfo objectWithKeyValues:response.data[@"customer"]];
+                self.cusInfo = [CustomerInfo mj_objectWithKeyValues:response.data[@"customer"]];
             }else if ([response.data[@"state"]intValue]==2){
                 [self pushSearchVC];
             }
@@ -1021,7 +1021,7 @@
         return;
     }
     if (self.cusInfo.customerID==0) {
-        [MBProgressHUD showError:@"请客户信息"];
+        [MBProgressHUD showError:@"请选择客户信息"];
         if (self.topBtn.selected) {
             [self showHeadView];
         }

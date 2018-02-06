@@ -28,6 +28,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self = [[NSBundle mainBundle]loadNibNamed:@"CustomDriWordCell" owner:nil options:nil][0];
+        self.wordFie.textColor = ChooseColor;
     }
     return self;
 }

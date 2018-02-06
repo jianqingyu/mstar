@@ -23,7 +23,8 @@
     _webView.scrollView.showsVerticalScrollIndicator = NO;
     _webView.delegate = self;
     if (@available(iOS 11.0, *)) {
-        _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        _webView.scrollView.contentInsetAdjustmentBehavior =
+        UIScrollViewContentInsetAdjustmentNever;
     }
     self.url = @"http://appapi1.fanerweb.com/htapp/index.html";
     NSString *reUrl = [NSString stringWithFormat:@"%@?tokenKey=%@",self.url,[AccountTool account].tokenKey];

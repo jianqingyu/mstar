@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface DetailModel : NSObject
+@property (nonatomic,  copy)NSString *id;
 @property (nonatomic,  copy)NSString *title;
 @property (nonatomic,  copy)NSString *weight;
 @property (nonatomic,  copy)NSString *categoryTitle;

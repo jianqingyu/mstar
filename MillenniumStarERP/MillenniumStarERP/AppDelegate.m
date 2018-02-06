@@ -51,8 +51,9 @@
     [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
     // 如需使用IDFA功能请添加此代码并在初始化方法的advertisingIdentifier参数中填写对应值
 //    NSString *advertisingId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
-    [JPUSHService setupWithOption:launchOptions appKey:@"3425ccff2777928ff8423746"
-                          channel:@"App Store" apsForProduction:0
+    //aps 0开发 1上线
+    [JPUSHService setupWithOption:launchOptions appKey:@"c562335006792772769db2a6"
+                          channel:@"App Store" apsForProduction:1
             advertisingIdentifier:@""];
     if (launchOptions) {
         NSDictionary * remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -148,8 +149,6 @@
                            stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSLog(@"nsdata:%@\n 字符串token: %@",deviceToken, newToken);// 获取device token
     [JPUSHService registerDeviceToken:deviceToken];
-    SaveDataTool *save = [SaveDataTool shared];
-    save.pushToken = [JPUSHService registrationID];
     //将token发送给服务器
 }
 #pragma mark- JPUSHRegisterDelegate

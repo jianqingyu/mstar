@@ -55,6 +55,8 @@
 #define BordColor CUSTOM_COLOR(200,200,200)
 #define TextlColor CUSTOM_COLOR(153,153,153)
 #define TextBColor CUSTOM_COLOR(68,68,68)
+#define ChooseColor CUSTOM_COLOR(0,122,255)
+#define NoChooseColor CUSTOM_COLOR(100,100,100)
 //基础接口
 #define baseNet @"http://appapi1.fanerweb.com/api/"
 //网络接口

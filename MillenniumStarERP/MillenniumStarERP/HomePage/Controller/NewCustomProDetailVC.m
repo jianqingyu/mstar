@@ -159,7 +159,8 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 
 - (void)addStoneWithDic:(NSDictionary *)data{
     CustomJewelInfo *CusInfo = [CustomJewelInfo mj_objectWithKeyValues:data];
-    NSArray *infoArr = @[@"钻石",CusInfo.jewelStoneWeight,[self modelWith:2 and:CusInfo.jewelStoneShape],[self modelWith:3 and:CusInfo.jewelStoneColor],[self modelWith:4 and:CusInfo.jewelStonePurity]];
+    NSArray *infoArr = @[@"钻石",CusInfo.jewelStoneWeight,[self modelWith:2 and:CusInfo.jewelStoneShape],
+         [self modelWith:3 and:CusInfo.jewelStoneColor],[self modelWith:4 and:CusInfo.jewelStonePurity]];
     NSMutableArray *mutA = [NSMutableArray new];
     for (int i=0; i<5; i++) {
         DetailTypeInfo *info = [DetailTypeInfo new];
@@ -213,6 +214,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     table.separatorStyle = UITableViewCellSeparatorStyleNone;
     table.delegate = self;
     table.dataSource = self;
+    table.bounces = NO;
     table.rowHeight = UITableViewAutomaticDimension;
     table.estimatedRowHeight = 125;
     [self.view addSubview:table];
@@ -227,8 +229,8 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         make.bottom.equalTo(self.view).offset(-50);
     }];
     self.tableView = table;
-    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:
-                                               CGRectMake(0, 0, SDevWidth, 10)];
+    CGRect frame = CGRectMake(0, 0, SDevWidth, 10);
+    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:frame];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -261,6 +263,23 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 }
 
 #pragma mark -- loadData 初始化数据
+- (void)scanSearchData:(NSString *)keyword{
+    if (self.mutArr.count>0) {
+        [self.mutArr removeAllObjects];
+    }
+    NSString *regiUrl = [NSString stringWithFormat:@"%@ModelDetailPageForSCanCode",baseUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    params[@"keyword"] = keyword;
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            [self setDetailDataWithDic:response.data];
+        }else{
+            [MBProgressHUD showError:response.message];
+        }
+    } requestURL:regiUrl params:params];
+}
+
 - (void)setupDetailData{
     [SVProgressHUD show];
     if (self.mutArr.count>0) {
@@ -281,59 +300,62 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     params[proId] = @(_proId);
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
-            if ([YQObjectBool boolForObject:response.data[@"IsCanSelectStone"]]) {
-                self.isCan = [response.data[@"IsCanSelectStone"]intValue];
-            }
-            if ([YQObjectBool boolForObject:response.data[@"jewelStone"]]) {
-                [self addStoneWithDic:response.data[@"jewelStone"]];
-            }
-            if ([YQObjectBool boolForObject:response.data[@"modelPuritys"]]) {
-                self.puritys = response.data[@"modelPuritys"];
-                StorageDataTool *data = [StorageDataTool shared];
-                if (data.colorInfo&&_isCus) {
-                    self.colorInfo = data.colorInfo;
-                }
-                if (self.puritys.count==0) {
-                    self.colorInfo = [DetailTypeInfo mj_objectWithKeyValues:self.puritys[0]];
-                }
-            }
-            if ([YQObjectBool boolForObject:response.data[@"model"]]) {
-                DetailModel *modelIn = [DetailModel mj_objectWithKeyValues:
-                                                       response.data[@"model"]];
-                [self setupBaseListData:modelIn];
-                [self creatCusTomHeadView];
-                if (([YQObjectBool boolForObject:response.data[@"model"][@"stoneWeightRange"]]) ) {
-                    self.stoneDic = response.data[@"model"][@"stoneWeightRange"];
-                }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
-                });
-            }
-            if ([YQObjectBool boolForObject:response.data[@"stoneType"]]) {
-                self.chooseArr = @[[self arrWithModel:response.data[@"stoneType"]],
-                                   [self arrWithModel:response.data[@"stoneColor"]],
-                                   [self arrWithModel:response.data[@"stoneShape"]],
-                                   [self arrWithModel:response.data[@"stoneColor"]],
-                                   [self arrWithModel:response.data[@"stonePurity"]]];
-            }
-            if ([YQObjectBool boolForObject:response.data[@"handSizeData"]]) {
-                NSMutableArray *mutA = [NSMutableArray new];
-                for (NSString *title in response.data[@"handSizeData"]) {
-                    [mutA addObject:@{@"title":title}];
-                }
-                self.handArr = mutA.copy;
-            }
-            if ([YQObjectBool boolForObject:response.data[@"remarks"]]) {
-                self.remakeArr = response.data[@"remarks"];
-            }
-            [self setBaseNakedDriSeaInfo];
+            [self setDetailDataWithDic:response.data];
         }
-        [SVProgressHUD dismiss];
     } requestURL:regiUrl params:params];
 }
 
+- (void)setDetailDataWithDic:(NSDictionary *)data{
+    if ([YQObjectBool boolForObject:data[@"IsCanSelectStone"]]) {
+        self.isCan = [data[@"IsCanSelectStone"]intValue];
+    }
+    if ([YQObjectBool boolForObject:data[@"jewelStone"]]) {
+        [self addStoneWithDic:data[@"jewelStone"]];
+    }
+    if ([YQObjectBool boolForObject:data[@"modelPuritys"]]) {
+        self.puritys = data[@"modelPuritys"];
+        StorageDataTool *stoData = [StorageDataTool shared];
+        if (stoData.colorInfo&&_isCus) {
+            self.colorInfo = stoData.colorInfo;
+        }
+        if (self.puritys.count==1) {
+            self.colorInfo = [DetailTypeInfo mj_objectWithKeyValues:self.puritys[0]];
+        }
+    }
+    if ([YQObjectBool boolForObject:data[@"model"]]) {
+        DetailModel *modelIn = [DetailModel mj_objectWithKeyValues:
+                                data[@"model"]];
+        [self setupBaseListData:modelIn];
+        [self creatCusTomHeadView];
+        if (([YQObjectBool boolForObject:data[@"model"][@"stoneWeightRange"]]) ) {
+            self.stoneDic = data[@"model"][@"stoneWeightRange"];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    }
+    if ([YQObjectBool boolForObject:data[@"stoneType"]]) {
+        self.chooseArr = @[[self arrWithModel:data[@"stoneType"]],
+                           [self arrWithModel:data[@"stoneColor"]],
+                           [self arrWithModel:data[@"stoneShape"]],
+                           [self arrWithModel:data[@"stoneColor"]],
+                           [self arrWithModel:data[@"stonePurity"]]];
+    }
+    if ([YQObjectBool boolForObject:data[@"handSizeData"]]) {
+        NSMutableArray *mutA = [NSMutableArray new];
+        for (NSString *title in data[@"handSizeData"]) {
+            [mutA addObject:@{@"title":title}];
+        }
+        self.handArr = mutA.copy;
+    }
+    if ([YQObjectBool boolForObject:data[@"remarks"]]) {
+        self.remakeArr = data[@"remarks"];
+    }
+    [self setBaseNakedDriSeaInfo];
+}
+
 - (NSArray *)arrWithModel:(NSDictionary *)dic{
-    NSArray *arr = [DetailTypeInfo objectArrayWithKeyValuesArray:dic];
+    NSArray *arr = [DetailTypeInfo mj_objectArrayWithKeyValuesArray:dic];
     return arr;
 }
 
@@ -610,9 +632,6 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
                     [self openNumberAndhandSize:2 and:indexPath];
                 }
             };
-            if (self.driCode) {
-                firstCell.certCode = self.driCode;
-            }
             firstCell.colur = self.colorInfo.title;
             firstCell.modelInfo = self.modelInfo;
             firstCell.messArr = self.proNum;
@@ -622,8 +641,12 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
             CustomFirstCell *firstCell = [CustomFirstCell cellWithTableView:tableView];
             firstCell.MessBack = ^(BOOL isSel,NSString *messArr){
                 if (isSel) {
-                    self.proNum = messArr;
-                    [self updateBottomPrice];
+                    if ([messArr isEqualToString:@"成色"]) {
+                        [self openNumberAndhandSize:1 and:indexPath];
+                    }else{
+                        self.proNum = messArr;
+                        [self updateBottomPrice];
+                    }
                 }else{
                     if (messArr.length==0) {
                         [self openNumberAndhandSize:2 and:indexPath];
@@ -631,13 +654,14 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
                         self.proId = [messArr intValue];
                         [self clearNakedDri];
                         self.isResh = 2;
-                        [self setupDetailData];
+                        [self scanSearchData:messArr];
                     }
                 }
             };
             firstCell.dBack = ^(BOOL isYes){
                 [self dismissCustomPopView];
             };
+            firstCell.colur = self.colorInfo.title;
             firstCell.refresh = self.isResh;
             firstCell.editId = self.isEdit;
             firstCell.isNew = YES;
@@ -662,7 +686,8 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
                 [self addOrder:message];
                 self.isResh = 1;
                 NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:0];
-                [self.tableView reloadRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationNone];
+                [self.tableView reloadRowsAtIndexPaths:@[index] withRowAnimation:
+                 UITableViewRowAnimationNone];
             }
         };
         lastCell.isNote = self.isNote;
@@ -862,9 +887,12 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         detail = @"OrderCurrentDoModelItemForDefaultDo";
     }
     NSString *regiUrl = [NSString stringWithFormat:@"%@%@",baseUrl,detail];
-    NSString *proId = self.isEdit?@"itemId":@"productId";
     params[@"tokenKey"] = [AccountTool account].tokenKey;
-    params[proId] = @(_proId);
+    if (self.isEdit) {
+        params[@"itemId"] = @(_proId);
+    }else{
+        params[@"productId"] = _modelInfo.id;
+    }
     params[@"number"] = self.proNum;
     if ([self.handStr length]>0) {
         params[@"handSize"] = self.handStr;

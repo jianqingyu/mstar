@@ -42,6 +42,7 @@
         if ([_titleStr isEqualToString:@"主   石"]) {
             self.nextBtn.hidden = YES;
             self.addBtn.hidden = YES;
+            self.infoLab.textColor = [UIColor blackColor];
         }
     }
 }
@@ -51,6 +52,7 @@
         _titleStr = titleStr;
         self.titleLab.text = _titleStr;
         if ([_titleStr isEqualToString:@"主   石"]) {
+            self.infoLab.textColor = ChooseColor;
             self.nextBtn.enabled = NO;
         }else{
             self.nextBtn.enabled = YES;

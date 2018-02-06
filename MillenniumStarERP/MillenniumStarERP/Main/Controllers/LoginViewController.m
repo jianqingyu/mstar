@@ -16,12 +16,11 @@
 #import "MainNavViewController.h"
 #import "RegisterViewController.h"
 #import "PassWordViewController.h"
-
 #import <LocalAuthentication/LocalAuthentication.h>
 @interface LoginViewController ()
 @property (nonatomic,  weak)CusTomLoginView *loginView;
-@property (nonatomic,  copy)NSString *openUrl;
 @property (nonatomic,  copy)NSDictionary *versionDic;
+@property (nonatomic,  copy)NSString *openUrl;
 @property (nonatomic,assign)BOOL isVer;
 @end
 
