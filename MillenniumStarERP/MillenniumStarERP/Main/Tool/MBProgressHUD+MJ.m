@@ -53,7 +53,7 @@
 //    hud.dimBackground = YES;
     
     // 1秒之后再消失
-    [hud hide:YES afterDelay:1];
+    [hud hide:YES afterDelay:1.5];
     return hud;
 }
 

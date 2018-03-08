@@ -37,16 +37,16 @@
 - (void)setHInfo:(NakedDriDetailHInfo *)hInfo{
     if (hInfo) {
         _hInfo = hInfo;
-        self.staueLab.text = _hInfo.orderStatusTitle;
+        self.staueLab.text  = _hInfo.orderStatusTitle;
         self.customLab.text = [NSString stringWithFormat:@"客户 %@",_hInfo.customerName];
         self.orderNumLab.text = [NSString stringWithFormat:@"订单编号 %@",_hInfo.orderNum];
-        self.addNameLab.text = _hInfo.postName;
+        self.addNameLab.text  = _hInfo.postName;
         self.addPhoneLab.text = _hInfo.postTel;
-        self.addressLab.text = _hInfo.postAddress;
+        self.addressLab.text  = _hInfo.postAddress;
         
         self.priceLab.text = [OrderNumTool strWithPrice:_hInfo.totelPrice];
-        self.numLab.text = _hInfo.orderNumber;
-        NSString *string = _hInfo.orderDate;
+        self.numLab.text   = _hInfo.orderNumber;
+        NSString *string   = _hInfo.orderDate;
         string = [string substringToIndex:10];//截取掉下标10之后的字符串
         self.dateLab.text = string;
         self.remakeLab.text = _hInfo.remark;

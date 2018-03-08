@@ -23,10 +23,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"扫一扫";
+    if (self.isFirst) {
+        self.title = @"快速扫描";
+    }else{
+        self.title = @"扫一扫";
+    }
     [self setupBaseView];
-    [self setupCamera];
     [self creatNaviBtn];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:)
+                 name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+}
+
+- (void)orientChange:(NSNotification *)notification{
+    _preview.frame = self.view.bounds;
 }
 
 - (void)creatNaviBtn{
@@ -43,13 +52,7 @@
     NSString *mediaType = AVMediaTypeVideo;
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
     if(authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied){
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"没有相机权限"
-                     message:@"请去设置-隐私-相机中对订单系统授权" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault
-                                         handler:^(UIAlertAction * _Nonnull action) {
-            [self.navigationController popViewControllerAnimated:YES];
-        }];
-        [alertController addAction:okAction];
+        [NewUIAlertTool show:@"请去设置-隐私-相机中对订单系统授权" okBack:nil andView:self.view yes:NO];
         hasCameraRight = NO;
         return;
     }
@@ -81,11 +84,12 @@
     [_line autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:imageView withOffset:-40];
     [_line autoSetDimension:ALDimensionHeight toSize:2];
     [_line autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:imageView withOffset:10];
+    [self setupCamera];
 }
 
 - (void)animation1
 {
-    if (upOrdown == NO) {
+    if (upOrdown == NO) { 
         num ++;
         _line.frame = CGRectMake(CGRectGetMinX(_line.frame), 110+2*num, CGRectGetWidth(_line.frame), CGRectGetHeight(_line.frame));
         if (2 * num == CGRectGetHeight(imageView.frame) - 20) {
@@ -152,6 +156,7 @@
         CGRect inFrame = CGRectMake((100+64)/SDevHeight,(SDevWidth-200)*0.5/SDevWidth,200/SDevHeight,200/SDevWidth);
         _output.metadataObjectTypes = @[AVMetadataObjectTypeQRCode,AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeEAN8Code, AVMetadataObjectTypeCode128Code];
         [_output setRectOfInterest:inFrame];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             // 更新界面 Preview
             _preview = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
@@ -176,13 +181,16 @@
         [_session stopRunning];
         [timer invalidate];
         if (stringValue.length > 0) {
-//            if (self.scanBack) {
-//                self.scanBack(stringValue);
-//            }
-//            [self.navigationController popViewControllerAnimated:YES];
-            QuickScanOrderVC *quickVc = [QuickScanOrderVC new];
-            quickVc.scanCode = stringValue;
-            [self.navigationController pushViewController:quickVc animated:YES];
+            if (self.isFirst) {
+                QuickScanOrderVC *quickVc = [QuickScanOrderVC new];
+                quickVc.scanCode = stringValue;
+                [self.navigationController pushViewController:quickVc animated:YES];
+            }else{
+                if (self.scanBack) {
+                    self.scanBack(stringValue);
+                }
+                [self.navigationController popViewControllerAnimated:YES];
+            }
         }
     }
 }

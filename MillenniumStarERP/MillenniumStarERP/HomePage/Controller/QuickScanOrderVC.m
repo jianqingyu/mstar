@@ -7,17 +7,17 @@
 //
 
 #import "QuickScanOrderVC.h"
+#import "SaveColorData.h"
 #import "HYBLoopScrollView.h"
 #import "DetailModel.h"
 #import "QuickScanTableCell.h"
-#import "CustomDriFirstCell.h"
-#import "CustomPickView.h"
-#import "CustomPopView.h"
+#import "ConfirmOrderVC.h"
 @interface QuickScanOrderVC ()<UINavigationControllerDelegate,UITableViewDataSource,
                                UITableViewDelegate,MWPhotoBrowserDelegate>
 @property (nonatomic,  weak)UITableView *tableView;
 @property (nonatomic,  weak) IBOutlet UIButton *lookBtn;
 @property (nonatomic,  weak) IBOutlet UIButton *addBtn;
+@property (weak,  nonatomic) IBOutlet UIButton *cancelBtn;
 @property (nonatomic,  weak) IBOutlet UILabel *numLab;
 @property (nonatomic,  copy)NSArray *IDarray;
 @property (nonatomic,  copy)NSArray *headImg;
@@ -28,8 +28,6 @@
 @property (nonatomic,  copy)NSString *proNum;
 @property (nonatomic,assign)float wid;
 @property (nonatomic,strong)UIView *hView;
-@property (nonatomic,  weak)CustomPickView *pickView;
-@property (nonatomic,  weak)CustomPopView *popView;
 @property (nonatomic,strong)DetailModel *modelInfo;
 @property (nonatomic,strong)DetailTypeInfo *colorInfo;
 @end
@@ -47,9 +45,10 @@
     [self setBaseTableView];
     [self setupQuickData];
     [self creatNaviBtn];
-    [self setupPopView];
+    [self setupLoadColor];
     [self.numLab setLayerWithW:8 andColor:BordColor andBackW:0.001];
     [self.lookBtn setLayerWithW:5 andColor:BordColor andBackW:0.5];
+    [self.cancelBtn setLayerWithW:5 andColor:BordColor andBackW:0.5];
     [self.addBtn setLayerWithW:5 andColor:BordColor andBackW:0.001];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
@@ -69,6 +68,8 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    App;
+    [OrderNumTool orderWithNum:app.shopNum andView:self.numLab];
     self.navigationController.delegate = self;
 }
 
@@ -100,13 +101,14 @@
 }
 
 - (void)setBaseTableView{
-    UITableView *table = [[UITableView alloc]init];
-    table.separatorStyle = UITableViewCellSeparatorStyleNone;
+    UITableView *table = [[UITableView alloc]initWithFrame:CGRectZero
+                                                     style:UITableViewStyleGrouped];
+    table.bounces = NO;
     table.delegate = self;
     table.dataSource = self;
-    table.bounces = NO;
+    table.estimatedRowHeight = 120;
     table.rowHeight = UITableViewAutomaticDimension;
-    table.estimatedRowHeight = 200;
+    table.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:table];
     CGFloat headF = 0;
     if (!IsPhone){
@@ -119,15 +121,20 @@
         make.bottom.equalTo(self.view).offset(-50);
     }];
     self.tableView = table;
+    if (@available(iOS 11.0, *)) {
+        self.tableView.estimatedSectionHeaderHeight = 0;
+        self.tableView.estimatedSectionFooterHeight = 0;
+    }
     CGRect frame = CGRectMake(0, 0, SDevWidth, 10);
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:frame];
 }
 
 - (void)setupQuickData{
-    NSString *regiUrl = [NSString stringWithFormat:@"%@ModelDetailPageForSCanCode",baseUrl];
+    NSString *regiUrl = [NSString stringWithFormat:
+                         @"%@ModelDetailPageGetInfoByModelNumSimplify",baseUrl];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
-    params[@"keyword"] = self.scanCode;
+    params[@"modelNum"] = self.scanCode;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
             [self setDetailDataWithDic:response.data];
@@ -137,13 +144,41 @@
     } requestURL:regiUrl params:params];
 }
 
-- (void)setDetailDataWithDic:(NSDictionary *)data{
-    if ([YQObjectBool boolForObject:data[@"modelPuritys"]]) {
-        self.colours = data[@"modelPuritys"];
-        if (self.colours.count==1) {
-            self.colorInfo = [DetailTypeInfo mj_objectWithKeyValues:self.colours[0]];
+- (void)setupLoadColor{
+    NSString *regiUrl = [NSString stringWithFormat:
+                         @"%@ModelDetailSimplify",baseUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            if ([YQObjectBool boolForObject:response.data[@"modelPuritys"]]) {
+                self.colours = [DetailTypeInfo mj_objectArrayWithKeyValuesArray:response. data[@"modelPuritys"]];
+                if ([YQObjectBool boolForObject:response.data]&&
+                    [YQObjectBool boolForObject:response.data[@"waitOrderCount"]]) {
+                    App;
+                    app.shopNum = [response.data[@"waitOrderCount"]intValue];
+                    [OrderNumTool orderWithNum:app.shopNum andView:self.numLab];
+                }
+                SaveColorData *saveColor = [SaveColorData shared];
+                if (saveColor.colorInfo.title.length>0) {
+                    self.colorInfo = saveColor.colorInfo;
+                    for (DetailTypeInfo *info in self.colours) {
+                        if ([self.colorInfo.title isEqualToString:info.title]) {
+                            info.isSel = YES;
+                        }
+                    }
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
+            }
+        }else{
+            [MBProgressHUD showError:response.message];
         }
-    }
+    } requestURL:regiUrl params:params];
+}
+
+- (void)setDetailDataWithDic:(NSDictionary *)data{
     if ([YQObjectBool boolForObject:data[@"model"]]) {
         DetailModel *modelIn = [DetailModel mj_objectWithKeyValues:
                                 data[@"model"]];
@@ -216,6 +251,8 @@
     if (isHead) {
         self.tableView.tableHeaderView = self.hView;
     }else{
+        self.tableView.tableHeaderView = [[UIView alloc]initWithFrame:
+                                          CGRectMake(0, 0, 0, 0.001)];
         [self.view addSubview:self.hView];
         [self.view sendSubviewToBack:self.hView];
     }
@@ -254,31 +291,110 @@
 }
 
 #pragma mark -tableviewDataSource-
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 2;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
+    if (section==0) {
+        return 1;
+    }else{
+        return self.colours.count;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 0.00001f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 0.00001f;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    QuickScanTableCell *scanCell = [QuickScanTableCell cellWithTableView:tableView];
-    scanCell.MessBack = ^(BOOL isSel,NSString *messArr){
-        if (isSel) {
-            if ([messArr isEqualToString:@"成色"]) {
-                [self openNumberAndhandSize:1 and:indexPath];
-            }else{
-                self.proNum = messArr;
-            }
-        }else{
-            [self openNumberAndhandSize:2 and:indexPath];
+    if (indexPath.section==0) {
+        QuickScanTableCell *scanCell = [QuickScanTableCell cellWithTableView:tableView];
+        scanCell.MessBack = ^(BOOL isSel,NSString *messArr){
+            self.proNum = messArr;
+        };
+        scanCell.colur = self.colorInfo.title;
+        scanCell.modelInfo = self.modelInfo;
+        scanCell.messArr = self.proNum;
+        return scanCell;
+    }else{
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"textCell"];
+        if (!cell) {
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"textCell"];
+            cell.textLabel.font = [UIFont systemFontOfSize:16];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-    };
-    scanCell.colur = self.colorInfo.title;
-    scanCell.modelInfo = self.modelInfo;
-    scanCell.messArr = self.proNum;
-    scanCell.handSize = self.handStr;
-    return scanCell;
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        DetailTypeInfo *info = self.colours[indexPath.row];
+        if (info.isSel) {
+            cell.backgroundColor = DefaultColor;
+        }else{
+            cell.backgroundColor = [UIColor whiteColor];
+        }
+        cell.textLabel.text = info.title;
+        return cell;
+    }
 }
 
-#pragma mark -- CustomPopView
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section==1) {
+        for (DetailTypeInfo *info in self.colours) {
+            info.isSel = NO;
+        }
+        DetailTypeInfo *info = self.colours[indexPath.row];
+        info.isSel = YES;
+        self.colorInfo = info;
+        SaveColorData *saveColor = [SaveColorData shared];
+        saveColor.colorInfo = info;
+        [self.tableView reloadData];
+    }
+}
+
+- (IBAction)lookClick:(id)sender {
+    ConfirmOrderVC *orderVC = [ConfirmOrderVC new];
+    [self.navigationController pushViewController:orderVC animated:YES];
+}
+
+- (IBAction)cancelClick:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)addClick:(id)sender {
+    if ([self.proNum length]==0) {
+        [MBProgressHUD showError:@"请选择件数"];
+        return;
+    }
+    if (!self.colorInfo) {
+        [MBProgressHUD showError:@"请选择成色"];
+        return;
+    }
+    NSString *regiUrl = [NSString stringWithFormat:
+                         @"%@OrderCurrentDoModelItemForAutoStoneDo",baseUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    params[@"productId"] = self.modelInfo.id;
+    params[@"number"] = self.proNum;
+    params[@"modelPurityId"] = @(self.colorInfo.id);
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            [MBProgressHUD showMessage:response.message];
+            if ([YQObjectBool boolForObject:response.data]&&
+                [YQObjectBool boolForObject:response.data[@"waitOrderCount"]]) {
+                App;
+                app.shopNum = [response.data[@"waitOrderCount"]intValue];
+                [OrderNumTool orderWithNum:app.shopNum andView:self.numLab];
+            }
+            [self.navigationController popViewControllerAnimated:YES];
+        }else{
+            [MBProgressHUD showError:response.message];
+        }
+    } requestURL:regiUrl params:params];
+}
+
 //- (void)setupPickView{
 //    CustomPickView *popV = [[CustomPickView alloc]init];
 //    popV.popBack = ^(int staue,id dict){
@@ -303,83 +419,75 @@
 //    self.pickView = popV;
 //    [self dismissCustomPopView];
 //}
-
-- (void)setupPopView{
-    CustomPopView *popV = [[CustomPopView alloc]init];
-    popV.popBack = ^(id dict){
-        DetailTypeInfo *info = [dict allValues][0];
-        if (info.title.length>0) {
-            self.colorInfo = info;
-        }
-        [self.tableView reloadData];
-        [self dismissCustomPopView];
-    };
-    [self.view addSubview:popV];
-    [popV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(0);
-        make.left.equalTo(self.view).offset(0);
-        make.right.equalTo(self.view).offset(0);
-        make.bottom.equalTo(self.view).offset(0);
-    }];
-    self.popView = popV;
-    [self dismissCustomPopView];
-}
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    [self dismissCustomPopView];
-}
-
-- (void)openNumberAndhandSize:(int)staue and:(NSIndexPath *)index{
-    self.popView.titleStr = @"请选择成色";
-    self.popView.typeList = self.colours;
-    [self showCustomPopView];
-//    if (staue==2) {
-//        self.pickView.typeList = self.handArr;
-//        NSString *title = self.handStr.length>0?self.handStr:@"12";
-//        self.pickView.titleStr = @"手寸";
-//        self.pickView.selTitle = title;
-//    }else{
-//        if (self.colours.count==0) {
-//            [MBProgressHUD showError:@"暂无数据"];
-//            return;
+//
+//- (void)setupPopView{
+//    CustomPopView *popV = [[CustomPopView alloc]init];
+//    popV.popBack = ^(id dict){
+//        DetailTypeInfo *info = [dict allValues][0];
+//        if (info.title.length>0) {
+//            self.colorInfo = info;
 //        }
-//        self.pickView.titleStr = @"成色";
-//        self.pickView.typeList = self.colours;
-//        self.pickView.selTitle = self.colorInfo.title;
-//    }
-//    self.pickView.section = index;
-//    self.pickView.staue = staue;
+//        [self.tableView reloadData];
+//        [self dismissCustomPopView];
+//    };
+//    [self.view addSubview:popV];
+//    [popV mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).offset(0);
+//        make.left.equalTo(self.view).offset(0);
+//        make.right.equalTo(self.view).offset(0);
+//        make.bottom.equalTo(self.view).offset(0);
+//    }];
+//    self.popView = popV;
+//    [self dismissCustomPopView];
+//}
+//
+//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    [self dismissCustomPopView];
+//}
+
+//- (void)openNumberAndhandSize:(int)staue and:(NSIndexPath *)index{
+//    self.popView.titleStr = @"请选择成色";
+//    self.popView.typeList = self.colours;
 //    [self showCustomPopView];
-}
-
-- (void)showCustomPopView{
-//    self.pickView.hidden = NO;
-    self.popView.hidden = NO;
-//    [UIView animateWithDuration:0.5 animations:^{
-//        [self.popView mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.view).offset(0);
-//        }];
-//        [self.popView layoutIfNeeded];//强制绘制
-//    }];
-}
-
-- (void)dismissCustomPopView{
-//    self.pickView.hidden = YES;
-    self.popView.hidden = YES;
-//    [UIView animateWithDuration:0.5 animations:^{
-//        [self.popView mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.view).offset(2*SDevWidth);
-//        }];
-//        [self.popView layoutIfNeeded];//强制绘制
-//    }];
-}
-
-- (IBAction)lookClick:(id)sender {
-    
-}
-
-- (IBAction)addClick:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
-}
+////    if (staue==2) {
+////        self.pickView.typeList = self.handArr;
+////        NSString *title = self.handStr.length>0?self.handStr:@"12";
+////        self.pickView.titleStr = @"手寸";
+////        self.pickView.selTitle = title;
+////    }else{
+////        if (self.colours.count==0) {
+////            [MBProgressHUD showError:@"暂无数据"];
+////            return;
+////        }
+////        self.pickView.titleStr = @"成色";
+////        self.pickView.typeList = self.colours;
+////        self.pickView.selTitle = self.colorInfo.title;
+////    }
+////    self.pickView.section = index;
+////    self.pickView.staue = staue;
+////    [self showCustomPopView];
+//}
+//
+//- (void)showCustomPopView{
+////    self.pickView.hidden = NO;
+//    self.popView.hidden = NO;
+////    [UIView animateWithDuration:0.5 animations:^{
+////        [self.popView mas_updateConstraints:^(MASConstraintMaker *make) {
+////            make.top.equalTo(self.view).offset(0);
+////        }];
+////        [self.popView layoutIfNeeded];//强制绘制
+////    }];
+//}
+//
+//- (void)dismissCustomPopView{
+////    self.pickView.hidden = YES;
+//    self.popView.hidden = YES;
+////    [UIView animateWithDuration:0.5 animations:^{
+////        [self.popView mas_updateConstraints:^(MASConstraintMaker *make) {
+////            make.top.equalTo(self.view).offset(2*SDevWidth);
+////        }];
+////        [self.popView layoutIfNeeded];//强制绘制
+////    }];
+//}
 
 @end

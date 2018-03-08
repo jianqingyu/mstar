@@ -573,8 +573,8 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         if (staue==1) {
             if (info.title.length>0) {
                 self.colorInfo = info;
-                [[NSNotificationCenter defaultCenter]postNotificationName:NotificationColourName
-                                object:nil userInfo:@{UserInfoColourName:info}];
+            [[NSNotificationCenter defaultCenter]postNotificationName:
+                 NotificationColourName object:nil userInfo:@{UserInfoColourName:info}];
             }
         }else if (staue==2){
             self.handStr = info.title;
@@ -620,112 +620,133 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
          cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row==0) {
         if (self.isCus) {
-            CustomDriFirstCell *firstCell = [CustomDriFirstCell cellWithTableView:tableView];
-            firstCell.MessBack = ^(BOOL isSel,NSString *messArr){
-                if (isSel) {
-                    if ([messArr isEqualToString:@"成色"]) {
-                        [self openNumberAndhandSize:1 and:indexPath];
-                    }else{
-                        self.proNum = messArr;
-                    }
-                }else{
-                    [self openNumberAndhandSize:2 and:indexPath];
-                }
-            };
-            firstCell.colur = self.colorInfo.title;
-            firstCell.modelInfo = self.modelInfo;
-            firstCell.messArr = self.proNum;
-            firstCell.handSize = self.handStr;
-            return firstCell;
+            UITableViewCell *cusCell = [self cellForCus:tableView andIdx:indexPath];
+            return cusCell;
         }else{
-            CustomFirstCell *firstCell = [CustomFirstCell cellWithTableView:tableView];
-            firstCell.MessBack = ^(BOOL isSel,NSString *messArr){
-                if (isSel) {
-                    if ([messArr isEqualToString:@"成色"]) {
-                        [self openNumberAndhandSize:1 and:indexPath];
-                    }else{
-                        self.proNum = messArr;
-                        [self updateBottomPrice];
-                    }
-                }else{
-                    if (messArr.length==0) {
-                        [self openNumberAndhandSize:2 and:indexPath];
-                    }else{
-                        self.proId = [messArr intValue];
-                        [self clearNakedDri];
-                        self.isResh = 2;
-                        [self scanSearchData:messArr];
-                    }
-                }
-            };
-            firstCell.dBack = ^(BOOL isYes){
-                [self dismissCustomPopView];
-            };
-            firstCell.colur = self.colorInfo.title;
-            firstCell.refresh = self.isResh;
-            firstCell.editId = self.isEdit;
-            firstCell.isNew = YES;
-            if (self.driCode) {
-                firstCell.certCode = self.driCode;
-            }
-            firstCell.modelInfo = self.modelInfo;
-            firstCell.messArr = self.proNum;
-            firstCell.handSize = self.handStr;
-            self.isResh = 0;
-            return firstCell;
+            UITableViewCell *norCell = [self cellForNor:tableView andIdx:indexPath];
+            return norCell;
         }
     }else if (indexPath.row==self.mutArr.count+self.idx-1){
-        CustomLastCell *lastCell = [CustomLastCell cellWithTableView:tableView];
-        [lastCell.btn addTarget:self action:@selector(openRemark:)
-               forControlEvents:UIControlEventTouchUpInside];
-        lastCell.messBack = ^(id message,BOOL isYes){
-            if ([message isKindOfClass:[NSString class]]) {
-                self.lastMess = message;
-            }
-            if (isYes) {
-                [self addOrder:message];
-                self.isResh = 1;
-                NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:0];
-                [self.tableView reloadRowsAtIndexPaths:@[index] withRowAnimation:
-                 UITableViewRowAnimationNone];
-            }
-        };
-        lastCell.isNote = self.isNote;
-        lastCell.message = self.lastMess;
-        self.isNote = NO;
+        UITableViewCell *lastCell = [self cellForLast:tableView andIdx:indexPath];
         return lastCell;
     }else{
-        NSInteger index = indexPath.row-self.idx+1;
-        if (self.isCus&&indexPath.row==1) {
-            CustomDriWordCell *driCell = [CustomDriWordCell cellWithTableView:tableView];
-            driCell.cate = _modelInfo.categoryTitle;
-            driCell.word = self.driWord;
-            driCell.back = ^(BOOL isSel,NSString *word){
-                if (isSel) {
-                    self.driWord = word;
-                    StorageDataTool *data = [StorageDataTool shared];
-                    data.word = word;
-                }else{
-                    self.wordView.wordLab.text = self.driWord;
-                    self.wordView.hidden = NO;
-                }
-            };
-            return driCell;
-        }else{
-            NewCustomProCell *proCell = [NewCustomProCell cellWithTableView:tableView];
-            proCell.num = self.nums[index];
-            proCell.titleStr = self.typeArr[index];
-            proCell.list = self.mutArr[index];
-            if (self.driCode) {
-                proCell.certCode = self.driCode;
+        UITableViewCell *millCell = [self cellForMil:tableView andIdx:indexPath];
+        return millCell;
+    }
+}
+#pragma mark --各种cell--
+//快递定制cell
+- (UITableViewCell *)cellForCus:(UITableView *)tableView andIdx:(NSIndexPath *)indexPath{
+    CustomDriFirstCell *firstCell = [CustomDriFirstCell cellWithTableView:tableView];
+    firstCell.MessBack = ^(BOOL isSel,NSString *messArr){
+        if (isSel) {
+            if ([messArr isEqualToString:@"成色"]) {
+                [self openNumberAndhandSize:1 and:indexPath];
+            }else{
+                self.proNum = messArr;
             }
-            proCell.isSel = [self.bools[index]boolValue];
-            proCell.isCus = self.isCus;
-            proCell.back = ^(BOOL isSel){
-                [self.bools setObject:@(isSel) atIndexedSubscript:index];
-            };
-            return proCell;
+        }else{
+            [self openNumberAndhandSize:2 and:indexPath];
         }
+    };
+    firstCell.colur = self.colorInfo.title;
+    firstCell.modelInfo = self.modelInfo;
+    firstCell.messArr = self.proNum;
+    firstCell.handSize = self.handStr;
+    return firstCell;
+}
+//正常cell
+- (UITableViewCell *)cellForNor:(UITableView *)tableView andIdx:(NSIndexPath *)indexPath{
+    CustomFirstCell *firstCell = [CustomFirstCell cellWithTableView:tableView];
+    firstCell.MessBack = ^(BOOL isSel,NSString *messArr){
+        if (isSel) {
+            if ([messArr isEqualToString:@"成色"]) {
+                [self openNumberAndhandSize:1 and:indexPath];
+            }else{
+                self.proNum = messArr;
+                [self updateBottomPrice];
+            }
+        }else{
+            if (messArr.length==0) {
+                [self openNumberAndhandSize:2 and:indexPath];
+            }else{
+                self.proId = [messArr intValue];
+                [self clearNakedDri];
+                self.isResh = 2;
+                [self scanSearchData:messArr];
+            }
+        }
+    };
+    firstCell.dBack = ^(BOOL isYes){
+        [self dismissCustomPopView];
+    };
+    firstCell.refresh = self.isResh;
+    firstCell.editId = self.isEdit;
+    firstCell.isNew = YES;
+    if (self.driCode) {
+        firstCell.certCode = self.driCode;
+    }
+    firstCell.colur = self.colorInfo.title;
+    firstCell.modelInfo = self.modelInfo;
+    firstCell.messArr = self.proNum;
+    firstCell.handSize = self.handStr;
+    self.isResh = 0;
+    return firstCell;
+}
+//底部cell
+- (UITableViewCell *)cellForLast:(UITableView *)tableView andIdx:(NSIndexPath *)indexPath{
+    CustomLastCell *lastCell = [CustomLastCell cellWithTableView:tableView];
+    [lastCell.btn addTarget:self action:@selector(openRemark:)
+           forControlEvents:UIControlEventTouchUpInside];
+    lastCell.messBack = ^(id message,BOOL isYes){
+        if ([message isKindOfClass:[NSString class]]) {
+            self.lastMess = message;
+        }
+        if (isYes) {
+            [self addOrder:message];
+            self.isResh = 1;
+            NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:0];
+            [self.tableView reloadRowsAtIndexPaths:@[index] withRowAnimation:
+             UITableViewRowAnimationNone];
+        }
+    };
+    lastCell.isNote = self.isNote;
+    lastCell.message = self.lastMess;
+    self.isNote = NO;
+    return lastCell;
+}
+//中间cell
+- (UITableViewCell *)cellForMil:(UITableView *)tableView andIdx:(NSIndexPath *)indexPath{
+    NSInteger index = indexPath.row-self.idx+1;
+    if (self.isCus&&indexPath.row==1) {
+        CustomDriWordCell *driCell = [CustomDriWordCell cellWithTableView:tableView];
+        driCell.cate = _modelInfo.categoryTitle;
+        driCell.word = self.driWord;
+        driCell.back = ^(BOOL isSel,NSString *word){
+            if (isSel) {
+                self.driWord = word;
+                StorageDataTool *data = [StorageDataTool shared];
+                data.word = word;
+            }else{
+                self.wordView.wordLab.text = self.driWord;
+                self.wordView.hidden = NO;
+            }
+        };
+        return driCell;
+    }else{
+        NewCustomProCell *proCell = [NewCustomProCell cellWithTableView:tableView];
+        proCell.num = self.nums[index];
+        proCell.titleStr = self.typeArr[index];
+        proCell.list = self.mutArr[index];
+        if (self.driCode) {
+            proCell.certCode = self.driCode;
+        }
+        proCell.isSel = [self.bools[index]boolValue];
+        proCell.isCus = self.isCus;
+        proCell.back = ^(BOOL isSel){
+            [self.bools setObject:@(isSel) atIndexedSubscript:index];
+        };
+        return proCell;
     }
 }
 
@@ -816,8 +837,6 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         [self.navigationController popViewControllerAnimated:YES];
         return;
     }
-//    ConfirmOrderCollectionVC *vc = [ConfirmOrderCollectionVC new];
-//    [self.navigationController pushViewController:vc animated:YES];
     ConfirmOrderVC *orderVC = [ConfirmOrderVC new];
     [self.navigationController pushViewController:orderVC animated:YES];
 }

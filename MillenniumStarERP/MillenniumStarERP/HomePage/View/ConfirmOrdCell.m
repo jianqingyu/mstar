@@ -45,8 +45,9 @@
         btn.selected = _listInfo.isSel;
         [self.picImg sd_setImageWithURL:[ NSURL URLWithString:_listInfo.pic] placeholderImage:DefaultImage];
         self.titleLab.text = _listInfo.title;
-        self.baseLab.text = _listInfo.baseInfo;
-        
+        NSString *mess = [NSString stringWithFormat:@"%@,成色:%@",
+                          _listInfo.baseInfo,_listInfo.purityName];
+        self.baseLab.text = _listInfo.purityName.length>0?mess:_listInfo.baseInfo;
         self.priceLab.text = [OrderNumTool strWithPrice:_listInfo.price];
         self.numLab.text = [NSString stringWithFormat:@"%@件",_listInfo.number];
         self.infoLab.text = _listInfo.info;

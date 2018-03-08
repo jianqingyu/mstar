@@ -13,7 +13,7 @@
 #import "LoginViewController.h"
 @implementation BaseApi
 //自定义接口版本
-#define ApiVersion @"1.9"
+#define ApiVersion @"2.0"
 + (void)getNoGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
                 params:(NSMutableDictionary*)params{
     params[@"QxVersion"] = ApiVersion;

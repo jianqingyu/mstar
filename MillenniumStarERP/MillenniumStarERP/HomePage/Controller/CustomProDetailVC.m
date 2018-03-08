@@ -197,7 +197,7 @@
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
             if ([YQObjectBool boolForObject:response.data[@"model"]]) {
-                DetailModel *modelIn = [DetailModel objectWithKeyValues:
+                DetailModel *modelIn = [DetailModel mj_objectWithKeyValues:
                                                        response.data[@"model"]];
                 [self setupBaseListData:modelIn];
                 [self creatCusTomHeadView];
@@ -326,16 +326,15 @@
     NSMutableArray *mPic = @[].mutableCopy;
     NSMutableArray *bPic = @[].mutableCopy;
     for (NSDictionary*dict in self.modelInfo.pics) {
-        NSString *str = [dict[@"pic"]stringByAddingPercentEscapesUsingEncoding:
-                         NSUTF8StringEncoding];
+        NSString *str = [self UsingEncoding:dict[@"pic"]];
         if (str.length>0) {
             [pic addObject:str];
         }
-        NSString *strm = [dict[@"picm"]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];;
+        NSString *strm = [self UsingEncoding:dict[@"picm"]];
         if (strm.length>0) {
             [mPic addObject:strm];
         }
-        NSString *strb = [dict[@"picb"]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];;
+        NSString *strb = [self UsingEncoding:dict[@"picb"]];
         if (strb.length>0) {
             [bPic addObject:strb];
         }
@@ -352,6 +351,10 @@
     self.headImg = headArr;
     self.IDarray = [bPic copy];
     [self changeTableHeadView];
+}
+
+- (NSString *)UsingEncoding:(NSString *)str{
+    return [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
 - (void)setupHeadView:(NSArray *)headArr and:(BOOL)isHead{

@@ -74,8 +74,6 @@
     UIView *mainContentView = [[UIView alloc] init];
     menuHorizontalView = [[UserManagerMenuHrizontal alloc] initWithFrame:CGRectZero ButtonItems:titleArray];
     menuHorizontalView.delegate = self;
-    //默认选中第一个button
-    [menuHorizontalView clickButtonAtIndex:_index];
     [mainContentView addSubview:menuHorizontalView];
 
     //初始化滑动列表
@@ -83,9 +81,6 @@
     mScrollPageView.delegate = self;
     [mScrollPageView setContentOfTables:titleArray andId:@"UserManagerTableView"];
     [mainContentView addSubview:mScrollPageView];
-    //初始化选择
-    [mScrollPageView moveScrollowViewAthIndex:_index];
-    [menuHorizontalView changeButtonStateAtIndex:_index];
     [self.view addSubview:mainContentView];
     
     [mainContentView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -103,6 +98,10 @@
         make.bottom.equalTo(mainContentView).offset(0);
         make.right.equalTo(mainContentView).offset(0);
     }];
+    //回到主线程选中第index个
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [menuHorizontalView clickButtonAtIndex:_index];
+    });
 }
 
 #pragma mark - 其他辅助功能

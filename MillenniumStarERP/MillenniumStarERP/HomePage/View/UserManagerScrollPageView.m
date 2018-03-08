@@ -21,24 +21,23 @@
 }
 
 - (void)commInit{
-    if (_contentItems == nil) {
-        _contentItems = [[NSMutableArray alloc] init];
-    }
-    if (_scrollView == nil) {
-        _scrollView = [[UIScrollView alloc]init];
-        _scrollView.bounces = NO;
-        _scrollView.pagingEnabled = YES;
-        _scrollView.delegate = self;
-    }
+    _contentItems = [[NSMutableArray alloc] init];
+    _scrollView = [[UIScrollView alloc]init];
+    _scrollView.bounces = NO;
+    _scrollView.pagingEnabled = YES;
+    _scrollView.delegate = self;
     [self addSubview:_scrollView];
 }
-
 #pragma mark - 其他辅助功能
 #pragma mark 添加ScrollowViewd的ContentView
 - (void)setContentOfTables:(NSArray *)proidArr andId:(id)idTab{
     proArr = proidArr;
+    [self setContentWithTab:idTab];
+}
+
+- (void)setContentWithTab:(id)idTab{
     UIView *lastView = nil;
-    for (int i=0;i<proArr.count;i++) {
+    for (int i = 0;i<proArr.count;i++) {
         Class c;
         if ([idTab isKindOfClass:[NSArray class]]) {
             c = NSClassFromString(idTab[i]);
@@ -75,21 +74,13 @@
         [contentView setValue:proArr[index] forKey:@"dict"];
     }
     mNeedUseDelegate = NO;
-    CGRect vMoveRect = CGRectMake(self.width *index, 0, SDevWidth, SDevHeight);
+    CGRect vMoveRect = CGRectMake(SDevWidth *index, 0, SDevWidth, SDevHeight);
     [_scrollView scrollRectToVisible:vMoveRect animated:YES];
-    mCurrentPage = index;
-    if ([_delegate respondsToSelector:@selector(didScrollPageViewChangedPage:)]) {
-        [_delegate didScrollPageViewChangedPage:mCurrentPage];
-    }
 }
 
 - (void)moveScrollowViewToFirst{
-    mNeedUseDelegate = NO;
+    mNeedUseDelegate = YES;
     _scrollView.contentOffset = CGPointMake(0, 0);
-    mCurrentPage = 0;
-    if ([_delegate respondsToSelector:@selector(didScrollPageViewChangedPage:)]) {
-        [_delegate didScrollPageViewChangedPage:mCurrentPage];
-    }
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -98,11 +89,11 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    int page = (_scrollView.contentOffset.x+self.width/2.0)/self.width;
+    int page = (_scrollView.contentOffset.x+SDevWidth/2.0)/SDevWidth;
     if (mCurrentPage == page) {
         return;
     }
-    if (page<_contentItems.count) {
+    if (page<_contentItems.count && mNeedUseDelegate) {
         UIView *contentView = _contentItems[page];
         [contentView setValue:proArr[page] forKey:@"dict"];
     }

@@ -8,10 +8,12 @@
 
 #import "NewHomeBannerVC.h"
 #import "CustomTopBtn.h"
+#import "ShowLoginViewTool.h"
 #import "ProductListVC.h"
 #import "EditUserInfoVC.h"
 #import "CustomerInfo.h"
 #import "OrderNumTool.h"
+#import "ScanViewController.h"
 #import "HYBLoopScrollView.h"
 #import "CusHauteCoutureView.h"
 #import "NewCustomizationVC.h"
@@ -183,14 +185,14 @@
         make.bottom.equalTo(self.view).with.offset(-15);
         make.size.mas_equalTo(CGSizeMake(width, 80));
     }];
-//    NSArray *arr = @[@"p_11-1",@"p_03-1",@"p_04-1",@"p_06-1",@"p_08-1"];
-//    NSArray *arrS = @[@"快速定制",@"产品",@"个性定制",@"裸钻库",@"个人中心"];
-//    self.pushVcs = @[@"vc",@"ProductListVC",@"NewCustomizationVC",
-//                     @"NakedDriLibViewController",@"EditUserInfoVC"];
-    NSArray *arr = @[@"p_11-1",@"p_03-1",@"p_06-1",@"p_08-1"];
-    NSArray *arrS = @[@"快速定制",@"产品",@"裸钻库",@"个人中心"];
-    self.pushVcs = @[@"vc",@"ProductListVC",@"NakedDriLibViewController",
-                     @"EditUserInfoVC"];
+    NSArray *arr = @[@"p_11-1",@"p_03-1",@"p_04-1",@"p_06-1",@"p_08-1"];
+    NSArray *arrS = @[@"快速定制",@"产品",@"个性定制",@"裸钻库",@"个人中心"];
+    self.pushVcs = @[@"vc",@"ProductListVC",@"NewCustomizationVC",
+                     @"NakedDriLibViewController",@"EditUserInfoVC"];
+//    NSArray *arr = @[@"p_11-1",@"p_03-1",@"p_06-1",@"p_08-1"];
+//    NSArray *arrS = @[@"快速定制",@"产品",@"裸钻库",@"个人中心"];
+//    self.pushVcs = @[@"vc",@"ProductListVC",@"NakedDriLibViewController",
+//                     @"EditUserInfoVC"];
     CGFloat mar = (width-arr.count*60)/(arr.count-1);
     for (int i=0; i<arr.count; i++) {
         CustomTopBtn *right = [CustomTopBtn creatCustomView];
@@ -201,7 +203,22 @@
         [right.bBtn addTarget:self action:@selector(openClick:)
                                   forControlEvents:UIControlEventTouchUpInside];
         right.frame = CGRectMake(i*(60+mar), 0, 60, 80);
+        if (i==1) {
+            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]
+                                                       initWithTarget:self action:@selector(btnLong:)];
+            longPress.minimumPressDuration = 0.8; //定义按的时间
+            [right.bBtn addGestureRecognizer:longPress];
+        }
         [bottomV addSubview:right];
+    }
+}
+
+- (void)btnLong:(UILongPressGestureRecognizer *)gestureRecognizer{
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        UIViewController *vc = [ShowLoginViewTool getCurrentVC];
+        ScanViewController *scan = [ScanViewController new];
+        scan.isFirst = YES;
+        [vc.navigationController pushViewController:scan animated:YES];
     }
 }
 

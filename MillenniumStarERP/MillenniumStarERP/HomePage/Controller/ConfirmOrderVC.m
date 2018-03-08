@@ -274,9 +274,46 @@
     }else{
         self.colorInfo = info;
         self.headView.colorMes = info.title;
+        [self changeColorInfo:info];
     }
     [self editColorAndQuality];
-//    [self loadUpOrderPrice];
+}
+
+- (void)changeColorInfo:(DetailTypeInfo *)cInfo{
+    NSArray *dataArr = [NSArray new];
+    NSString *mess = [NSString new];
+    if (self.selectDataArray.count>0) {
+        dataArr = self.selectDataArray;
+        mess = [NSString stringWithFormat:@"是否把勾选的%d个商品都选为%@",
+                (int)dataArr.count,cInfo.title];
+    }else{
+        dataArr = self.dataArray;
+        mess = [NSString stringWithFormat:@"是否把当前的%d个商品都选为%@",
+                (int)dataArr.count,cInfo.title];
+    }
+    NSMutableArray *mutA = @[].mutableCopy;
+    for (OrderListInfo *collInfo in dataArr) {
+        [mutA addObject:@(collInfo.id)];
+    }
+    [NewUIAlertTool show:mess okBack:^{
+        NSString *netUrl = [NSString stringWithFormat:@"%@BathModifyPurityDo",baseUrl];
+        NSMutableDictionary *params = [NSMutableDictionary new];
+        params[@"tokenKey"] = [AccountTool account].tokenKey;
+        params[@"itemIds"] = [StrWithIntTool strWithIntArr:mutA];
+        params[@"purityId"] = @(self.colorInfo.id);
+        [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+            if ([response.error intValue]==0) {
+                for (OrderListInfo *collInfo in dataArr) {
+                    collInfo.purityName = cInfo.title;
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
+            }else{
+                [MBProgressHUD showError:response.message];
+            }
+        } requestURL:netUrl params:params];
+    } andView:self.view yes:YES];
 }
 //选择客户
 - (void)setCusInfo:(CustomerInfo *)cusInfo{
@@ -336,7 +373,6 @@
         }else{
             [MBProgressHUD showError:response.message];
         }
-        [SVProgressHUD dismiss];
     } requestURL:regiUrl params:params];
 }
 
@@ -822,7 +858,8 @@
         //同步显示
         [self syncPriceLabel];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:indx];
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath]
+                              withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
@@ -1003,13 +1040,14 @@
         [self cancelOrder];
     }else{
         self.conBtn.enabled = NO;
-        [self performSelector:@selector(changeButtonStatus)withObject:nil afterDelay:1.0f];//防止重复点击
+        [self performSelector:@selector(changeButtonStatus)withObject:nil
+                   afterDelay:2.0f];//防止重复点击
         [self confirmOrder];
     }
 }
 
 - (void)changeButtonStatus{
-    self.conBtn.enabled =YES;
+    self.conBtn.enabled = YES;
 }
 //提交订单
 - (void)confirmOrder{
@@ -1034,18 +1072,65 @@
         }
         return;
     }
-    if (self.colorInfo.id==0) {
-        [MBProgressHUD showError:@"请选择成色"];
-        if (self.topBtn.selected) {
-            [self showHeadView];
-        }
-        return;
-    }
+//    if (self.colorInfo.id==0) {
+//        [MBProgressHUD showError:@"请选择成色"];
+//        if (self.topBtn.selected) {
+//            [self showHeadView];
+//        }
+//        return;
+//    }
     if (!self.selectDataArray.count) {
         [MBProgressHUD showError:@"请选择商品"];
         return;
     }
-    [self submitOrders];
+    [self submitOrdersNew];
+}
+
+- (void)submitOrdersNew{
+    [SVProgressHUD show];
+    NSMutableArray *mutArr = [NSMutableArray array];
+    for (OrderListInfo *collInfo in _selectDataArray) {
+        [mutArr addObject:@(collInfo.id)];
+    }
+    NSString *url = [NSString stringWithFormat:@"%@OrderCurrentSubmitsDo",baseUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    params[@"itemId"] = [StrWithIntTool strWithIntArr:mutArr];
+    params[@"addressId"] = @(self.addressInfo.id);
+    params[@"qualityId"] = @(self.qualityInfo.id);
+    if (self.headView.wordFie.text.length>0) {
+        params[@"word"] = _headView.wordFie.text;
+    }
+    if (self.headView.noteFie.text.length>0) {
+        params[@"orderNote"] = _headView.noteFie.text;
+    }
+    if (self.invoInfo.title.length>0) {
+        params[@"invTitle"] = self.invoInfo.price;
+        params[@"invType"] = @(self.invoInfo.id);
+    }
+    params[@"customerID"] = @(self.cusInfo.customerID);
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            [MBProgressHUD showSuccess:@"提交成功"];
+            if ([YQObjectBool boolForObject:response.data]&&
+                [YQObjectBool boolForObject:response.data[@"waitOrderCount"]]) {
+                App;
+                app.shopNum = [response.data[@"waitOrderCount"]intValue];
+            }
+            [self gotoListOrder:response.data];
+        }else{
+            [MBProgressHUD showError:response.message];
+        }
+    } requestURL:url params:params];
+}
+//直接跳到历史订单
+- (void)gotoListOrder:(id)dic{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        OrderListController *listVC = [OrderListController new];
+        listVC.isOrd = YES;
+        listVC.index = [dic[@"isCheckErpOrder"]intValue];
+        [self.navigationController pushViewController:listVC animated:YES];
+    });
 }
 
 - (void)submitOrders{
@@ -1106,7 +1191,7 @@
         }
     }
     NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray:
-                                    self.navigationController.viewControllers];
+                                       self.navigationController.viewControllers];
     NSInteger index = self.navigationController.viewControllers.count;
     [navigationArray removeObjectAtIndex: index-2];
     self.navigationController.viewControllers = navigationArray;

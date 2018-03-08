@@ -40,8 +40,8 @@
         _mTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
         [self addSubview:_mTableView];
         [_mTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self).offset(0);
             make.top.equalTo(self).offset(0);
+            make.left.equalTo(self).offset(0);
             make.right.equalTo(self).offset(0);
             make.bottom.equalTo(self).offset(0);
         }];
@@ -60,7 +60,7 @@
         if (isFir) {
             return;
         }
-        [_mTableView.header beginRefreshing];
+        [_mTableView.mj_header beginRefreshing];
     }
 }
 
@@ -73,8 +73,8 @@
     [header setTitle:@"用力往下拉我!!!" forState:MJRefreshStateIdle];
     [header setTitle:@"快放开我!!!" forState:MJRefreshStatePulling];
     [header setTitle:@"努力刷新中..." forState:MJRefreshStateRefreshing];
-    _mTableView.header = header;
-    [_mTableView.header beginRefreshing];
+    _mTableView.mj_header = header;
+    [_mTableView.mj_header beginRefreshing];
 }
 
 - (void)setupFootRefresh{
@@ -84,7 +84,7 @@
     [footer setTitle:@"加载更多订单" forState:MJRefreshStateIdle];
     [footer setTitle:@"好了，可以放松一下手指" forState:MJRefreshStatePulling];
     [footer setTitle:@"努力加载中，请稍候" forState:MJRefreshStateRefreshing];
-    _mTableView.footer = footer;
+    _mTableView.mj_footer = footer;
 }
 #pragma mark - refresh
 - (void)headerRereshing{
@@ -105,7 +105,7 @@
 #pragma mark - 网络数据
 - (void)getCommodityData{
     if ([self.dict[@"netUrl"]length]==0) {
-        [_mTableView.header endRefreshing];
+        [_mTableView.mj_header endRefreshing];
         return;
     }
     isFir = YES;
@@ -116,17 +116,19 @@
     params[@"cpage"] = @(curPage);
     NSString *url = [NSString stringWithFormat:@"%@%@",baseUrl,self.dict[@"netUrl"]];
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        [_mTableView.header endRefreshing];
-        [_mTableView.footer endRefreshing];
+        [_mTableView.mj_header endRefreshing];
+        [_mTableView.mj_footer endRefreshing];
         if ([response.error intValue]==0) {
             [self setupFootRefresh];
             if ([YQObjectBool boolForObject:response.data]){
                 switch ([self.dict[@"proId"]intValue]) {
                     case 10:case 20:
-                        [self setListData:response.data[@"orderList"][@"list"] and:response.data[@"orderList"][@"list_count"]];
+                        [self setListData:response.data[@"orderList"][@"list"]
+                                      and:response.data[@"orderList"][@"list_count"]];
                         break;
                     case 30:
-                        [self setListData:response.data[@"orderList"]and:response.data[@"list_count"]];
+                        [self setListData:response.data[@"orderList"]
+                                      and:response.data[@"list_count"]];
                         break;
                     case 40:
                         break;
@@ -134,7 +136,7 @@
                         break;
                 }
                 if ([YQObjectBool boolForObject:response.data[@"statusCount"]]) {
-                    StausCount *staC = [StausCount objectWithKeyValues:response.data[@"statusCount"]];
+                    StausCount *staC = [StausCount mj_objectWithKeyValues:response.data[@"statusCount"]];
                     NSArray *arr = @[@(staC.waitForValidate),@(staC.produceding),
                                      @(staC.waitForSend),@(staC.finished)];
                     [self listNotifacation:arr];
@@ -148,28 +150,29 @@
 }
 
 - (void)listNotifacation:(NSArray *)arr{
-    [[NSNotificationCenter defaultCenter]postNotificationName:NotificationList object:nil userInfo:@{ListNum:arr}];
+    [[NSNotificationCenter defaultCenter]postNotificationName:NotificationList
+                                                       object:nil userInfo:@{ListNum:arr}];
 }
 
 //更新list数据
 - (void)setListData:(NSDictionary *)dicList and:(id)couDic{
     if([YQObjectBool boolForObject:dicList]){
-        _mTableView.footer.state = MJRefreshStateIdle;
+        _mTableView.mj_footer.state = MJRefreshStateIdle;
         curPage++;
         totalCount = [couDic intValue];
-        NSArray *seaArr = [OrderListNewInfo objectArrayWithKeyValuesArray:dicList];
+        NSArray *seaArr = [OrderListNewInfo mj_objectArrayWithKeyValuesArray:dicList];
         [_dataArray addObjectsFromArray:seaArr];
         if(_dataArray.count>=totalCount){
             //已加载全部数据
-            MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)_mTableView.footer;
+            MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)_mTableView.mj_footer;
             [footer setTitle:@"没有更多了" forState:MJRefreshStateNoMoreData];
-            _mTableView.footer.state = MJRefreshStateNoMoreData;
+            _mTableView.mj_footer.state = MJRefreshStateNoMoreData;
         }
     }else{
         //[self.tableView.header removeFromSuperview];
-        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)_mTableView.footer;
+        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)_mTableView.mj_footer;
         [footer setTitle:@"暂时没有商品" forState:MJRefreshStateNoMoreData];
-        _mTableView.footer.state = MJRefreshStateNoMoreData;
+        _mTableView.mj_footer.state = MJRefreshStateNoMoreData;
     }
 }
 #pragma mark -- UITableViewDataSource
@@ -193,7 +196,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [[UITableViewCell alloc]init];
+    UITableViewCell *cell;
     OrderListNewInfo *newInfo;
     if (indexPath.section<_dataArray.count) {
         newInfo = _dataArray[indexPath.section];
@@ -279,7 +282,7 @@
     NSString *url = [NSString stringWithFormat:@"%@ModelOrderWaitCheckItem",baseUrl];
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0&&[YQObjectBool boolForObject:response.data]) {
-            OrderListNewInfo *info = [OrderListNewInfo objectWithKeyValues:response.data[@"orderInfo"]];
+            OrderListNewInfo *info = [OrderListNewInfo mj_objectWithKeyValues:response.data[@"orderInfo"]];
             _dataArray[section] = info;
         }
     } requestURL:url params:params];

@@ -25,9 +25,9 @@
 - (id)initWithFrame:(CGRect)frame ButtonItems:(NSArray *)aItemsArray;
 
 #pragma mark 选中某个button
--(void)clickButtonAtIndex:(NSInteger)aIndex;
+- (void)clickButtonAtIndex:(NSInteger)aIndex;
 
 #pragma mark 改变第几个button为选中状态，不发送delegate
--(void)changeButtonStateAtIndex:(NSInteger)aIndex;
+- (void)changeButtonStateAtIndex:(NSInteger)aIndex;
 
 @end

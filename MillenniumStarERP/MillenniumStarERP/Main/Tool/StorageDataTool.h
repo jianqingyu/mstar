@@ -15,9 +15,9 @@
 @interface StorageDataTool : NSObject
 + (instancetype)shared;
 @property (nonatomic,assign)BOOL isMain;
-@property (nonatomic,copy)NSString *word;
-@property (nonatomic,copy)NSString *note;
-@property (nonatomic,copy)NSString *handSize;
+@property (nonatomic,  copy)NSString *word;
+@property (nonatomic,  copy)NSString *note;
+@property (nonatomic,  copy)NSString *handSize;
 @property (nonatomic,strong)AddressInfo *addInfo;
 @property (nonatomic,strong)CustomerInfo *cusInfo;
 @property (nonatomic,strong)ProductInfo *BaseInfo;

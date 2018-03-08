@@ -13,12 +13,13 @@
 @property (nonatomic,assign)BOOL showPageType;
 @property (nonatomic,assign)int id;
 @property (nonatomic,assign)int modelId;
-@property (nonatomic,copy)NSString *title;
-@property (nonatomic,copy)NSString *pic;
-@property (nonatomic,copy)NSString *baseInfo;
+@property (nonatomic,  copy)NSString *title;
+@property (nonatomic,  copy)NSString *pic;
+@property (nonatomic,  copy)NSString *baseInfo;
+@property (nonatomic,  copy)NSString *purityName;
 @property (nonatomic,assign)float price;
 @property (nonatomic,assign)float needPayPrice;
-@property (nonatomic,copy)NSString *number;
-@property (nonatomic,copy)NSString *info;
+@property (nonatomic,  copy)NSString *number;
+@property (nonatomic,  copy)NSString *info;
 
 @end

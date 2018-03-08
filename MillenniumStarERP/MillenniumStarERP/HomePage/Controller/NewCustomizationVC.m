@@ -40,8 +40,8 @@
 @property (nonatomic,  weak)NewCustomizationView *chooseV;
 @property (nonatomic,  weak)NewCustomizationView *customV;
 @property (nonatomic,  weak)HYBLoopScrollView *loopHead;
-@property (weak, nonatomic) IBOutlet UIView *bottomSureBtn;
-@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *bottomBtns;
+@property (weak,  nonatomic) IBOutlet UIView *bottomSureBtn;
+@property (strong,nonatomic) IBOutletCollection(UIButton) NSArray *bottomBtns;
 @end
 
 @implementation NewCustomizationVC
@@ -259,7 +259,7 @@
     }
     NSArray *headArr;
     if (mPic.count==0) {
-        mPic = @[@"pic"].mutableCopy;
+        mPic = @[@"picm"].mutableCopy;
     }
     if (IsPhone) {
         headArr = mPic.copy;

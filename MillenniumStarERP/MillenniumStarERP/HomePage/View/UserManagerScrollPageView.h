@@ -17,11 +17,11 @@
     BOOL mNeedUseDelegate;
     NSArray *proArr;
 }
-@property (nonatomic,retain) UINavigationController*navigationController;
+@property (nonatomic,strong) UINavigationController*navigationController;
 
-@property (nonatomic,retain) UIScrollView *scrollView;
+@property (nonatomic,strong) UIScrollView *scrollView;
 
-@property (nonatomic,retain) NSMutableArray *contentItems;
+@property (nonatomic,strong) NSMutableArray *contentItems;
 
 @property (nonatomic,assign) id<UserManagerScrollPageViewDelegate> delegate;
 #pragma mark 添加ScrollowViewd的ContentView

@@ -13,13 +13,15 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *titleFie;
 @property (weak, nonatomic) IBOutlet UILabel *ptLab;
-@property (weak, nonatomic) IBOutlet UIButton *btn;
+@property (weak, nonatomic) IBOutlet UILabel *cateLab;
 @property (weak, nonatomic) IBOutlet UIView *driView;
 @property (weak, nonatomic) IBOutlet UILabel *codeLab;
 @property (weak, nonatomic) IBOutlet UIButton *accBtn;
 @property (weak, nonatomic) IBOutlet UIButton *addBtn;
 @property (weak, nonatomic) IBOutlet UIButton *scanBtn;
 @property (weak, nonatomic) IBOutlet UILabel *colorLab;
+@property (weak, nonatomic) IBOutlet UIButton *colorBtn;
+@property (weak, nonatomic) IBOutlet UIImageView *rigntIM;
 @end
 @implementation CustomFirstCell
 
@@ -40,7 +42,7 @@
         self.titleFie.textColor = ChooseColor;
         self.handFie.textColor = ChooseColor;
         self.fie1.textColor = ChooseColor;
-        self.colorLab.textColor = NoChooseColor;
+        self.colorLab.textColor = ChooseColor;
         [self.handFie setValue:ChooseColor forKeyPath:@"_placeholderLabel.textColor"];
         [self setBaseView];
     }
@@ -175,6 +177,33 @@
         }
     }
 }
+//赋值
+- (void)setMessArr:(NSString *)messArr{
+    if (messArr) {
+        _messArr = messArr;
+        self.fie1.text = _messArr;
+    }
+}
+
+- (void)setHandSize:(NSString *)handSize{
+    if (handSize) {
+        _handSize = handSize;
+        if (_handSize.length>0&&![_handSize isEqualToString:@"0"]) {
+            self.handFie.text = _handSize;
+        }
+    }
+}
+
+- (void)setColur:(NSString *)colur{
+    if (colur) {
+        _colur = colur;
+        self.colorLab.text = _colur;
+        if (self.editId==2) {
+            self.colorLab.textColor = NoChooseColor;
+            self.colorBtn.hidden = self.rigntIM.hidden = YES;
+        }
+    }
+}
 
 - (void)setModelInfo:(DetailModel *)modelInfo{
     if (modelInfo) {
@@ -186,7 +215,7 @@
             self.titleFie.textColor = NoChooseColor;
         }
         self.ptLab.text = [NSString stringWithFormat:@"%@",_modelInfo.weight];
-        self.colorLab.text = _modelInfo.categoryTitle;
+        self.cateLab.text = _modelInfo.categoryTitle;
         switch (self.refresh) {
             case 1:
                 [self customFieFirstWith:self.titleFie];
@@ -211,22 +240,6 @@
     });
 }
 
-- (void)setMessArr:(NSString *)messArr{
-    if (messArr) {
-        _messArr = messArr;
-        self.fie1.text = _messArr;
-    }
-}
-
-- (void)setHandSize:(NSString *)handSize{
-    if (handSize) {
-        _handSize = handSize;
-        if (_handSize.length>0&&![_handSize isEqualToString:@"0"]) {
-            self.handFie.text = _handSize;
-        }
-    }
-}
-
 - (IBAction)scanClick:(id)sender {
     UIViewController *vc = [ShowLoginViewTool getCurrentVC];
     ScanViewController *scan = [ScanViewController new];
@@ -236,13 +249,6 @@
         }
     };
     [vc.navigationController pushViewController:scan animated:YES];
-}
-
-- (void)setColur:(NSString *)colur{
-    if (colur) {
-        _colur = colur;
-        self.colorLab.text = _colur;
-    }
 }
 
 - (IBAction)colorClick:(id)sender {

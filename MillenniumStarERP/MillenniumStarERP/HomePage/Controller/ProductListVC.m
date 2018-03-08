@@ -468,7 +468,9 @@
             if ([YQObjectBool boolForObject:response.data]){
                 [self setupDataWithData:response.data];
                 [self setupListDataWithDict:response.data];
-                [self.rightCollection reloadData];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.rightCollection reloadData];
+                });
                 if ([YQObjectBool boolForObject:response.data[@"waitOrderCount"]]) {
                     App;
                     app.shopNum = [response.data[@"waitOrderCount"]intValue];

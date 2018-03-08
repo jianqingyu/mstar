@@ -39,9 +39,9 @@
 
 - (void)setBaseView{
     self.numFie.delegate = self;
-    self.colourLab.textColor = ChooseColor;
-    [self.handbtn setTitleColor:ChooseColor forState:UIControlStateSelected];
-    [self.handbtn setTitleColor:ChooseColor forState:UIControlStateNormal];
+//    self.colourLab.textColor = ChooseColor;
+//    [self.handbtn setTitleColor:ChooseColor forState:UIControlStateSelected];
+//    [self.handbtn setTitleColor:ChooseColor forState:UIControlStateNormal];
     self.numFie.textColor = ChooseColor;
 }
 
@@ -83,8 +83,7 @@
 - (void)setModelInfo:(DetailModel *)modelInfo{
     if (modelInfo) {
         _modelInfo = modelInfo;
-        self.titleLab.text = [NSString stringWithFormat:@"%@ %@",_modelInfo.title,
-                              _modelInfo.categoryTitle];
+        self.titleLab.text = [NSString stringWithFormat:@"%@",_modelInfo.title];
         self.ptLab.text = _modelInfo.weight;
     }
 }
@@ -116,9 +115,9 @@
 }
 
 - (IBAction)colourClick:(id)sender {
-    if (self.MessBack) {
-        self.MessBack(YES,@"成色");
-    }
+//    if (self.MessBack) {
+//        self.MessBack(YES,@"成色");
+//    }
 }
 
 @end

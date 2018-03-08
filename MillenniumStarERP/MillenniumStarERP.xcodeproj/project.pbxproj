@@ -22,6 +22,7 @@
 		292939122021BD92009FEC56 /* QuickScanOrderVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 292939102021BD92009FEC56 /* QuickScanOrderVC.xib */; };
 		292939162021C2DB009FEC56 /* QuickScanTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 292939142021C2DB009FEC56 /* QuickScanTableCell.m */; };
 		292939172021C2DB009FEC56 /* QuickScanTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 292939152021C2DB009FEC56 /* QuickScanTableCell.xib */; };
+		292C0D1A204CF1E70094E96A /* SaveColorData.m in Sources */ = {isa = PBXBuildFile; fileRef = 292C0D19204CF1E70094E96A /* SaveColorData.m */; };
 		2941482A1FAB00BB00F12782 /* CustomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294148291FAB00BB00F12782 /* CustomTitleView.m */; };
 		2941E3AE1FE1273F00D672A8 /* NewCustomizationSureVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941E3AC1FE1273F00D672A8 /* NewCustomizationSureVC.m */; };
 		2941E3AF1FE1273F00D672A8 /* NewCustomizationSureVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2941E3AD1FE1273F00D672A8 /* NewCustomizationSureVC.xib */; };
@@ -474,6 +475,8 @@
 		292939132021C2DB009FEC56 /* QuickScanTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuickScanTableCell.h; sourceTree = "<group>"; };
 		292939142021C2DB009FEC56 /* QuickScanTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuickScanTableCell.m; sourceTree = "<group>"; };
 		292939152021C2DB009FEC56 /* QuickScanTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickScanTableCell.xib; sourceTree = "<group>"; };
+		292C0D18204CF1E70094E96A /* SaveColorData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaveColorData.h; sourceTree = "<group>"; };
+		292C0D19204CF1E70094E96A /* SaveColorData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaveColorData.m; sourceTree = "<group>"; };
 		294148281FAB00BB00F12782 /* CustomTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomTitleView.h; sourceTree = "<group>"; };
 		294148291FAB00BB00F12782 /* CustomTitleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomTitleView.m; sourceTree = "<group>"; };
 		2941E3AB1FE1273F00D672A8 /* NewCustomizationSureVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCustomizationSureVC.h; sourceTree = "<group>"; };
@@ -1469,6 +1472,8 @@
 				29191CB32011A6EB00966FF4 /* SaveDataTool.m */,
 				7912BC5D1F41810C00D22EBA /* StorageDataTool.h */,
 				7912BC5E1F41810C00D22EBA /* StorageDataTool.m */,
+				292C0D18204CF1E70094E96A /* SaveColorData.h */,
+				292C0D19204CF1E70094E96A /* SaveColorData.m */,
 				79655DD91D7D0AAA006B90FC /* MBProgressHUD+MJ.h */,
 				79655DDA1D7D0AAA006B90FC /* MBProgressHUD+MJ.m */,
 			);
@@ -2869,6 +2874,7 @@
 				7922F2971DCADD88003E0C8F /* CusTomLoginView.m in Sources */,
 				792C01AE1D88E487005943AE /* CusDetailHeadView.m in Sources */,
 				79B4B8271DA895A600B97070 /* ScreenDetailInfo.m in Sources */,
+				292C0D1A204CF1E70094E96A /* SaveColorData.m in Sources */,
 				795C94661F2081FD00D2C044 /* NakedDriSearchVC.m in Sources */,
 				79655DF21D7D0AAA006B90FC /* RegisterViewController.m in Sources */,
 				790C70A51DCC1B23007343BA /* NoNetViewController.m in Sources */,

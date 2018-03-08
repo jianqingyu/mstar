@@ -17,5 +17,6 @@ typedef void(^ScanViewBack)(id message);
     BOOL hasCameraRight;
 }
 @property (nonatomic, retain) UIImageView * line;
+@property (nonatomic,assign)BOOL isFirst;
 @property (nonatomic,copy)ScanViewBack scanBack;
 @end
