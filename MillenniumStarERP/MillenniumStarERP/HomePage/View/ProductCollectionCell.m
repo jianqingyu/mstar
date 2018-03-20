@@ -19,9 +19,9 @@
 - (void)setProInfo:(ProductInfo *)proInfo{
     if (proInfo) {
         _proInfo = proInfo;
-        if (!_isSel) {
-            [self setLayerWithW:0.001 andColor:BordColor andBackW:0.5];
-        }
+//        if (!_isSel) {
+//            [self setLayerWithW:0.001 andColor:MAIN_COLOR andBackW:0.5];
+//        }
         self.bottomV.hidden = self.isShow;
         self.titleLab.text = _proInfo.title;
         NSString *image = _proInfo.pic;

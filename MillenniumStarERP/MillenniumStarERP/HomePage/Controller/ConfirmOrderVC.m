@@ -280,8 +280,11 @@
 }
 
 - (void)changeColorInfo:(DetailTypeInfo *)cInfo{
-    NSArray *dataArr = [NSArray new];
-    NSString *mess = [NSString new];
+    if (self.editId) {
+        return;
+    }
+    NSArray *dataArr;
+    NSString *mess;
     if (self.selectDataArray.count>0) {
         dataArr = self.selectDataArray;
         mess = [NSString stringWithFormat:@"是否把勾选的%d个商品都选为%@",
@@ -514,6 +517,8 @@
     if (self.editId&&dict[@"orderInfo"]&&dict[@"totalPrice"]&&dict[@"totalNeedPayPrice"]) {
         OrderNewInfo *orderInfo = [OrderNewInfo mj_objectWithKeyValues:dict[@"orderInfo"]];
         self.headView.orderInfo = orderInfo;
+        self.colorInfo = [DetailTypeInfo new];
+        self.colorInfo.title = orderInfo.purityName;
         self.headEView.staueInfo = orderInfo;
         self.invoInfo = [DetailTypeInfo new];
         self.invoInfo.price = orderInfo.invoiceTitle;
@@ -887,7 +892,14 @@
     if ([[AccountTool account].isNorm intValue]==0) {
         NewCustomProDetailVC *newVc = [NewCustomProDetailVC new];
         newVc.isCus = NO;
-        newVc.isEdit = self.editId?2:1;
+        if (self.editId) {
+            newVc.isEdit = 2;
+            if (self.colorInfo.title>0) {
+                newVc.colorInfo = self.colorInfo;
+            }
+        }else{
+            newVc.isEdit = 1;
+        }
         newVc.proId = collectInfo.id;
         newVc.orderBack = ^(OrderListInfo *dict){
             [self detailOrderBack:dict andIdx:index];

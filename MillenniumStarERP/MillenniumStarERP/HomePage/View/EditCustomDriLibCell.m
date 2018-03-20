@@ -94,10 +94,11 @@
 }
 
 - (void)subCateBtnAction:(UIButton *)btn{
+    for (DetailTypeInfo *dInfo in _libArr) {
+        dInfo.isSel = NO;
+    }
     for (int i=0; i<self.mutBtns.count; i++) {
         CustomShapeBtn *sBtn = self.mutBtns[i];
-        DetailTypeInfo *dInfo = _libArr[i];
-        dInfo.isSel = NO;
         if (i!=btn.tag) {
             sBtn.selected = NO;
         }

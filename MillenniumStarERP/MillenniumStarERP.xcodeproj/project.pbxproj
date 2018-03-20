@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		29191CB42011A6EB00966FF4 /* SaveDataTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 29191CB32011A6EB00966FF4 /* SaveDataTool.m */; };
 		2919DDE51FA0391900F27C17 /* ShowPriceHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2919DDE41FA0391900F27C17 /* ShowPriceHeadView.m */; };
+		291DE621205A4954009DD469 /* NewBaseApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 291DE620205A4954009DD469 /* NewBaseApi.m */; };
 		291F30381FDFAAFB00E1CEDC /* NewCustomizationCollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F30361FDFAAFB00E1CEDC /* NewCustomizationCollCell.m */; };
 		291F30391FDFAAFB00E1CEDC /* NewCustomizationCollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291F30371FDFAAFB00E1CEDC /* NewCustomizationCollCell.xib */; };
 		291F303C1FDFAD2D00E1CEDC /* NewCustomizationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F303B1FDFAD2D00E1CEDC /* NewCustomizationInfo.m */; };
@@ -22,6 +23,10 @@
 		292939122021BD92009FEC56 /* QuickScanOrderVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 292939102021BD92009FEC56 /* QuickScanOrderVC.xib */; };
 		292939162021C2DB009FEC56 /* QuickScanTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 292939142021C2DB009FEC56 /* QuickScanTableCell.m */; };
 		292939172021C2DB009FEC56 /* QuickScanTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 292939152021C2DB009FEC56 /* QuickScanTableCell.xib */; };
+		292BB5B6205B563500DB1388 /* KeyBoardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 292BB5B5205B563500DB1388 /* KeyBoardModel.m */; };
+		292BB5B9205B569100DB1388 /* KeyBoardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 292BB5B8205B569100DB1388 /* KeyBoardCell.m */; };
+		292BB5BC205B56F300DB1388 /* KeyBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 292BB5BB205B56F300DB1388 /* KeyBoardView.m */; };
+		292BB5BF205B575E00DB1388 /* CustomFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 292BB5BE205B575E00DB1388 /* CustomFlowLayout.m */; };
 		292C0D1A204CF1E70094E96A /* SaveColorData.m in Sources */ = {isa = PBXBuildFile; fileRef = 292C0D19204CF1E70094E96A /* SaveColorData.m */; };
 		2941482A1FAB00BB00F12782 /* CustomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294148291FAB00BB00F12782 /* CustomTitleView.m */; };
 		2941E3AE1FE1273F00D672A8 /* NewCustomizationSureVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941E3AC1FE1273F00D672A8 /* NewCustomizationSureVC.m */; };
@@ -454,6 +459,8 @@
 		29191CB32011A6EB00966FF4 /* SaveDataTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaveDataTool.m; sourceTree = "<group>"; };
 		2919DDE31FA0391800F27C17 /* ShowPriceHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowPriceHeadView.h; sourceTree = "<group>"; };
 		2919DDE41FA0391900F27C17 /* ShowPriceHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowPriceHeadView.m; sourceTree = "<group>"; };
+		291DE61F205A4954009DD469 /* NewBaseApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewBaseApi.h; sourceTree = "<group>"; };
+		291DE620205A4954009DD469 /* NewBaseApi.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewBaseApi.m; sourceTree = "<group>"; };
 		291F30351FDFAAFB00E1CEDC /* NewCustomizationCollCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCustomizationCollCell.h; sourceTree = "<group>"; };
 		291F30361FDFAAFB00E1CEDC /* NewCustomizationCollCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewCustomizationCollCell.m; sourceTree = "<group>"; };
 		291F30371FDFAAFB00E1CEDC /* NewCustomizationCollCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewCustomizationCollCell.xib; sourceTree = "<group>"; };
@@ -475,6 +482,14 @@
 		292939132021C2DB009FEC56 /* QuickScanTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuickScanTableCell.h; sourceTree = "<group>"; };
 		292939142021C2DB009FEC56 /* QuickScanTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuickScanTableCell.m; sourceTree = "<group>"; };
 		292939152021C2DB009FEC56 /* QuickScanTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickScanTableCell.xib; sourceTree = "<group>"; };
+		292BB5B4205B563500DB1388 /* KeyBoardModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyBoardModel.h; sourceTree = "<group>"; };
+		292BB5B5205B563500DB1388 /* KeyBoardModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyBoardModel.m; sourceTree = "<group>"; };
+		292BB5B7205B569100DB1388 /* KeyBoardCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyBoardCell.h; sourceTree = "<group>"; };
+		292BB5B8205B569100DB1388 /* KeyBoardCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyBoardCell.m; sourceTree = "<group>"; };
+		292BB5BA205B56F300DB1388 /* KeyBoardView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyBoardView.h; sourceTree = "<group>"; };
+		292BB5BB205B56F300DB1388 /* KeyBoardView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyBoardView.m; sourceTree = "<group>"; };
+		292BB5BD205B575E00DB1388 /* CustomFlowLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomFlowLayout.h; sourceTree = "<group>"; };
+		292BB5BE205B575E00DB1388 /* CustomFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomFlowLayout.m; sourceTree = "<group>"; };
 		292C0D18204CF1E70094E96A /* SaveColorData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaveColorData.h; sourceTree = "<group>"; };
 		292C0D19204CF1E70094E96A /* SaveColorData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaveColorData.m; sourceTree = "<group>"; };
 		294148281FAB00BB00F12782 /* CustomTitleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomTitleView.h; sourceTree = "<group>"; };
@@ -1238,6 +1253,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		292BB5B3205B560800DB1388 /* CusKeyBoard */ = {
+			isa = PBXGroup;
+			children = (
+				292BB5B4205B563500DB1388 /* KeyBoardModel.h */,
+				292BB5B5205B563500DB1388 /* KeyBoardModel.m */,
+				292BB5B7205B569100DB1388 /* KeyBoardCell.h */,
+				292BB5B8205B569100DB1388 /* KeyBoardCell.m */,
+				292BB5BA205B56F300DB1388 /* KeyBoardView.h */,
+				292BB5BB205B56F300DB1388 /* KeyBoardView.m */,
+				292BB5BD205B575E00DB1388 /* CustomFlowLayout.h */,
+				292BB5BE205B575E00DB1388 /* CustomFlowLayout.m */,
+			);
+			path = CusKeyBoard;
+			sourceTree = "<group>";
+		};
 		792F57AB1F0B4FCB00343976 /* BannerView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1506,6 +1536,7 @@
 				29215192200DE7EE00DD368F /* ChooseAddressCusView.h */,
 				29215193200DE7EE00DD368F /* ChooseAddressCusView.m */,
 				29215195200DE8CC00DD368F /* ChooseAddressCusView.xib */,
+				292BB5B3205B560800DB1388 /* CusKeyBoard */,
 				7959A8D61D814F23009CAA02 /* SKTagView */,
 			);
 			path = Views;
@@ -1514,6 +1545,9 @@
 		79655DFE1D7D0AF3006B90FC /* HelpMenu */ = {
 			isa = PBXGroup;
 			children = (
+				79655E131D7D0EE2006B90FC /* HomePageVC.h */,
+				79655E141D7D0EE2006B90FC /* HomePageVC.m */,
+				79655E151D7D0EE2006B90FC /* HomePageVC.xib */,
 				79655E1D1D7D0F1D006B90FC /* HelpMenuVC.h */,
 				79655E1E1D7D0F1D006B90FC /* HelpMenuVC.m */,
 				79655E1F1D7D0F1D006B90FC /* HelpMenuVC.xib */,
@@ -1526,9 +1560,6 @@
 		79655DFF1D7D0AF3006B90FC /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
-				79655E131D7D0EE2006B90FC /* HomePageVC.h */,
-				79655E141D7D0EE2006B90FC /* HomePageVC.m */,
-				79655E151D7D0EE2006B90FC /* HomePageVC.xib */,
 				7928A97A1F28761800BE69C0 /* NewHomeBannerVC.h */,
 				7928A97B1F28761800BE69C0 /* NewHomeBannerVC.m */,
 				7928A97C1F28761800BE69C0 /* NewHomeBannerVC.xib */,
@@ -1578,6 +1609,8 @@
 			children = (
 				79655E0A1D7D0E53006B90FC /* BaseApi.h */,
 				79655E0B1D7D0E53006B90FC /* BaseApi.m */,
+				291DE61F205A4954009DD469 /* NewBaseApi.h */,
+				291DE620205A4954009DD469 /* NewBaseApi.m */,
 				790C70951DCC18D8007343BA /* BaseResponse.h */,
 				790C70961DCC18D8007343BA /* BaseResponse.m */,
 				79655E0C1D7D0E53006B90FC /* RequestClient.h */,
@@ -2738,6 +2771,7 @@
 				794EDBE81DDD38CD0018DDF3 /* IQToolbar.m in Sources */,
 				79655E101D7D0E53006B90FC /* BaseViewController.m in Sources */,
 				797688A51EE025BE001C6711 /* NakedDriConfirmCell.m in Sources */,
+				292BB5B9205B569100DB1388 /* KeyBoardCell.m in Sources */,
 				7930F59C1E6D043C008549C3 /* SettlementSecHedView.m in Sources */,
 				795C944F1F20640E00D2C044 /* NewCustomProCell.m in Sources */,
 				792F57BA1F0B4FCB00343976 /* HYBPageControl.m in Sources */,
@@ -2763,6 +2797,7 @@
 				79655E1B1D7D0F06006B90FC /* InformationVC.m in Sources */,
 				7989B5C71D82422900706F5E /* ScanViewController.m in Sources */,
 				795C946C1F2082BE00D2C044 /* NakedDriSeaHeadV.m in Sources */,
+				292BB5B6205B563500DB1388 /* KeyBoardModel.m in Sources */,
 				79655DF81D7D0AAA006B90FC /* Md5PassWord.m in Sources */,
 				794EDBE41DDD38CD0018DDF3 /* IQNSArray+Sort.m in Sources */,
 				79655DF11D7D0AAA006B90FC /* NewfeatureViewController.m in Sources */,
@@ -2827,6 +2862,7 @@
 				7915BCEA1E7A833E00407927 /* SearchResultTableCell.m in Sources */,
 				7959A8DD1D814F23009CAA02 /* SKTag.m in Sources */,
 				79F1C7D11D9D165D00C58335 /* PayViewController.m in Sources */,
+				292BB5BC205B56F300DB1388 /* KeyBoardView.m in Sources */,
 				7926B6251E6952030022B4A3 /* SettlementHeadInfo.m in Sources */,
 				7948B33E1E78ED6900909601 /* CustomBtnView.m in Sources */,
 				7969FB771DBE068900139681 /* ChooseAddressTableCell.m in Sources */,
@@ -2887,6 +2923,7 @@
 				7944C19B1DDECCF400F6C15F /* OrderSatueInfo.m in Sources */,
 				796965801EDFAD6C00F6B027 /* NakedDriLibImgInfo.m in Sources */,
 				7959A8E21D815088009CAA02 /* ProductPopView.m in Sources */,
+				292BB5BF205B575E00DB1388 /* CustomFlowLayout.m in Sources */,
 				7926B62B1E6952D60022B4A3 /* SettlementHeadView.m in Sources */,
 				794F28A71EDEF8DF003EC54D /* NakedDriLibListCell.m in Sources */,
 				291F303C1FDFAD2D00E1CEDC /* NewCustomizationInfo.m in Sources */,
@@ -2932,6 +2969,7 @@
 				79ED9EDD1DC0512000257454 /* UserManagerScrollPageView.m in Sources */,
 				794B71941E7FAFD400A8BCE7 /* SearchResultInfo.m in Sources */,
 				79ED9EDE1DC0512000257454 /* UserManagerTableView.m in Sources */,
+				291DE621205A4954009DD469 /* NewBaseApi.m in Sources */,
 				7959A8CA1D813E36009CAA02 /* ProductListHeadBtn.m in Sources */,
 				795D86C61F21E43200632FE9 /* EditCustomDriLibCell.m in Sources */,
 				7943F10D1E8F3D6A00268ABB /* CustomBottomView.m in Sources */,

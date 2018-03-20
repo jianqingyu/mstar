@@ -11,7 +11,7 @@
 @implementation CustomTitleView
 
 - (CGSize)intrinsicContentSize {
-    return  CGSizeMake(SDevWidth*0.65, 30);
+    return  CGSizeMake(SDevWidth*0.7, 30);
     //    return UILayoutFittingExpandedSize;
 }
 

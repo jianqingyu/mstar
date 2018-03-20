@@ -26,8 +26,8 @@
                             <constraint firstAttribute="width" secondItem="8Si-5S-sfd" secondAttribute="height" multiplier="1:1" id="8vV-ti-yCw"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="光沙心型" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTk-rH-JYi">
-                        <rect key="frame" x="10" y="158" width="56" height="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="光沙心型" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTk-rH-JYi">
+                        <rect key="frame" x="10" y="158" width="57.5" height="17"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="17" id="EtC-t1-qZk"/>
                         </constraints>

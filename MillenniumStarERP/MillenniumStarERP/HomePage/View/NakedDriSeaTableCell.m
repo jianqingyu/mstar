@@ -17,7 +17,8 @@
     static NSString *Id = @"textSCell";
     NakedDriSeaTableCell *imgCell = [tableView dequeueReusableCellWithIdentifier:Id];
     if (imgCell==nil) {
-        imgCell = [[NakedDriSeaTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Id];
+        imgCell = [[NakedDriSeaTableCell alloc]initWithStyle:UITableViewCellStyleDefault
+                                             reuseIdentifier:Id];
         imgCell.selectionStyle = UITableViewCellSelectionStyleNone;
         imgCell.mutBtns = [NSMutableArray array];
     }

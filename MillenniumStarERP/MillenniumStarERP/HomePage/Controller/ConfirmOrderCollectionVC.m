@@ -25,7 +25,8 @@
 #import "CustomPickView.h"
 #import "NewCustomProDetailVC.h"
 #import "ConfirmOrdCollCell.h"
-@interface ConfirmOrderCollectionVC ()<UICollectionViewDataSource,UICollectionViewDelegate,ConfirmOrdCollCellDelegate,ConfirmOrdHeadViewDelegate>{
+@interface ConfirmOrderCollectionVC ()<UICollectionViewDataSource,UICollectionViewDelegate,
+                        ConfirmOrdCollCellDelegate,ConfirmOrdHeadViewDelegate>{
     int curPage;
     int pageCount;
     int totalCount;//商品总数量

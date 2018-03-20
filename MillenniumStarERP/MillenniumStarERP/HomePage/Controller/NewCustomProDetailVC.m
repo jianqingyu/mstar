@@ -26,6 +26,7 @@
 #import "ChooseNakedDriVC.h"
 #import "CustomDriWordCell.h"
 #import "CustomShowView.h"
+#import "SaveColorData.h"
 #import "ConfirmOrderCollectionVC.h"
 @interface NewCustomProDetailVC ()<UINavigationControllerDelegate,UITableViewDelegate,
 UITableViewDataSource,MWPhotoBrowserDelegate>
@@ -62,20 +63,20 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 @property (nonatomic,  copy)NSArray *puritys;
 @property (nonatomic,  copy)NSArray *chooseArr;
 
-@property (nonatomic,  strong)NSDictionary*stoneDic;
-@property (nonatomic,  strong)NSMutableArray*bools;
-@property (nonatomic,  strong)NSMutableArray*mutArr;
-@property (nonatomic,  strong)NSMutableArray*nums;
+@property (nonatomic,strong)NSDictionary*stoneDic;
+@property (nonatomic,strong)NSMutableArray*bools;
+@property (nonatomic,strong)NSMutableArray*mutArr;
+@property (nonatomic,strong)NSMutableArray*nums;
 
-@property (nonatomic,  strong)UIView *hView;
-@property (nonatomic,  strong)DetailModel *modelInfo;
-@property (nonatomic,  strong)DetailTypeInfo *colorInfo;
-@property (nonatomic,  strong)CustomPickView *pickView;
-@property (nonatomic,    weak)CustomShowView *wordView;
+@property (nonatomic,strong)UIView *hView;
+@property (nonatomic,strong)DetailModel *modelInfo;
+
+@property (nonatomic,strong)CustomPickView *pickView;
+@property (nonatomic,  weak)CustomShowView *wordView;
 @end
 
 @implementation NewCustomProDetailVC
-
+//简单模式下单
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"定制信息";
@@ -86,9 +87,11 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 - (void)loadBaseCustomView{
     self.proNum = @"1";
     self.idx = self.isCus?3:2;
-    [self.numLab setLayerWithW:8 andColor:BordColor andBackW:0.001];
+    
+    [OrderNumTool setCircularWithPath:self.numLab size:CGSizeMake(16, 16)];
     [self.lookBtn setLayerWithW:5 andColor:BordColor andBackW:0.5];
-    [self.addBtn setLayerWithW:5 andColor:BordColor andBackW:0.001];
+    [OrderNumTool setCircularWithPath:self.addBtn size:CGSizeMake(5, 5)];
+    
     self.lookBtn.hidden = self.isCus;
     self.priceLab.hidden = [[AccountTool account].isNoShow intValue];
     self.allLab.hidden = [[AccountTool account].isNoShow intValue];
@@ -114,7 +117,8 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         [self setupDetailData];
     }];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeNakedDri:)
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(changeNakedDri:)
                                                 name:NotificationDriName object:nil];
 }
 //修改裸石
@@ -141,8 +145,10 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         return;
     }
     NakedDriSeaListInfo *listInfo = self.seaInfo;
-    NSArray *infoArr = @[@"钻石",listInfo.Weight,[self modelWith:2 and:listInfo.Shape],
-        [self modelWith:3 and:listInfo.Color],[self modelWith:4 and:listInfo.Purity]];
+    NSArray *infoArr =  @[@"钻石",listInfo.Weight,
+                         [self modelWith:2 and:listInfo.Shape],
+                         [self modelWith:3 and:listInfo.Color],
+                         [self modelWith:4 and:listInfo.Purity]];
     NSArray *arr = self.mutArr[0];
     for (int i=0; i<arr.count; i++) {
         DetailTypeInfo *info = arr[i];
@@ -159,8 +165,10 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 
 - (void)addStoneWithDic:(NSDictionary *)data{
     CustomJewelInfo *CusInfo = [CustomJewelInfo mj_objectWithKeyValues:data];
-    NSArray *infoArr = @[@"钻石",CusInfo.jewelStoneWeight,[self modelWith:2 and:CusInfo.jewelStoneShape],
-         [self modelWith:3 and:CusInfo.jewelStoneColor],[self modelWith:4 and:CusInfo.jewelStonePurity]];
+    NSArray *infoArr = @[@"钻石",CusInfo.jewelStoneWeight,
+                        [self modelWith:2 and:CusInfo.jewelStoneShape],
+                        [self modelWith:3 and:CusInfo.jewelStoneColor],
+                        [self modelWith:4 and:CusInfo.jewelStonePurity]];
     NSMutableArray *mutA = [NSMutableArray new];
     for (int i=0; i<5; i++) {
         DetailTypeInfo *info = [DetailTypeInfo new];
@@ -322,6 +330,10 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
             self.colorInfo = [DetailTypeInfo mj_objectWithKeyValues:self.puritys[0]];
         }
     }
+    SaveColorData *saveColor = [SaveColorData shared];
+    if (!_isCus&&saveColor.colorInfo.title.length>0) {
+        self.colorInfo = saveColor.colorInfo;
+    }
     if ([YQObjectBool boolForObject:data[@"model"]]) {
         DetailModel *modelIn = [DetailModel mj_objectWithKeyValues:
                                 data[@"model"]];
@@ -329,6 +341,11 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         [self creatCusTomHeadView];
         if (([YQObjectBool boolForObject:data[@"model"][@"stoneWeightRange"]]) ) {
             self.stoneDic = data[@"model"][@"stoneWeightRange"];
+        }
+        if (modelIn.modelPurityTitle.length>0) {
+            self.colorInfo = [DetailTypeInfo new];
+            self.colorInfo.title = modelIn.modelPurityTitle;
+            self.colorInfo.id = modelIn.modelPurityId;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
@@ -573,8 +590,13 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         if (staue==1) {
             if (info.title.length>0) {
                 self.colorInfo = info;
-            [[NSNotificationCenter defaultCenter]postNotificationName:
-                 NotificationColourName object:nil userInfo:@{UserInfoColourName:info}];
+                if (self.isCus) {
+                    [[NSNotificationCenter defaultCenter]postNotificationName:
+                     NotificationColourName object:nil userInfo:@{UserInfoColourName:info}];
+                }else{
+                    SaveColorData *saveColor = [SaveColorData shared];
+                    saveColor.colorInfo = info;
+                }
             }
         }else if (staue==2){
             self.handStr = info.title;
@@ -900,10 +922,12 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     NSString *detail;
     if (self.isEdit==1) {
         detail = @"OrderCurrentEditModelItemForDefaultDo";
+        params[@"purityId"] = @(self.colorInfo.id);
     }else if (self.isEdit==2){
         detail = @"ModelOrderWaitCheckOrderCurrentEditModelItemForDefaultDo";
     }else{
         detail = @"OrderCurrentDoModelItemForDefaultDo";
+        params[@"modelPurityId"] = @(self.colorInfo.id);
     }
     NSString *regiUrl = [NSString stringWithFormat:@"%@%@",baseUrl,detail];
     params[@"tokenKey"] = [AccountTool account].tokenKey;

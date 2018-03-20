@@ -25,8 +25,11 @@
 #import "CustomTextField.h"
 #import "NewCustomProDetailVC.h"
 #import "CustomTitleView.h"
+#import "IQKeyboardManager.h"
+#import "KeyBoardView.h"
 @interface ProductListVC ()<UICollectionViewDataSource,UICollectionViewDelegate,
-                             UITextFieldDelegate,CDRTranslucentSideBarDelegate>{
+                             UITextFieldDelegate,CDRTranslucentSideBarDelegate,
+                           KeyBoardViewDelegate>{
     int curPage;
     int pageCount;
     int totalCount;//商品总数量
@@ -47,6 +50,7 @@
 @property (nonatomic,strong) CDRTranslucentSideBar *rightSideBar;
 @property (nonatomic,  weak) ScreeningRightView *slideRightTab;
 @property (nonatomic,assign) BOOL isShowPrice;
+@property (nonatomic,assign) BOOL isDefultSea;
 @property (nonatomic,  copy) NSArray *values;
 @end
 
@@ -67,6 +71,7 @@
 }
 
 - (void)orientChange:(NSNotification *)notification{
+    [self.searchFie resignFirstResponder];
     self.popClassView.frame = CGRectMake(0, 40, SDevWidth, SDevHeight-40);
     [self.rightCollection reloadData];
 }
@@ -76,8 +81,7 @@
         self.backDict =[NSMutableDictionary new];
     }
     self.dataArray = [NSMutableArray new];
-    self.orderNumLab.layer.cornerRadius = 8;
-    self.orderNumLab.layer.masksToBounds = YES;
+    [OrderNumTool setCircularWithPath:self.orderNumLab size:self.orderNumLab.size];
     [self.orderNumLab setAdjustsFontSizeToFitWidth:YES];
     curPage = 1;
     [self setupSearchBar];
@@ -93,12 +97,14 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
     self.isShowPrice = ![[AccountTool account].isNoShow intValue];
     self.hisBtn.enabled = !([[AccountTool account].isNoShow intValue]||
                             [[AccountTool account].isNoDriShow intValue]);
     App;
     [OrderNumTool orderWithNum:app.shopNum andView:self.orderNumLab];
 }
+
 #pragma mark -- 创建collectionView
 - (void)setProTableView{
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc]init];
@@ -179,24 +185,38 @@
 }
 
 - (void)setupSearchBar{
-    CGFloat width = SDevWidth*0.65;
+    CGFloat width = SDevWidth*0.7;
     CustomTitleView *titleView= [[CustomTitleView alloc]initWithFrame:CGRectMake(0, 0, width, 30)];
-    [titleView setLayerWithW:5 andColor:BordColor andBackW:0.5];
+//    [titleView setLayerWithW:5 andColor:BordColor andBackW:0.5];
     titleView.backgroundColor = [UIColor clearColor];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setBackgroundImage:[UIImage imageNamed:@"icon_switch_off"] forState:UIControlStateNormal];
+    [btn setBackgroundImage:[UIImage imageNamed:@"icon_switch_on"] forState:UIControlStateSelected];
+    [titleView addSubview:btn];
+    [btn addTarget:self action:@selector(easyClick:)
+        forControlEvents:UIControlEventTouchUpInside];
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(titleView).offset(0);
+        make.top.equalTo(titleView).offset(0);
+        make.width.mas_equalTo(@46);
+        make.height.mas_equalTo(@28);
+    }];
+
     CustomTextField *titleFie = [[CustomTextField alloc]initWithFrame:CGRectZero];
     [titleView addSubview:titleFie];
-    titleFie.borderStyle = UITextBorderStyleNone;
+    titleFie.borderStyle = UITextBorderStyleRoundedRect;
     titleFie.keyboardType = UIKeyboardTypeASCIICapable;
     [titleFie mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(titleView).offset(10);
+        make.left.equalTo(btn.mas_right).offset(5);
         make.top.equalTo(titleView).offset(0);
-        make.right.equalTo(titleView).offset(-40);
+        make.right.equalTo(titleView).offset(-35);
         make.height.mas_equalTo(@30);
     }];
     titleFie.delegate = self;
     
     UIButton *seaBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [seaBtn addTarget:self action:@selector(searchClick) forControlEvents:
+    [seaBtn addTarget:self action:@selector(btnClick) forControlEvents:
                                                    UIControlEventTouchUpInside];
     [seaBtn setImage:[UIImage imageNamed:@"icon_search"] forState:
                                                    UIControlStateNormal];
@@ -208,7 +228,34 @@
         make.height.mas_equalTo(@30);
     }];
     _searchFie = titleFie;
+    [self setSearchFieKeyBoard];
+    
     self.navigationItem.titleView = titleView;
+}
+
+- (void)setSearchFieKeyBoard{
+    self.searchFie.inputView = nil;
+    KeyBoardView * KBView = [[KeyBoardView alloc]init];
+    KBView.delegate = self;
+    self.searchFie.inputView = KBView;
+    KBView.inputSource = self.searchFie;
+}
+
+- (void)btnClick:(KeyBoardView *)headView andIndex:(NSInteger)index{
+    if (index==201) {
+        self.searchFie.inputView = nil;
+        [self.searchFie reloadInputViews];
+    }else{
+        [self.searchFie resignFirstResponder];
+        [self searchClick];
+    }
+}
+
+- (void)easyClick:(UIButton *)btn{
+    btn.selected = !btn.selected;
+    self.isDefultSea = btn.selected;
+    NSString *mess = btn.selected?@"可以不输全款号模糊查找":@"必须精确输入款号查找";
+    [MBProgressHUD showSuccess:mess];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
@@ -216,7 +263,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{
-    [self searchClick];
+    [self setSearchFieKeyBoard];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
@@ -224,10 +271,18 @@
     return YES;
 }
 
+- (void)btnClick{
+    [self searchClick];
+}
+
 - (void)searchClick{
     [_searchFie resignFirstResponder];
     NSMutableArray *addArr = @[].mutableCopy;
     if (_searchFie.text.length>0) {
+        if (!self.isDefultSea) {
+            [self scanMessageSearch:_searchFie.text];
+            return;
+        }
         NSArray *arr = [_searchFie.text componentsSeparatedByString:@" "];
         for (NSString *str in arr) {
             if (![str isEqualToString:@""]) {
@@ -257,7 +312,7 @@
 }
 
 - (void)scanMessageSearch:(NSString *)message{
-    [_dataArray removeAllObjects];
+    [BaseApi cancelAllOperation];
     NSMutableDictionary *params = @{}.mutableCopy;
     NSString *url = [NSString stringWithFormat:@"%@modelListPageForScanCode",baseUrl];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
@@ -267,6 +322,7 @@
         [self.rightCollection.mj_footer endRefreshing];
         if ([response.error intValue]==0) {
             if ([YQObjectBool boolForObject:response.data]){
+                [_dataArray removeAllObjects];
                 [self scanCodeWithDict:response.data];
                 [self.rightCollection reloadData];
             }
@@ -275,17 +331,19 @@
 }
 //扫描数据
 - (void)scanCodeWithDict:(NSDictionary *)data{
+    NSString *title;
     if([YQObjectBool boolForObject:data[@"model"][@"modelList"]]){
-        NSArray *seaArr = [ProductInfo mj_objectArrayWithKeyValuesArray:data[@"model"][@"modelList"]];
+        NSArray *seaArr = [ProductInfo mj_objectArrayWithKeyValuesArray:
+                           data[@"model"][@"modelList"]];
         [_dataArray addObjectsFromArray:seaArr];
-        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.rightCollection.mj_footer;
-        [footer setTitle:@"没有更多了" forState:MJRefreshStateNoMoreData];
-        self.rightCollection.mj_footer.state = MJRefreshStateNoMoreData;
+        title = @"没有更多了";
     }else{
-        MJRefreshAutoNormalFooter*footer = (MJRefreshAutoNormalFooter*)self.rightCollection.mj_footer;
-        [footer setTitle:@"暂时没有商品" forState:MJRefreshStateNoMoreData];
-        self.rightCollection.mj_footer.state = MJRefreshStateNoMoreData;
+        title = @"没有此款商品";
     }
+    MJRefreshAutoNormalFooter *footer = (MJRefreshAutoNormalFooter*)
+                            self.rightCollection.mj_footer;
+    [footer setTitle:title forState:MJRefreshStateNoMoreData];
+    self.rightCollection.mj_footer.state = MJRefreshStateNoMoreData;
 }
 
 - (void)changeTextFieKeyWord:(NSString *)searchWord{
@@ -301,7 +359,7 @@
     self.rightSideBar = [[CDRTranslucentSideBar alloc] initWithDirection:YES];
     self.rightSideBar.delegate = self;
     self.rightSideBar.sideBarWidth = width*0.8;
-    CGRect frame = CGRectMake(0, 20, width*0.8, height-20);
+    CGRect frame = CGRectMake(0, 0, width*0.8, height);
     ScreeningRightView *slideTab = [[ScreeningRightView alloc]initWithFrame:frame];
     slideTab.isTop = YES;
     slideTab.tableBack = ^(NSDictionary *dict,BOOL isSel){
@@ -361,16 +419,16 @@
     [self.navigationController pushViewController:listVC animated:YES];
 }
 
-- (IBAction)classifyQuery:(id)sender {
-    ClassListController *classVc = [ClassListController new];
-    classVc.values = self.values;
-    classVc.listBack = ^(BOOL isYes){
-        if (isYes) {
-            [self.rightCollection.mj_header beginRefreshing];
-        }
-    };
-    [self.navigationController pushViewController:classVc animated:YES];
-}
+//- (IBAction)classifyQuery:(id)sender {
+//    ClassListController *classVc = [ClassListController new];
+//    classVc.values = self.values;
+//    classVc.listBack = ^(BOOL isYes){
+//        if (isYes) {
+//            [self.rightCollection.mj_header beginRefreshing];
+//        }
+//    };
+//    [self.navigationController pushViewController:classVc animated:YES];
+//}
 
 - (IBAction)screenyClick:(id)sender {
     [_searchFie resignFirstResponder];
@@ -557,6 +615,11 @@
     return CGSizeMake(width, width+rowH);
 }
 
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [cell setLayerWithW:0.001 andColor:BordColor andBackW:0.5];
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     ProductInfo *info;
     if (indexPath.row<self.dataArray.count) {
@@ -581,6 +644,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
     [_searchFie resignFirstResponder];
 }
 

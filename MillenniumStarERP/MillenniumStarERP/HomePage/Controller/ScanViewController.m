@@ -8,34 +8,147 @@
 
 #import "ScanViewController.h"
 #import "PureLayout.h"
+#import "CustomTitleView.h"
+#import "CustomTextField.h"
+#import "KeyBoardView.h"
 #import "QuickScanOrderVC.h"
+#import "IQKeyboardManager.h"
 @interface ScanViewController ()<AVCaptureMetadataOutputObjectsDelegate,
                               UINavigationControllerDelegate,
-                               UIImagePickerControllerDelegate>
+UIImagePickerControllerDelegate,UITextFieldDelegate,
+KeyBoardViewDelegate>
 @property (nonatomic, strong) AVCaptureSession *session;
 @property (nonatomic, strong) AVCaptureDevice *device;
 @property (nonatomic, strong) AVCaptureDeviceInput *input;
 @property (nonatomic, strong) AVCaptureMetadataOutput *output;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *preview;
+@property (weak,   nonatomic) UITextField *searchFie;
 @end
 
 @implementation ScanViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if (self.isFirst) {
-        self.title = @"快速扫描";
-    }else{
-        self.title = @"扫一扫";
-    }
+//    if (self.isFirst) {
+//        self.title = @"快速扫描";
+//    }else{
+//        self.title = @"扫一扫";
+//    }
+    [self setupSearchBar];
     [self setupBaseView];
     [self creatNaviBtn];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:)
                  name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (hasCameraRight) {
+        if (_session && ![_session isRunning]) {
+            [_session startRunning];
+        }
+        timer = [NSTimer scheduledTimerWithTimeInterval:.02 target:self
+                                               selector:@selector(animation1) userInfo:nil repeats:YES];
+    }
+     [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [timer invalidate];
+    [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
+}
+
+- (void)setupSearchBar{
+    CGFloat width = SDevWidth*0.7;
+    CustomTitleView *titleView= [[CustomTitleView alloc]initWithFrame:CGRectMake(0, 0, width, 30)];
+    [titleView setLayerWithW:5 andColor:BordColor andBackW:0.5];
+    titleView.backgroundColor = [UIColor clearColor];
+    
+    CustomTextField *titleFie = [[CustomTextField alloc]initWithFrame:CGRectZero];
+    [titleView addSubview:titleFie];
+    titleFie.borderStyle = UITextBorderStyleNone;
+    titleFie.keyboardType = UIKeyboardTypeASCIICapable;
+    [titleFie mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(titleView).offset(5);
+        make.top.equalTo(titleView).offset(0);
+        make.right.equalTo(titleView).offset(-35);
+        make.height.mas_equalTo(@30);
+    }];
+    titleFie.delegate = self;
+    
+    UIButton *seaBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [seaBtn addTarget:self action:@selector(btnClick) forControlEvents:
+     UIControlEventTouchUpInside];
+    [seaBtn setImage:[UIImage imageNamed:@"icon_search"] forState:
+     UIControlStateNormal];
+    [titleView addSubview:seaBtn];
+    [seaBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(titleView).offset(0);
+        make.left.equalTo(titleFie.mas_right).with.offset(0);
+        make.right.equalTo(titleView).offset(0);
+        make.height.mas_equalTo(@30);
+    }];
+    _searchFie = titleFie;
+    [self setSearchFieKeyBoard];
+    
+    self.navigationItem.titleView = titleView;
+}
+
+- (void)setSearchFieKeyBoard{
+    self.searchFie.inputView = nil;
+    KeyBoardView * KBView = [[KeyBoardView alloc]init];
+    KBView.delegate = self;
+    self.searchFie.inputView = KBView;
+    KBView.inputSource = self.searchFie;
+}
+
+- (void)btnClick:(KeyBoardView *)headView andIndex:(NSInteger)index{
+    if (index==201) {
+        self.searchFie.inputView = nil;
+        [self.searchFie reloadInputViews];
+    }else{
+        [self.searchFie resignFirstResponder];
+        [self searchClick];
+    }
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    [textField selectAll:nil];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    [self setSearchFieKeyBoard];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self searchClick];
+    return YES;
+}
+
+- (void)btnClick{
+    [self searchClick];
+}
+
+- (void)searchClick{
+    [self.searchFie resignFirstResponder];
+    if (self.isFirst) {
+        QuickScanOrderVC *quickVc = [QuickScanOrderVC new];
+        quickVc.scanCode = self.searchFie.text;
+        [self.navigationController pushViewController:quickVc animated:YES];
+    }else{
+        if (self.scanBack) {
+            self.scanBack(self.searchFie.text);
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
 - (void)orientChange:(NSNotification *)notification{
     _preview.frame = self.view.bounds;
+    [self.searchFie resignFirstResponder];
 }
 
 - (void)creatNaviBtn{
@@ -46,7 +159,6 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"相册"
                      style:UIBarButtonItemStyleDone target:self action:@selector(choicePhoto)];
 }
-
 #pragma mark -- 设置扫描背景
 - (void)setupBaseView{
     NSString *mediaType = AVMediaTypeVideo;
@@ -110,24 +222,6 @@
     return YES;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    if (hasCameraRight) {
-        if (_session && ![_session isRunning]) {
-            [_session startRunning];
-        }
-        timer = [NSTimer scheduledTimerWithTimeInterval:.02 target:self
-                       selector:@selector(animation1) userInfo:nil repeats:YES];
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [timer invalidate];
-}
 #pragma mark -- 扫描
 - (void)setupCamera
 {
@@ -232,6 +326,10 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

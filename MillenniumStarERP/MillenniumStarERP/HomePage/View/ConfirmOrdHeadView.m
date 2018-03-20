@@ -140,11 +140,15 @@
     NSInteger index = [self.allBtns indexOfObject:sender];
     [self.wordFie resignFirstResponder];
     [self.customerFie resignFirstResponder];
-    [self.delegate btnClick:self andIndex:index andMes:@""];
+    if ([self.delegate respondsToSelector:@selector(btnClick:andIndex:andMes:)]) {
+         [self.delegate btnClick:self andIndex:index andMes:@""];
+    }
 }
 
 - (IBAction)addBtnClick:(id)sender {
-    [self.delegate btnClick:self andIndex:0 andMes:@"添加地址"];
+    if ([self.delegate respondsToSelector:@selector(btnClick:andIndex:andMes:)]) {
+        [self.delegate btnClick:self andIndex:0 andMes:@"添加地址"];
+    }
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{

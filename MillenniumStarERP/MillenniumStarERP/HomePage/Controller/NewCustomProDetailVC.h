@@ -13,6 +13,7 @@ typedef void (^NewEditBack)(id orderInfo);
 @property (nonatomic,assign)int proId;
 @property (nonatomic,assign)int isEdit;
 @property (nonatomic,assign)BOOL isCus;
+@property (nonatomic,strong)DetailTypeInfo *colorInfo;
 @property (nonatomic,  copy)NewEditBack orderBack;
 @property (nonatomic,strong)NakedDriSeaListInfo *seaInfo;
 @end

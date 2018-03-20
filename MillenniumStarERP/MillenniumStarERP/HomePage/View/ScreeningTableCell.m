@@ -55,6 +55,7 @@
                 }else{
                     btn.selected = dInfo.isSelect;
                 }
+                [OrderNumTool setCircularWithPath:btn size:CGSizeMake(3, 3)];
                 [btn setTitle:dInfo.title forState:UIControlStateNormal];
                 [self.screenBtns addObject:btn];
             }
@@ -63,16 +64,19 @@
 }
 
 - (UIView *)setupTextField{
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(ROWSPACE, ROWSPACE, MIN(SDevHeight, SDevWidth)*0.8-20, ROWHEIHT)];
+    UIView *view = [[UIView alloc]initWithFrame:
+                    CGRectMake(ROWSPACE, ROWSPACE, MIN(SDevHeight, SDevWidth)*0.8-20, ROWHEIHT)];
     view.backgroundColor = DefaultColor;
     view.layer.cornerRadius = 5;
     view.layer.masksToBounds = YES;
     [self.contentView addSubview:view];
-    UITextField *min = [self creatFieWithFrame:CGRectMake(2, 2, (view.width-30)/2, ROWHEIHT-4)];
+    UITextField *min = [self creatFieWithFrame:
+                        CGRectMake(2, 2, (view.width-30)/2, ROWHEIHT-4)];
     min.placeholder = @"最小值";
     min.textColor = MAIN_COLOR;
     min.delegate = self;
-    UITextField *max = [self creatFieWithFrame:CGRectMake(view.width-min.width-2, 2, min.width, min.height)];
+    UITextField *max = [self creatFieWithFrame:
+                        CGRectMake(view.width-min.width-2, 2, min.width, min.height)];
     max.placeholder = @"最大值";
     max.textColor = MAIN_COLOR;
     max.delegate = self;
@@ -116,9 +120,8 @@
     [btn setBackgroundImage:[CommonUtils createImageWithColor:DefaultColor]
                    forState:UIControlStateNormal];
     [btn setBackgroundImage:[CommonUtils createImageWithColor:CUSTOM_COLOR(248, 205, 207)] forState:UIControlStateSelected];
-    btn.layer.cornerRadius = 3;
-    btn.layer.masksToBounds = YES;
-    [btn addTarget:self action:@selector(subCateBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(subCateBtnAction:)
+              forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:btn];
     return btn;
 }

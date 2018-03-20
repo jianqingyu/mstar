@@ -7,9 +7,10 @@
 //
 
 #import "CustomFirstCell.h"
+#import "KeyBoardView.h"
 #import "ShowLoginViewTool.h"
 #import "ScanViewController.h"
-@interface CustomFirstCell()<UITextFieldDelegate>
+@interface CustomFirstCell()<UITextFieldDelegate,KeyBoardViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *titleFie;
 @property (weak, nonatomic) IBOutlet UILabel *ptLab;
@@ -52,6 +53,7 @@
 - (void)setBaseView{
     self.titleFie.tag = 1;
     self.titleFie.delegate = self;
+    [self setSearchFieKeyBoard];
     
     self.fie1.tag = 2;
     self.fie1.delegate = self;
@@ -60,6 +62,23 @@
     self.handFie.delegate = self;
     self.handFie.inputView = [[UIView alloc]initWithFrame:CGRectZero];
     self.handFie.inputAccessoryView = [[UIView alloc] init];
+}
+
+- (void)setSearchFieKeyBoard{
+    self.titleFie.inputView = nil;
+    KeyBoardView * KBView = [[KeyBoardView alloc]init];
+    KBView.delegate = self;
+    self.titleFie.inputView = KBView;
+    KBView.inputSource = self.titleFie;
+}
+
+- (void)btnClick:(KeyBoardView *)headView andIndex:(NSInteger)index{
+    if (index==201) {
+        self.titleFie.inputView = nil;
+        [self.titleFie reloadInputViews];
+    }else{
+        [self.titleFie resignFirstResponder];
+    }
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField{

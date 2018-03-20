@@ -167,9 +167,9 @@
     HYBLoopScrollView *loop = [HYBLoopScrollView loopScrollViewWithFrame:
                                CGRectMake(0, 0, SDevWidth, SDevHeight) imageUrls:arr];
     loop.timeInterval = 6.0;
-    loop.didSelectItemBlock = ^(NSInteger atIndex,HYBLoadImageView  *sender){
-        
-    };
+//    loop.didSelectItemBlock = ^(NSInteger atIndex,HYBLoadImageView  *sender){
+//
+//    };
     loop.alignment = kPageControlAlignRight;
     [self.view addSubview:loop];
     [self.view sendSubviewToBack:loop];
@@ -215,6 +215,7 @@
 
 - (void)btnLong:(UILongPressGestureRecognizer *)gestureRecognizer{
     if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        [self resetWindow];
         UIViewController *vc = [ShowLoginViewTool getCurrentVC];
         ScanViewController *scan = [ScanViewController new];
         scan.isFirst = YES;

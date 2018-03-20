@@ -93,7 +93,7 @@
     lab.text = appVer;
     [self addSubview:lab];
     [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(20);
+        make.top.equalTo(self).offset(30);
         make.left.equalTo(self).offset(15);
     }];
     

@@ -61,7 +61,7 @@
 @end
 
 @implementation CustomProDetailVC
-
+//板房复杂模式下单
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"定制信息";
@@ -72,8 +72,6 @@
 
 - (void)loadCustomProBaseView{
     self.proNum = @"1";
-    [self.numLab setLayerWithW:8 andColor:BordColor andBackW:0.0001];
-    [self.numLab setAdjustsFontSizeToFitWidth:YES];
     if (self.isEdit) {
         [self.lookBtn setTitle:@"取消" forState:UIControlStateNormal];
         [self.addBtn setTitle:@"确定" forState:UIControlStateNormal];

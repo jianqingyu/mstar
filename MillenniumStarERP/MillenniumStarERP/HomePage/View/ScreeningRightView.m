@@ -38,7 +38,7 @@
     };
     [self addSubview:topV];
     [topV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(0);
+        make.top.equalTo(self).offset(10);
         make.left.equalTo(self).offset(0);
         make.right.equalTo(self).offset(0);
         make.height.mas_equalTo(@0);
@@ -68,7 +68,6 @@
         _sildeTableView.estimatedSectionFooterHeight = 0;
     }
     
-    self.backgroundColor = [UIColor whiteColor];
     UIButton *sureBtn = [self setB:@"确定" andS:88 andC:MAIN_COLOR];
     UIButton *cancelBtn = [self setB:@"重置筛选" andS:89 andC:[UIColor lightGrayColor]];
     [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -93,7 +92,7 @@
     [btn setTitle:title forState:UIControlStateNormal];
     [btn setBackgroundColor:color];
     [btn addTarget:self action:@selector(bottomBtnClick:)
-                                forControlEvents:UIControlEventTouchUpInside];
+              forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:btn];
     return btn;
 }

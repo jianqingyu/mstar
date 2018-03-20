@@ -60,6 +60,7 @@
     [super setAttributedText:attributedText];
     [self setNeedsDisplay];
 }
+
 - (void)drawRect:(CGRect)rect {
     if (self.hasText) return;//有文字就返回
     //没文字就画字符串

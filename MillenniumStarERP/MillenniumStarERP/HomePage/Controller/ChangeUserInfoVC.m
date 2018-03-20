@@ -40,10 +40,12 @@
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
             if ([YQObjectBool boolForObject:response.data[@"address"]]){
-                self.addressInfo = [AddressInfo objectWithKeyValues:response.data[@"address"]];
+                self.addressInfo = [AddressInfo mj_objectWithKeyValues:
+                                    response.data[@"address"]];
             }
             if ([YQObjectBool boolForObject:response.data[@"DefaultCustomer"]]){
-                self.cusInfo = [CustomerInfo objectWithKeyValues:response.data[@"DefaultCustomer"]];
+                self.cusInfo = [CustomerInfo mj_objectWithKeyValues:
+                                response.data[@"DefaultCustomer"]];
             }
         }
     } requestURL:url params:params];

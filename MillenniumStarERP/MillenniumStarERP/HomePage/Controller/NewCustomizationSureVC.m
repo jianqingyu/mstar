@@ -297,8 +297,9 @@ ConfirmOrdHeadViewDelegate,ConfirmOrdCellDelegate>{
         if (!self.qualityInfo) {
             self.qualityInfo = [DetailTypeInfo mj_objectWithKeyValues:
                                 dict[@"defaultValue"][@"modelQuality"]];
-            if (self.qualityInfo.title.length==0) {
-                self.qualityInfo = [DetailTypeInfo mj_objectWithKeyValues:self.qualityArr[0]];
+            if (self.qualityInfo.title.length==0&&self.qualityArr.count>0) {
+                self.qualityInfo = [DetailTypeInfo mj_objectWithKeyValues:
+                                    self.qualityArr[0]];
             }
             self.headView.qualityMes = self.qualityInfo.title;
         }
@@ -309,7 +310,8 @@ ConfirmOrdHeadViewDelegate,ConfirmOrdCellDelegate>{
         }
     }
     if([YQObjectBool boolForObject:dict[@"currentOrderlList"][@"list"]]){
-        NSArray *seaArr = [OrderListInfo mj_objectArrayWithKeyValuesArray:dict[@"currentOrderlList"][@"list"]];
+        NSArray *seaArr = [OrderListInfo mj_objectArrayWithKeyValuesArray:
+                           dict[@"currentOrderlList"][@"list"]];
         [_dataArray addObjectsFromArray:seaArr];
         OrderListInfo *info = seaArr[0];
         self.priceLab.text = [NSString stringWithFormat:@"￥%0.0f",info.price];
@@ -533,7 +535,7 @@ ConfirmOrdHeadViewDelegate,ConfirmOrdCellDelegate>{
         return;
     }
     if (self.cusInfo.customerID==0) {
-        [MBProgressHUD showError:@"请客户信息"];
+        [MBProgressHUD showError:@"请选择客户信息"];
         if (self.topBtn.selected) {
             [self showHeadView];
         }

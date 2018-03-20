@@ -13,4 +13,5 @@
 + (NSString *)strWithPrice:(float)price;
 + (void)NSLoginWithStr:(NSString *)str andDic:(NSDictionary *)dic;
 + (UIWindow *)lastWindow;
++ (void)setCircularWithPath:(UIView *)view size:(CGSize)size;
 @end

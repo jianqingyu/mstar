@@ -14,7 +14,7 @@
     //创建路径并获取句柄
     CGMutablePathRef path = CGPathCreateMutable();
     //指定矩形
-    CGRect rectangle = CGRectMake(0, 0, self.width, self.height);
+    CGRect rectangle = self.bounds;
     //将矩形添加到路径中
     CGPathAddRect(path,NULL,rectangle);
     //获取上下文

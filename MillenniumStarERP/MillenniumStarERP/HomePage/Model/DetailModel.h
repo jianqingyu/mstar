@@ -17,6 +17,8 @@
 @property (nonatomic,  copy)NSArray *pics;
 @property (nonatomic,  copy)NSString *handSize;
 @property (nonatomic,  copy)NSString *number;
+@property (nonatomic,  copy)NSString *modelPurityTitle;
+@property (nonatomic,assign)int modelPurityId;
 @property (nonatomic,assign)float price;
 @property (nonatomic,assign)int categoryId;
 @property (nonatomic,assign)BOOL isSelfStone;

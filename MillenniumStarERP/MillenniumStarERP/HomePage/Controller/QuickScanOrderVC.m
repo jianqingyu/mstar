@@ -140,6 +140,9 @@
             [self setDetailDataWithDic:response.data];
         }else{
             [MBProgressHUD showError:response.message];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.navigationController popViewControllerAnimated:YES];
+            });
         }
     } requestURL:regiUrl params:params];
 }

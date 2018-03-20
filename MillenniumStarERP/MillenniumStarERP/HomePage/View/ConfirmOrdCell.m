@@ -77,7 +77,9 @@
 
 - (IBAction)allClick:(UIButton *)sender {
     NSInteger index = [self.allBtns indexOfObject:sender];
-    [self.delegate btnCellClick:self andIndex:index];
+    if ([self.delegate respondsToSelector:@selector(btnCellClick:andIndex:)]) {
+        [self.delegate btnCellClick:self andIndex:index];
+    }
 }
 
 @end
