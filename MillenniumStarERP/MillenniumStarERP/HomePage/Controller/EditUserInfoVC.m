@@ -8,6 +8,7 @@
 
 #import "EditUserInfoVC.h"
 #import "AccountTool.h"
+#import "OrderPassVC.h"
 #import "AppDownViewC.h"
 #import "CustomInvoice.h"
 #import "EditAddressVC.h"
@@ -15,7 +16,9 @@
 #import "CommonUsedTool.h"
 #import "MasterCountInfo.h"
 #import "EditShowPriceVC.h"
-#import "OrderPassVC.h"
+#import "UserOrderListVC.h"
+#import "SearchOrderVc.h"
+#import "UserTodayGoldVC.h"
 #import "ChooseAddressCusView.h"
 #import <ShareSDK/ShareSDK.h>
 #import "CustomInputPassView.h"
@@ -47,19 +50,13 @@
     self.addHeight = 270;
     self.mutDic = [NSMutableDictionary new];
     [self setBaseViewData];
-    [self creatAddView];
 }
 
-//- (void)setShareDicData{
-//    NSString *url = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
-//    NSString *str = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//    self.shareDic = @{@"image":@"http://appapi1.fanerweb.com/images/other/AppleApp.png",
-//                      @"url":str,
-//                      @"title":@"千禧之星珠宝",@"des":@"下载地址"};
-//}
-
 - (void)setBaseViewData{
-    self.textArr = @[@[@"用户名",@"修改头像"],@[@"设置",@"修改密码",@"管理地址",@"清理缓存",@"订单审核",@"修改区域"]];
+    self.textArr = @[@[@"用户名",@"修改头像"],
+                     @[@"设置",@"修改密码",@"管理地址",@"清理缓存",@"订单审核",@"今日金价",@"我的订单"]];
+//    self.textArr = @[@[@"用户名",@"修改头像"],
+//                     @[@"设置",@"修改密码",@"管理地址",@"清理缓存",@"订单审核"]];
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -156,9 +153,9 @@
                 if ([YQObjectBool boolForObject:response.data[@"address"]]) {
                     self.mutDic[@"管理地址"] = response.data[@"address"];
                 }
-                if ([YQObjectBool boolForObject:response.data[@"userArea"]]) {
-                    self.mutDic[@"修改区域"] = response.data[@"userArea"];
-                }
+//                if ([YQObjectBool boolForObject:response.data[@"userArea"]]) {
+//                    self.mutDic[@"修改区域"] = response.data[@"userArea"];
+//                }
                 [self.tableView reloadData];
             }
         }
@@ -171,6 +168,17 @@
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
+            params[@"userName"] = [AccountTool account].userName;
+            params[@"password"] = [AccountTool account].password;
+            params[@"phone"] = [AccountTool account].phone;
+            params[@"tokenKey"] = @"";
+            params[@"isNoShow"] = [AccountTool account].isNoShow;
+            params[@"isNoDriShow"] = [AccountTool account].isNoDriShow;
+            params[@"isNorm"] = [AccountTool account].isNorm;
+            Account *account = [Account accountWithDict:params];
+            //自定义类型存储用NSKeyedArchiver
+            [AccountTool saveAccount:account];
+            
             StorageDataTool *data = [StorageDataTool shared];
             data.addInfo = nil;
             data.cusInfo = nil;
@@ -230,7 +238,23 @@
          }
             break;
         default:
-            tableCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            if (indexPath.row==5) {
+                UISwitch *switchBtn = [[UISwitch alloc]initWithFrame:CGRectMake(0, 0, 50, 20)];
+                BOOL isOn = [[[NSUserDefaults standardUserDefaults]objectForKey:@"goldOn"]intValue];
+                [switchBtn setOn:isOn];
+                tableCell.accessoryView = switchBtn;
+                [switchBtn addTarget:self action:@selector(goldClick:)
+                    forControlEvents:UIControlEventTouchUpInside];
+            }else if(indexPath.row==6){
+                UISwitch *switchBtn = [[UISwitch alloc]initWithFrame:CGRectMake(0, 0, 50, 20)];
+                BOOL isOn = [[[NSUserDefaults standardUserDefaults]objectForKey:@"myOn"]intValue];
+                [switchBtn setOn:isOn];
+                tableCell.accessoryView = switchBtn;
+                [switchBtn addTarget:self action:@selector(myClick:)
+                    forControlEvents:UIControlEventTouchUpInside];
+            }else{
+                tableCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
             break;
     }
     tableCell.detailTextLabel.text = detailStr;
@@ -279,8 +303,12 @@
             }else if(indexPath.row==4){
                 OrderPassVC *orderList = [OrderPassVC new];
                 [self.navigationController pushViewController:orderList animated:YES];
+            }else if(indexPath.row==5){
+                UserTodayGoldVC *gold = [UserTodayGoldVC new];
+                [self.navigationController pushViewController:gold animated:YES];
             }else{
-                [self changeAddView:NO];
+                SearchOrderVc *seaVc = [SearchOrderVc new];
+                [self.navigationController pushViewController:seaVc animated:YES];
             }
             break;
         default:
@@ -288,74 +316,83 @@
     }
 }
 
-- (void)creatAddView{
-    UIView *bView = [UIView new];
-    bView.backgroundColor = CUSTOM_COLOR_ALPHA(0, 0, 0, 0.5);
-    bView.hidden = YES;
-    [self.view addSubview:bView];
-    [bView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(0);
-        make.left.equalTo(self.view).offset(0);
-        make.right.equalTo(self.view).offset(0);
-        make.bottom.equalTo(self.view).offset(0);
-    }];
-    self.baView = bView;
-    
-    ChooseAddressCusView *infoV = [ChooseAddressCusView createLoginView];
-    [self.view addSubview:infoV];
-    infoV.storeBack = ^(NSDictionary *store,BOOL isYes){
-        if (isYes) {
-            [self submitAddressInfo:store];
-        }
-        [self changeAddView:YES];
-    };
-    [infoV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(0);
-        make.bottom.equalTo(self.view).offset(self.addHeight);
-        make.right.equalTo(self.view).offset(0);
-        make.height.mas_equalTo(270);
-    }];
-    self.infoView = infoV;
+- (void)goldClick:(UISwitch *)btn{
+    [[NSUserDefaults standardUserDefaults]setObject:@(btn.on) forKey:@"goldOn"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
-- (void)submitAddressInfo:(NSDictionary *)dic{
-    NSString *url = [NSString stringWithFormat:@"%@userModifyuserAreaDo",baseUrl];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"tokenKey"] = [AccountTool account].tokenKey;
-    params[@"memberAreaId"] = dic[@"id"];
-    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
-            self.mutDic[@"修改区域"] = dic[@"title"];
-            [self.tableView reloadData];
-        }
-        [MBProgressHUD showError:response.message];
-    } requestURL:url params:params];
+- (void)myClick:(UISwitch *)btn{
+    [[NSUserDefaults standardUserDefaults]setObject:@(btn.on) forKey:@"myOn"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
 }
+//- (void)creatAddView{
+//    UIView *bView = [UIView new];
+//    bView.backgroundColor = CUSTOM_COLOR_ALPHA(0, 0, 0, 0.5);
+//    bView.hidden = YES;
+//    [self.view addSubview:bView];
+//    [bView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).offset(0);
+//        make.left.equalTo(self.view).offset(0);
+//        make.right.equalTo(self.view).offset(0);
+//        make.bottom.equalTo(self.view).offset(0);
+//    }];
+//    self.baView = bView;
+//
+//    ChooseAddressCusView *infoV = [ChooseAddressCusView createLoginView];
+//    [self.view addSubview:infoV];
+//    infoV.storeBack = ^(NSDictionary *store,BOOL isYes){
+//        if (isYes) {
+//            [self submitAddressInfo:store];
+//        }
+//        [self changeAddView:YES];
+//    };
+//    [infoV mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.view).offset(0);
+//        make.bottom.equalTo(self.view).offset(self.addHeight);
+//        make.right.equalTo(self.view).offset(0);
+//        make.height.mas_equalTo(270);
+//    }];
+//    self.infoView = infoV;
+//}
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    [self changeAddView:YES];
-}
+//- (void)submitAddressInfo:(NSDictionary *)dic{
+//    NSString *url = [NSString stringWithFormat:@"%@userModifyuserAreaDo",baseUrl];
+//    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+//    params[@"tokenKey"] = [AccountTool account].tokenKey;
+//    params[@"memberAreaId"] = dic[@"id"];
+//    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+//        if ([response.error intValue]==0) {
+//            self.mutDic[@"修改区域"] = dic[@"title"];
+//            [self.tableView reloadData];
+//        }
+//        [MBProgressHUD showError:response.message];
+//    } requestURL:url params:params];
+//}
 
-- (void)changeAddView:(BOOL)isClose{
-    BOOL isHi = YES;
-    if (self.addHeight==270) {
-        if (isClose) {
-            return;
-        }
-        self.addHeight = 0;
-        isHi = NO;
-    }else{
-        self.addHeight = 270;
-        isHi = YES;
-    }
-    [UIView animateWithDuration:0.5 animations:^{
-        [self.infoView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self.view).offset(self.addHeight);
-        }];
-        [self.infoView layoutIfNeeded];//强制绘制
-        self.baView.hidden = isHi;
-    }];
-}
+//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    [self changeAddView:YES];
+//}
+
+//- (void)changeAddView:(BOOL)isClose{
+//    BOOL isHi = YES;
+//    if (self.addHeight==270) {
+//        if (isClose) {
+//            return;
+//        }
+//        self.addHeight = 0;
+//        isHi = NO;
+//    }else{
+//        self.addHeight = 270;
+//        isHi = YES;
+//    }
+//    [UIView animateWithDuration:0.5 animations:^{
+//        [self.infoView mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.bottom.equalTo(self.view).offset(self.addHeight);
+//        }];
+//        [self.infoView layoutIfNeeded];//强制绘制
+//        self.baView.hidden = isHi;
+//    }];
+//}
 //- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 //    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 //    switch (indexPath.section) {
@@ -397,7 +434,13 @@
 //            break;
 //    }
 //}
-
+//- (void)setShareDicData{
+//    NSString *url = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
+//    NSString *str = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    self.shareDic = @{@"image":@"http://appapi1.fanerweb.com/images/other/AppleApp.png",
+//                      @"url":str,
+//                      @"title":@"千禧之星珠宝",@"des":@"下载地址"};
+//}
 //- (void)setShare:(UITableViewCell *)cell{
 //    //创建分享参数（必要）
 //    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
@@ -414,7 +457,8 @@
 
 - (void)clearTmpPics{
     float tmpSize = [[SDImageCache sharedImageCache] getSize]/1024.0/1024.0;
-    NSString *clearCacheName = tmpSize >= 1 ? [NSString stringWithFormat:@"清理缓存(%.2fM)",tmpSize] : [NSString stringWithFormat:@"清理缓存(%.2fK)",tmpSize * 1024];
+    NSString *clearCacheName = tmpSize >= 1 ? [NSString stringWithFormat:@"清理缓存(%.2fM)",tmpSize] :
+                    [NSString stringWithFormat:@"清理缓存(%.2fK)",tmpSize * 1024];
     [[SDImageCache sharedImageCache] clearDisk];
     [MBProgressHUD showSuccess:clearCacheName];
 }

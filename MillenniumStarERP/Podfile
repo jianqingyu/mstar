@@ -12,6 +12,7 @@ target 'MillenniumStarERP' do
      pod 'MWPhotoBrowser'
      pod 'Masonry'
      pod 'JPush'
+     pod 'FMDB'
 end
 
 target 'MillenniumStarERPTests' do

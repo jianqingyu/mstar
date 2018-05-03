@@ -27,8 +27,8 @@
         [UIView animateWithDuration:0.1 animations:^{
             [self.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         }];
-        UILabel *lab = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 40, 20)];
-        lab.font = [UIFont systemFontOfSize:14];
+        UILabel *lab = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 40, 18)];
+        lab.font = [UIFont systemFontOfSize:15];
         CGFloat height = CGRectGetMaxY(lab.frame)+5;
         lab.text = _imgInfo.title;
         [self.contentView addSubview:lab];

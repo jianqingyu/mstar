@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface BaseResponse : NSObject
-@property(copy, nonatomic) NSString *message;
+@property(copy,   nonatomic) NSString *message;
 @property(strong, nonatomic) id data;
 @property(assign, nonatomic) id error;
 @property(assign, nonatomic) id response;

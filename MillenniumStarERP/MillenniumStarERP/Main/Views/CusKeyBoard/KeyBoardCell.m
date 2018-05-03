@@ -13,34 +13,29 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
-    {
+    if (self){
         [self setup];
     }
     return self;
 }
 
-- (void)setup
-{
+- (void)setup{
     [self keyboardBtn];
 }
 
 - (UIButton *)keyboardBtn
 {
-    if (!_keyboardBtn)
-    {
-        _keyboardBtn = [UIButton new];
-//        [_keyboardBtn setBackgroundImage:[UIImage imageNamed:@"keyboard_key"] forState:UIControlStateNormal];
-        UIImage *backImg = [CommonUtils createImageWithColor:BordColor];
+    if (!_keyboardBtn){
+        _keyboardBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         UIImage *norImg = [CommonUtils createImageWithColor:[UIColor whiteColor]];
+        UIImage *backImg = [CommonUtils createImageWithColor:MAIN_COLOR];
         [_keyboardBtn setBackgroundImage:norImg forState:UIControlStateNormal];
         [_keyboardBtn setBackgroundImage:backImg forState:UIControlStateHighlighted];
-//        _keyboardBtn.backgroundColor = [UIColor whiteColor];
 //        [_keyboardBtn setLayerWithW:2 andColor:BordColor andBackW:0.5];
         [_keyboardBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_keyboardBtn addTarget:self action:@selector(KeyboardBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self.contentView addSubview:_keyboardBtn];
         _keyboardBtn.frame = self.contentView.bounds;
+        [self.contentView addSubview:_keyboardBtn];
         [OrderNumTool setCircularWithPath:_keyboardBtn size:CGSizeMake(3, 3)];
     }
     return _keyboardBtn;

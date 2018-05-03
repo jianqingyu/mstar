@@ -14,6 +14,7 @@
 @property (nonatomic,  copy)NSString *weight;
 @property (nonatomic,  copy)NSString *categoryTitle;
 @property (nonatomic,  copy)NSString *remark;
+@property (nonatomic,  copy)NSString *remarks;
 @property (nonatomic,  copy)NSArray *pics;
 @property (nonatomic,  copy)NSString *handSize;
 @property (nonatomic,  copy)NSString *number;

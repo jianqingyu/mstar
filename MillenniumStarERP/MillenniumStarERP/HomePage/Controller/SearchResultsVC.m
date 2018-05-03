@@ -23,7 +23,7 @@
     self.title = @"搜索结果";
     self.dataArray = [NSMutableArray new];
     _resultTable.rowHeight = UITableViewAutomaticDimension;
-    _resultTable.estimatedRowHeight = 90;
+    _resultTable.estimatedRowHeight = 110;
     [self setupHeaderRefresh];
 }
 
@@ -80,6 +80,9 @@
         if ([response.error intValue]==0) {
             [self setupFootRefresh];
             if ([YQObjectBool boolForObject:response.data]){
+                if (self.curPage==1&&[YQObjectBool boolForObject:response.data[@"list_count"]]) {
+                    self.title = [NSString stringWithFormat:@"搜索结果(%@)",response.data[@"list_count"]];
+                }
                 [self setListData:response.data[@"orderList"]and:response.data[@"list_count"]];
                 [self.resultTable reloadData];
                 self.view.userInteractionEnabled = YES;
@@ -120,7 +123,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 10.0f;
+    return 5.0f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{

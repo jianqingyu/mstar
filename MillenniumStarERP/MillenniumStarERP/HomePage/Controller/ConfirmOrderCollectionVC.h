@@ -10,7 +10,9 @@
 typedef void (^ EditOrdCoBack)(id orderInfo);
 typedef void (^ EditBoolCoBack)(BOOL isDel);
 @interface ConfirmOrderCollectionVC : BaseViewController
+@property (nonatomic,assign)BOOL isSel;
+@property (nonatomic,assign)BOOL isOrd;
+@property (nonatomic,assign)int editId;
 @property (nonatomic,copy)EditOrdCoBack orderBack;
 @property (nonatomic,copy)EditBoolCoBack boolBack;
-@property (nonatomic,assign)int editId;
 @end

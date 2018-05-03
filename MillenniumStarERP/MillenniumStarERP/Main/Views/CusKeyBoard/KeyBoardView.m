@@ -18,7 +18,7 @@
 #define BTN_HEIGHT           (BTN_WIDTH * KEYRATIO)         //按键的高
 #define ITEM_HEIGHT          (BTN_HEIGHT + 10)              //item的高
 
-#define TOTAL_HEIGHT         (ITEM_HEIGHT * 4 + 50)
+#define TOTAL_HEIGHT         (ITEM_HEIGHT * 5 + 10)
 
 @implementation KeyBoardView
 
@@ -49,7 +49,7 @@
     model.key = @"0";
     [self.modelArray addObject:model];
     
-    for (NSInteger i = 0 ; i < 29 ; i ++ )
+    for (NSInteger i = 0 ; i < 31 ; i ++ )
     {
         KeyBoardModel * model = [KeyBoardModel new];
         model.isUpper = YES;
@@ -70,27 +70,28 @@
 - (NSArray *)letterArray{
     if (!_letterArray)
     {
-        _letterArray = @[@"Q",@"W",@"E",@"R",@"T",@"Y",
-                         @"U",@"I",@"O",@"P",@"A",@"S",@"D",@"F",
-                         @"G",@"H",@"J",@"K",@"L",@"-",@"Z",@"X",
-                         @"C",@"V",@"B",@"N",@"M",@".",@"#"];
+        _letterArray = @[@"Q",@"W",@"E",@"R",@"T",@"Y",@"U",@"I",@"O",@"P",
+                         @"A",@"S",@"D",@"F",@"G",@"H",@"J",@"K",@"L",
+                         @"Z",@"X",@"C",@"V",@"B",@"N",@"M",
+                         @".",@"-",@"#",@"*",@"&"];
     }
     return _letterArray;
 }
 
 - (UIButton *)clearBtn{
-    if (!_clearBtn)
-    {
-        _clearBtn = [UIButton new];
+    if (!_clearBtn){
+        _clearBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_clearBtn setImage:[UIImage imageNamed:@"icon_keyclear"] forState:UIControlStateNormal];
         [_clearBtn setImage:[UIImage imageNamed:@"icon_keyclear"] forState:UIControlStateHighlighted];
+        [_clearBtn setBackgroundImage:[CommonUtils createImageWithColor:BordColor] forState:UIControlStateHighlighted];
         [_clearBtn addTarget:self action:@selector(ClearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_clearBtn];
         [_clearBtn setLayerWithW:3 andColor:BordColor andBackW:0.5];
         [_clearBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self).offset(-3);
-            make.bottom.mas_equalTo(-10);
-            make.size.mas_equalTo(CGSizeMake(BTN_WIDTH, BTN_HEIGHT));
+            make.bottom.mas_equalTo(-(ITEM_HEIGHT+10));
+            make.left.equalTo(self.bottomView.mas_right).with.offset(6);
+            make.height.mas_equalTo(BTN_HEIGHT);
         }];
     }
     return _clearBtn;
@@ -98,7 +99,7 @@
 
 - (UIButton *)upBtn{
     if (!_upBtn){
-        _upBtn = [UIButton new];
+        _upBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_upBtn setImage:[UIImage imageNamed:@"icon_keyup"] forState:UIControlStateNormal];
         [_upBtn setImage:[UIImage imageNamed:@"icon_keydown"] forState:UIControlStateHighlighted];
         [_upBtn addTarget:self action:@selector(UpBtnClick:)
@@ -106,53 +107,43 @@
         [self addSubview:_upBtn];
         [_upBtn setLayerWithW:0.01 andColor:BordColor andBackW:0.5];
         [_upBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self).offset(3);
-            make.bottom.mas_equalTo(-10);
+            make.left.equalTo(self).with.offset(3);
+            make.right.equalTo(self.bottomView.mas_right).with.offset(-6);
+            make.bottom.mas_equalTo(-(ITEM_HEIGHT+10));
             make.size.mas_equalTo(CGSizeMake(BTN_WIDTH, BTN_HEIGHT));
         }];
     }
     return _upBtn;
 }
 
-- (UIView *)setupTopView{
-    if (!_btnView){
-        _btnView = [UIView new];
-        [self addSubview:_btnView];
-        _btnView.backgroundColor = BordColor;
-        [_btnView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self).offset(0);
-            make.left.equalTo(self).offset(0);
-            make.right.equalTo(self).offset(0);
-            make.height.mas_equalTo(40);
-        }];
-        
-        UIButton *btn1 = [self creatBtn:@"系统键盘"];
-        btn1.tag = 201;
-        [btn1 mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self).offset(3);
-            make.top.mas_equalTo(5);
-            make.size.mas_equalTo(CGSizeMake(80, 30));
-        }];
-        
-        UIButton *btn2 = [self creatBtn:@"搜索"];
-        btn2.tag = 202;
-        [btn2 mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self).offset(-3);
-            make.top.mas_equalTo(5);
-            make.size.mas_equalTo(CGSizeMake(80, 30));
-        }];
-    }
-    return _btnView;
+- (void)setupTopView{
+    UIButton *btn1 = [self creatBtn:@"系统键盘"];
+    btn1.tag = 201;
+    [btn1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self).offset(3);
+        make.bottom.mas_equalTo(-10);
+        make.size.mas_equalTo(CGSizeMake(2.5*BTN_WIDTH, BTN_HEIGHT));
+    }];
+    
+    UIButton *btn2 = [self creatBtn:@"搜索"];
+    btn2.tag = 202;
+    [btn2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self).offset(-3);
+        make.bottom.mas_equalTo(-10);
+        make.size.mas_equalTo(CGSizeMake(2.5*BTN_WIDTH, BTN_HEIGHT));
+    }];
 }
 
 - (UIButton *)creatBtn:(NSString *)title{
-    UIButton *btn = [UIButton new];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.titleLabel.font = [UIFont systemFontOfSize:14];
+    btn.backgroundColor = BordColor;
     [btn setTitle:title forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(changeClick:)
               forControlEvents:UIControlEventTouchUpInside];
-    [_btnView addSubview:btn];
+    [self addSubview:btn];
+    [btn setLayerWithW:3 andColor:BordColor andBackW:0.0001];
     return btn;
 }
 
@@ -164,74 +155,59 @@
 
 - (void)setup{
     self.backgroundColor = DefaultColor;
-    
     [self setupTopView];
-//    [self upBtn];
-    [self clearBtn];
-    
-    //topView
-    CustomFlowLayout * topflowLayout = [[CustomFlowLayout alloc]init];
-    topflowLayout.sectionInset = UIEdgeInsetsMake(10, 3, 0, 3);
-    [topflowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    
-//    CGRect frame = CGRectMake(0, 0, SCREEN_WIDTH , ITEM_HEIGHT * 2);
-    self.topView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:topflowLayout];
-    [self addSubview:self.topView];
+
+    self.topView = [self creatCollView];
     [self.topView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_btnView.mas_bottom).with.offset(0);
+        make.top.equalTo(self).offset(0);
         make.left.equalTo(self).offset(0);
         make.right.equalTo(self).offset(0);
         make.height.mas_equalTo(ITEM_HEIGHT*2);
     }];
-    
-    self.topView.delegate = self;
-    self.topView.dataSource = self;
-    self.topView.bounces = NO;
-    self.topView.backgroundColor = [UIColor clearColor];
-    [self.topView registerClass:[KeyBoardCell class] forCellWithReuseIdentifier:NSStringFromClass([KeyBoardCell class])];
-    
-    //middleView
-    CustomFlowLayout * middleflowLayout = [[CustomFlowLayout alloc]init];
-    middleflowLayout.sectionInset = UIEdgeInsetsMake(10, 3, 0, 3);
-    [middleflowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    
-//    CGRect frame1 = CGRectMake(0, ITEM_HEIGHT * 2, SCREEN_WIDTH, ITEM_HEIGHT);
-    self.middleView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:middleflowLayout];
-    [self addSubview:self.middleView];
+
+    self.middleView = [self creatCollView];
     [self.middleView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topView.mas_bottom).with.offset(0);
-        make.left.equalTo(self).offset(0);
-        make.right.equalTo(self).offset(0);
+        make.left.equalTo(self).offset(SCREEN_WIDTH / 20.0);
+        make.right.equalTo(self).offset(-SCREEN_WIDTH / 20.0);
         make.height.mas_equalTo(ITEM_HEIGHT);
     }];
     
-    self.middleView.delegate = self;
-    self.middleView.dataSource = self;
-    self.middleView.bounces = NO;
-    self.middleView.backgroundColor = [UIColor clearColor];
-    [self.middleView registerClass:[KeyBoardCell class] forCellWithReuseIdentifier:NSStringFromClass([KeyBoardCell class])];
+    self.bottomView = [self creatCollView];
+    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.middleView.mas_bottom).with.offset(0);
+        make.left.equalTo(self).offset(SCREEN_WIDTH * 3.0 / 20.0);
+        make.right.equalTo(self).offset(-SCREEN_WIDTH * 3.0 / 20.0);
+        make.height.mas_equalTo(ITEM_HEIGHT);
+    }];
     
-    //bottomView
+    self.symbolView = [self creatCollView];
+    [self.symbolView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.bottomView.mas_bottom).with.offset(0);
+        make.left.equalTo(self).offset(SCREEN_WIDTH * 5.0 / 20.0);
+        make.right.equalTo(self).offset(-SCREEN_WIDTH * 5.0 / 20.0);
+        make.height.mas_equalTo(ITEM_HEIGHT);
+    }];
+    
+//    [self upBtn];
+    [self clearBtn];
+}
+
+- (UICollectionView *)creatCollView{
     CustomFlowLayout * bottomflowLayout = [[CustomFlowLayout alloc]init];
     bottomflowLayout.sectionInset = UIEdgeInsetsMake(10, 3, 0, 3);
     [bottomflowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
+
+    UICollectionView *collView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:bottomflowLayout];
+    [self addSubview:collView];
     
-//    CGRect frame2 = CGRectMake(SCREEN_WIDTH/ 10.0, ITEM_HEIGHT * 3, SCREEN_WIDTH / 10.0 * 8.0, ITEM_HEIGHT);
-    self.bottomView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:bottomflowLayout];
-    [self addSubview:self.bottomView];
-    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.middleView.mas_bottom).with.offset(0);
-        make.left.equalTo(self).offset(0);
-        make.right.equalTo(self).offset(-SCREEN_WIDTH/10.0);
-        make.height.mas_equalTo(ITEM_HEIGHT);
-    }];
-    
-    self.bottomView.delegate = self;
-    self.bottomView.dataSource = self;
-    self.bottomView.bounces = NO;
-    self.bottomView.backgroundColor = [UIColor clearColor];
-    [self.bottomView registerClass:[KeyBoardCell class] forCellWithReuseIdentifier:NSStringFromClass([KeyBoardCell class])];
-    
+    collView.delegate = self;
+    collView.dataSource = self;
+    collView.bounces = NO;
+    collView.delaysContentTouches = false;
+    collView.backgroundColor = [UIColor clearColor];
+    [collView registerClass:[KeyBoardCell class] forCellWithReuseIdentifier:NSStringFromClass([KeyBoardCell class])];
+    return collView;
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -241,12 +217,6 @@
     {
         return 2;
     }
-    
-    if (collectionView == self.middleView)
-    {
-        return 1;
-    }
-    
     return 1;
 }
 
@@ -259,10 +229,14 @@
     
     if (collectionView == self.middleView)
     {
-        return 10;
+        return 9;
     }
     
-    return 9;
+    if (collectionView == self.bottomView)
+    {
+        return 7;
+    }
+    return 5;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -277,7 +251,11 @@
     }
     else if (collectionView == self.bottomView)
     {
-        index = 30 + indexPath.section * 10 + indexPath.item ;
+        index = 29 + indexPath.section * 10 + indexPath.item ;
+    }
+    else if (collectionView == self.symbolView)
+    {
+        index = 36 + indexPath.section * 10 + indexPath.item ;
     }
     cell.tag = index + 100;
     cell.delegate = self;

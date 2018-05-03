@@ -40,7 +40,6 @@
               [UIImage imageNamed:@"icon_return"] style:UIBarButtonItemStyleDone
                                        target:self action:@selector(backClick)];
     [self setBaseView];
-    [self creatAddView];
     self.userType = 1;
 }
 
@@ -56,66 +55,66 @@
     [self.codeBtn setbuttenfrontTitle:@"" backtitle:@"s后获取"];
 }
 
-- (void)creatAddView{
-    UIView *bView = [UIView new];
-    bView.backgroundColor = CUSTOM_COLOR_ALPHA(0, 0, 0, 0.5);
-    bView.hidden = YES;
-    [self.view addSubview:bView];
-    [bView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(0);
-        make.left.equalTo(self.view).offset(0);
-        make.right.equalTo(self.view).offset(0);
-        make.bottom.equalTo(self.view).offset(0);
-    }];
-    self.baView = bView;
-    
-    ChooseAddressCusView *infoV = [ChooseAddressCusView createLoginView];
-    [self.view addSubview:infoV];
-    infoV.storeBack = ^(NSDictionary *store,BOOL isYes){
-        if (isYes) {
-            self.addLab.textColor = [UIColor blackColor];
-            self.addLab.text = store[@"title"];
-            self.addId = [store[@"id"]intValue];
-        }
-        [self changeAddView:YES];
-    };
-    [infoV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(0);
-        make.bottom.equalTo(self.view).offset(self.addHeight);
-        make.right.equalTo(self.view).offset(0);
-        make.height.mas_equalTo(270);
-    }];
-    self.infoView = infoV;
-}
-
-- (IBAction)didPushChooseView:(id)sender {
-    [self changeAddView:NO];
-}
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    [self changeAddView:YES];
-}
-
-- (void)changeAddView:(BOOL)isClose{
-    BOOL isHi = YES;
-    if (self.addHeight==270) {
-        if (isClose) {
-            return;
-        }
-        self.addHeight = 0;
-        isHi = NO;
-    }else{
-        self.addHeight = 270;
-        isHi = YES;
-    }
-    [UIView animateWithDuration:0.5 animations:^{
-        [self.infoView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self.view).offset(self.addHeight);
-        }];
-        [self.infoView layoutIfNeeded];//强制绘制
-        self.baView.hidden = isHi;
-    }];
-}
+//- (void)creatAddView{
+//    UIView *bView = [UIView new];
+//    bView.backgroundColor = CUSTOM_COLOR_ALPHA(0, 0, 0, 0.5);
+//    bView.hidden = YES;
+//    [self.view addSubview:bView];
+//    [bView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).offset(0);
+//        make.left.equalTo(self.view).offset(0);
+//        make.right.equalTo(self.view).offset(0);
+//        make.bottom.equalTo(self.view).offset(0);
+//    }];
+//    self.baView = bView;
+//
+//    ChooseAddressCusView *infoV = [ChooseAddressCusView createLoginView];
+//    [self.view addSubview:infoV];
+//    infoV.storeBack = ^(NSDictionary *store,BOOL isYes){
+//        if (isYes) {
+//            self.addLab.textColor = [UIColor blackColor];
+//            self.addLab.text = store[@"title"];
+//            self.addId = [store[@"id"]intValue];
+//        }
+//        [self changeAddView:YES];
+//    };
+//    [infoV mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.view).offset(0);
+//        make.bottom.equalTo(self.view).offset(self.addHeight);
+//        make.right.equalTo(self.view).offset(0);
+//        make.height.mas_equalTo(270);
+//    }];
+//    self.infoView = infoV;
+//}
+//
+//- (IBAction)didPushChooseView:(id)sender {
+//    [self changeAddView:NO];
+//}
+//
+//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    [self changeAddView:YES];
+//}
+//
+//- (void)changeAddView:(BOOL)isClose{
+//    BOOL isHi = YES;
+//    if (self.addHeight==270) {
+//        if (isClose) {
+//            return;
+//        }
+//        self.addHeight = 0;
+//        isHi = NO;
+//    }else{
+//        self.addHeight = 270;
+//        isHi = YES;
+//    }
+//    [UIView animateWithDuration:0.5 animations:^{
+//        [self.infoView mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.bottom.equalTo(self.view).offset(self.addHeight);
+//        }];
+//        [self.infoView layoutIfNeeded];//强制绘制
+//        self.baView.hidden = isHi;
+//    }];
+//}
 
 - (IBAction)getCode:(UIButton *)btn{
     //发送命令
@@ -153,8 +152,10 @@
     [SVProgressHUD show];
     NSString *regiUrl = [NSString stringWithFormat:@"%@userRegisterDo",baseUrl];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"userName"] = [self.userFie.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    params[@"password"] = [self.keyfie.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    params[@"userName"] = [self.userFie.text stringByTrimmingCharactersInSet:
+                           [NSCharacterSet whitespaceCharacterSet]];
+    params[@"password"] = [self.keyfie.text stringByTrimmingCharactersInSet:
+                           [NSCharacterSet whitespaceCharacterSet]];
     params[@"trueName"] = self.namefie.text;
     params[@"phone"] = self.phonefie.text;
     params[@"phoneCode"] = self.codefie.text;
@@ -194,10 +195,10 @@
         SHOWALERTVIEW(@"请输入验证码");
         return YES;
     }
-    if (self.addId==0) {
-        SHOWALERTVIEW(@"请选择区域");
-        return YES;
-    }
+//    if (self.addId==0) {
+//        SHOWALERTVIEW(@"请选择区域");
+//        return YES;
+//    }
     return NO;
 }
 

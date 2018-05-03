@@ -45,6 +45,7 @@
         make.right.equalTo(self).offset(0);
     }];
     self.titleLab = lab;
+    
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [self addSubview:backBtn];
     [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -215,19 +215,19 @@
 
 #pragma mark -- 日历选择
 - (void)loadDatePick{
-    CustomDatePick *date = [CustomDatePick creatCustomView];
-    [self.view addSubview:date];
-    [date mas_makeConstraints:^(MASConstraintMaker *make) {
+    CustomDatePick *datePick = [CustomDatePick creatCustomView];
+    [self.view addSubview:datePick];
+    [datePick mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(0);
         make.top.equalTo(self.view).offset(0);
         make.right.equalTo(self.view).offset(0);
         make.bottom.equalTo(self.view).offset(0);
     }];
-    date.backgroundColor = CUSTOM_COLOR_ALPHA(0, 0, 0, 0.5);
+    datePick.backgroundColor = CUSTOM_COLOR_ALPHA(0, 0, 0, 0.5);
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     // 设置时间格式
     formatter.dateFormat = @"yyyy-MM-dd";
-    date.back = ^(NSDate *date){
+    datePick.back = ^(NSDate *date){
         [self.btnSeaView setAllBtnSele];
         NSString *str = [formatter stringFromDate:date];
         UIButton *sBtn = self.dateBtns[self.isSel];
@@ -238,8 +238,8 @@
             self.dict[@"sdate"] = str;
         }
     };
-    date.hidden = YES;
-    self.datePickView = date;
+    datePick.hidden = YES;
+    self.datePickView = datePick;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{

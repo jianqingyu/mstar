@@ -39,7 +39,7 @@
 - (void)setInfo:(SearchResultInfo *)info{
     if (info) {
         _info = info;
-        self.orderNum.text = _info.orderNum;
+        self.orderNum.text = [NSString stringWithFormat:@"订单编号 %@",_info.orderNum];
         NSString *string = _info.orderDate;
         string = [string substringToIndex:10];//截取掉下标10之后的字符串
         self.orderDate.text = string;

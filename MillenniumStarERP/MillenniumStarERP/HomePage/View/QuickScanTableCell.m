@@ -7,14 +7,14 @@
 //
 
 #import "QuickScanTableCell.h"
-@interface QuickScanTableCell()<UITextFieldDelegate>
-@property (weak, nonatomic) IBOutlet UILabel *titleLab;
+#import "KeyBoardView.h"
+@interface QuickScanTableCell()<UITextFieldDelegate,KeyBoardViewDelegate>
+@property (weak, nonatomic) IBOutlet UITextField *titleFie;
 @property (weak, nonatomic) IBOutlet UILabel *ptLab;
 @property (weak, nonatomic) IBOutlet UIButton *accBtn;
 @property (weak, nonatomic) IBOutlet UIButton *addBtn;
 @property (weak, nonatomic) IBOutlet UILabel *colourLab;
 @property (weak, nonatomic) IBOutlet UITextField *numFie;
-@property (weak, nonatomic) IBOutlet UIButton *handbtn;
 @end
 @implementation QuickScanTableCell
 
@@ -38,15 +38,50 @@
 }
 
 - (void)setBaseView{
-    self.numFie.delegate = self;
+    self.titleFie.tag = 1;
+    self.titleFie.delegate = self;
+    [self setSearchFieKeyBoard];
+    self.titleFie.textColor = ChooseColor;
 //    self.colourLab.textColor = ChooseColor;
 //    [self.handbtn setTitleColor:ChooseColor forState:UIControlStateSelected];
 //    [self.handbtn setTitleColor:ChooseColor forState:UIControlStateNormal];
+    self.numFie.tag = 2;
+    self.numFie.delegate = self;
     self.numFie.textColor = ChooseColor;
 }
 
+- (void)setSearchFieKeyBoard{
+    self.titleFie.inputView = nil;
+    KeyBoardView * KBView = [[KeyBoardView alloc]init];
+    KBView.delegate = self;
+    self.titleFie.inputView = KBView;
+    KBView.inputSource = self.titleFie;
+}
+
+- (void)btnClick:(KeyBoardView *)headView andIndex:(NSInteger)index{
+    if (index==201) {
+        self.titleFie.inputView = nil;
+        [self.titleFie reloadInputViews];
+    }else{
+        [self.titleFie resignFirstResponder];
+    }
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    [textField selectAll:nil];
+}
+
 - (void)textFieldDidEndEditing:(UITextField *)textField{
-    [self backText:[textField.text floatValue]];
+    if (textField.tag==1&&![textField.text isEqualToString:_modelInfo.title]) {
+        if (self.MessBack) {
+            self.MessBack(NO,textField.text);
+        }
+        return;
+    }
+    if (textField.tag==2) {
+        [self backText:[textField.text floatValue]];
+        return;
+    }
 }
 
 - (IBAction)accClick:(id)sender {
@@ -83,7 +118,7 @@
 - (void)setModelInfo:(DetailModel *)modelInfo{
     if (modelInfo) {
         _modelInfo = modelInfo;
-        self.titleLab.text = [NSString stringWithFormat:@"%@",_modelInfo.title];
+        self.titleFie.text = [NSString stringWithFormat:@"%@",_modelInfo.title];
         self.ptLab.text = _modelInfo.weight;
     }
 }
@@ -95,17 +130,17 @@
     }
 }
 
-- (void)setHandSize:(NSString *)handSize{
-    if (handSize) {
-        _handSize = handSize;
-        if (_handSize.length>0&&![_handSize isEqualToString:@"0"]) {
-            self.handbtn.selected = YES;
-            [self.handbtn setTitle:_handSize forState:UIControlStateSelected];
-        }else{
-            self.handbtn.selected = NO;
-        }
-    }
-}
+//- (void)setHandSize:(NSString *)handSize{
+//    if (handSize) {
+//        _handSize = handSize;
+//        if (_handSize.length>0&&![_handSize isEqualToString:@"0"]) {
+//            self.handbtn.selected = YES;
+//            [self.handbtn setTitle:_handSize forState:UIControlStateSelected];
+//        }else{
+//            self.handbtn.selected = NO;
+//        }
+//    }
+//}
 
 - (void)setColur:(NSString *)colur{
     if (colur) {
@@ -114,10 +149,10 @@
     }
 }
 
-- (IBAction)colourClick:(id)sender {
-//    if (self.MessBack) {
-//        self.MessBack(YES,@"成色");
-//    }
+- (IBAction)scanClick:(id)sender {
+    if (self.MessBack) {
+        self.MessBack(NO,@"扫描");
+    }
 }
 
 @end

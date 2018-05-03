@@ -18,12 +18,15 @@
 #import "CusHauteCoutureView.h"
 #import "NewCustomizationVC.h"
 #import "ChooseAddressCusView.h"
+#import "QuickScanOrderVC.h"
 #import "NakedDriLibViewController.h"
 @interface NewHomeBannerVC ()<UINavigationControllerDelegate>
 @property (nonatomic,  weak)UIWindow *keyWin;
 @property (nonatomic,strong)NSArray *photos;
 @property (nonatomic,strong)NSArray *bPhotos;
 @property (nonatomic,strong)NSArray *pushVcs;
+@property (nonatomic,  weak)UIView *listView;
+@property (nonatomic,strong)NSMutableArray *listVcs;
 @property (nonatomic,  weak)UIView *proDriView;
 @property (nonatomic,  weak)HYBLoopScrollView *loopView;
 @property (nonatomic,strong)CusHauteCoutureView *cusView;
@@ -57,7 +60,69 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.delegate = self;
+    [self setListBtn];
 }
+
+- (void)setListBtn{
+    self.listVcs = @[].mutableCopy;
+    if (self.listView) {
+        [self.listView removeFromSuperview];
+        self.listView = nil;
+    }
+    BOOL isOn = [[[NSUserDefaults standardUserDefaults]objectForKey:@"goldOn"]intValue];
+    if (isOn) {
+        NSDictionary *goldDic = @{@"title":@"今日金价",@"img":@"p_11-1",@"vc":@"UserTodayGoldVC"};
+        [self.listVcs addObject:goldDic];
+    }
+    BOOL isMyOn = [[[NSUserDefaults standardUserDefaults]objectForKey:@"myOn"]intValue];
+    if (isMyOn) {
+        NSDictionary *myDic = @{@"title":@"我的订单",@"img":@"p_08-1",@"vc":@"SearchOrderVc"};
+        [self.listVcs addObject:myDic];
+    }
+    if (self.listVcs.count==0) {
+        return;
+    }
+    CGFloat width = MIN(SDevWidth,SDevHeight)*0.9;
+    UIView *bottomV = [UIView new];
+    [self.view addSubview:bottomV];
+    [bottomV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(self.view.mas_centerX);
+        make.bottom.equalTo(self.view).with.offset(-100);
+        make.size.mas_equalTo(CGSizeMake(width, 80));
+    }];
+    self.listView = bottomV;
+
+    CGFloat mar = (width-self.pushVcs.count*60)/(self.pushVcs.count-1);
+    for (int i=0; i<self.listVcs.count; i++) {
+        NSDictionary *dic = self.listVcs[i];
+        CustomTopBtn *right = [CustomTopBtn creatCustomView];
+        right.bBtn.tag = i;
+        [right.sBtn setBackgroundImage:[UIImage imageNamed:dic[@"img"]] forState:
+         UIControlStateNormal];
+        right.titleLab.attributedText = [self setShadow:dic[@"title"]];
+        [right.bBtn addTarget:self action:@selector(openCusClick:)
+             forControlEvents:UIControlEventTouchUpInside];
+        right.frame = CGRectMake(i*(60+mar), 0, 60, 80);
+        [bottomV addSubview:right];
+    }
+}
+
+- (void)openCusClick:(UIButton *)btn{
+    [self resetWindow];
+    NSString *class = self.listVcs[btn.tag][@"vc"];
+    const char *className = [class cStringUsingEncoding:NSASCIIStringEncoding];
+    Class newClass = objc_getClass(className);
+    //如果没有则注册一个类
+    if (!newClass) {
+        Class superClass = [NSObject class];
+        newClass = objc_allocateClassPair(superClass, className, 0);
+        objc_registerClassPair(newClass);
+    }
+    // 创建对象
+    BaseViewController *instance = [[newClass alloc] init];
+    [self.navigationController pushViewController:instance animated:YES];
+}
+
 //加载默认地址
 - (void)loadAddressDataInfo{
     NSString *url = [NSString stringWithFormat:@"%@InitDataForQxzx",baseUrl];
@@ -65,9 +130,9 @@
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
-            if ([response.data[@"IsHaveSelectArea"]intValue]==0) {
-                [self creatAddView];
-            }
+//            if ([response.data[@"IsHaveSelectArea"]intValue]==0) {
+//                [self creatAddView];
+//            }
             StorageDataTool *data = [StorageDataTool shared];
             data.isMain = [response.data[@"IsMasterAccount"]boolValue];
             if ([YQObjectBool boolForObject:response.data[@"address"]]){
@@ -121,43 +186,43 @@
     } requestURL:url params:params];
 }
 
-- (void)creatAddView{
-    UIView *bView = [UIView new];
-    bView.backgroundColor = CUSTOM_COLOR_ALPHA(0, 0, 0, 0.5);
-    [self.view addSubview:bView];
-    [bView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(0);
-        make.left.equalTo(self.view).offset(0);
-        make.right.equalTo(self.view).offset(0);
-        make.bottom.equalTo(self.view).offset(0);
-    }];
-    
-    __weak ChooseAddressCusView *infoV = [ChooseAddressCusView createLoginView];
-    [self.view addSubview:infoV];
-    infoV.storeBack = ^(NSDictionary *store,BOOL isYes){
-        [self submitAddressInfo:store[@"id"]];
-        [infoV removeFromSuperview];
-        [bView removeFromSuperview];
-    };
-    [UIView animateWithDuration:0.5 animations:^{
-        [infoV mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(self.view);
-            make.width.mas_equalTo(225);
-            make.height.mas_equalTo(225);
-        }];
-        [infoV setNeedsLayout];
-    }];
-}
+//- (void)creatAddView{
+//    UIView *bView = [UIView new];
+//    bView.backgroundColor = CUSTOM_COLOR_ALPHA(0, 0, 0, 0.5);
+//    [self.view addSubview:bView];
+//    [bView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).offset(0);
+//        make.left.equalTo(self.view).offset(0);
+//        make.right.equalTo(self.view).offset(0);
+//        make.bottom.equalTo(self.view).offset(0);
+//    }];
+//    
+//    __weak ChooseAddressCusView *infoV = [ChooseAddressCusView createLoginView];
+//    [self.view addSubview:infoV];
+//    infoV.storeBack = ^(NSDictionary *store,BOOL isYes){
+//        [self submitAddressInfo:store[@"id"]];
+//        [infoV removeFromSuperview];
+//        [bView removeFromSuperview];
+//    };
+//    [UIView animateWithDuration:0.5 animations:^{
+//        [infoV mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.center.equalTo(self.view);
+//            make.width.mas_equalTo(225);
+//            make.height.mas_equalTo(225);
+//        }];
+//        [infoV setNeedsLayout];
+//    }];
+//}
 
-- (void)submitAddressInfo:(id)addId{
-    NSString *url = [NSString stringWithFormat:@"%@userModifyuserAreaDo",baseUrl];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"tokenKey"] = [AccountTool account].tokenKey;
-    params[@"memberAreaId"] = addId;
-    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        [MBProgressHUD showError:response.message];
-    } requestURL:url params:params];
-}
+//- (void)submitAddressInfo:(id)addId{
+//    NSString *url = [NSString stringWithFormat:@"%@userModifyuserAreaDo",baseUrl];
+//    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+//    params[@"tokenKey"] = [AccountTool account].tokenKey;
+//    params[@"memberAreaId"] = addId;
+//    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+//        [MBProgressHUD showError:response.message];
+//    } requestURL:url params:params];
+//}
 
 - (void)setLoopScrollView:(NSArray *)arr{
     if (self.loopView) {
@@ -189,17 +254,13 @@
     NSArray *arrS = @[@"快速定制",@"产品",@"个性定制",@"裸钻库",@"个人中心"];
     self.pushVcs = @[@"vc",@"ProductListVC",@"NewCustomizationVC",
                      @"NakedDriLibViewController",@"EditUserInfoVC"];
-//    NSArray *arr = @[@"p_11-1",@"p_03-1",@"p_06-1",@"p_08-1"];
-//    NSArray *arrS = @[@"快速定制",@"产品",@"裸钻库",@"个人中心"];
-//    self.pushVcs = @[@"vc",@"ProductListVC",@"NakedDriLibViewController",
-//                     @"EditUserInfoVC"];
     CGFloat mar = (width-arr.count*60)/(arr.count-1);
     for (int i=0; i<arr.count; i++) {
         CustomTopBtn *right = [CustomTopBtn creatCustomView];
         right.bBtn.tag = i;
         [right.sBtn setBackgroundImage:[UIImage imageNamed:arr[i]] forState:
                                    UIControlStateNormal];
-        right.titleLab.text = arrS[i];
+        right.titleLab.attributedText = [self setShadow:arrS[i]];
         [right.bBtn addTarget:self action:@selector(openClick:)
                                   forControlEvents:UIControlEventTouchUpInside];
         right.frame = CGRectMake(i*(60+mar), 0, 60, 80);
@@ -213,12 +274,20 @@
     }
 }
 
+- (NSAttributedString *)setShadow:(NSString *)str{
+    NSShadow *shadow = [[NSShadow alloc]init];
+    shadow.shadowBlurRadius = 6.0;
+    shadow.shadowOffset = CGSizeMake(0, 0);
+    shadow.shadowColor = [UIColor blackColor];
+    NSAttributedString *attTex = [[NSAttributedString alloc]initWithString:str attributes:@{NSShadowAttributeName:shadow}];
+    return attTex;
+}
+
 - (void)btnLong:(UILongPressGestureRecognizer *)gestureRecognizer{
     if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
         [self resetWindow];
         UIViewController *vc = [ShowLoginViewTool getCurrentVC];
-        ScanViewController *scan = [ScanViewController new];
-        scan.isFirst = YES;
+        QuickScanOrderVC *scan = [QuickScanOrderVC new];
         [vc.navigationController pushViewController:scan animated:YES];
     }
 }

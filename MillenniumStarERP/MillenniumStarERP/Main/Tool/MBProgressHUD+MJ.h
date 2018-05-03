@@ -16,6 +16,7 @@
 + (void)show:(NSString *)text icon:(NSString *)icon view:(UIView *)view;
 + (void)showSuccess:(NSString *)success;
 + (void)showError:(NSString *)error;
++ (void)showDetail:(NSString *)detail;
 
 + (MBProgressHUD *)showMessage:(NSString *)message;
 

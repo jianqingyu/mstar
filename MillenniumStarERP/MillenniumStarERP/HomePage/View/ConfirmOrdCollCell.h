@@ -10,7 +10,7 @@
 #import "OrderListInfo.h"
 @class ConfirmOrdCollCell;
 @protocol ConfirmOrdCollCellDelegate <NSObject>
-- (void)btnCellClick:(ConfirmOrdCollCell *)headView andIndex:(NSInteger)index;
+- (void)btnCellClick:(ConfirmOrdCollCell *)cell andIndex:(NSInteger)index;
 @end
 @interface ConfirmOrdCollCell : UICollectionViewCell
 @property (nonatomic,strong)OrderListInfo *listInfo;

@@ -10,7 +10,7 @@
 #import "DetailTypeInfo.h"
 #import "CustomShapeBtn.h"
 @interface EditCustomDriLibCell()
-@property (nonatomic,  weak)UILabel *topLab;
+@property (nonatomic,   weak)UILabel *topLab;
 @property (nonatomic, strong)NSMutableArray *mutBtns;
 @end
 @implementation EditCustomDriLibCell

@@ -29,14 +29,9 @@ KeyBoardViewDelegate>
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    if (self.isFirst) {
-//        self.title = @"快速扫描";
-//    }else{
-//        self.title = @"扫一扫";
-//    }
     [self setupSearchBar];
     [self setupBaseView];
-    [self creatNaviBtn];
+//    [self creatNaviBtn];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:)
                  name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
@@ -134,16 +129,10 @@ KeyBoardViewDelegate>
 
 - (void)searchClick{
     [self.searchFie resignFirstResponder];
-    if (self.isFirst) {
-        QuickScanOrderVC *quickVc = [QuickScanOrderVC new];
-        quickVc.scanCode = self.searchFie.text;
-        [self.navigationController pushViewController:quickVc animated:YES];
-    }else{
-        if (self.scanBack) {
-            self.scanBack(self.searchFie.text);
-        }
-        [self.navigationController popViewControllerAnimated:YES];
+    if (self.scanBack) {
+        self.scanBack(self.searchFie.text);
     }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)orientChange:(NSNotification *)notification{
@@ -151,14 +140,10 @@ KeyBoardViewDelegate>
     [self.searchFie resignFirstResponder];
 }
 
-- (void)creatNaviBtn{
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn.frame = CGRectMake(0, 0, 40, 20);
-    [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [btn setTitle:@"相册" forState:UIControlStateNormal];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"相册"
-                     style:UIBarButtonItemStyleDone target:self action:@selector(choicePhoto)];
-}
+//- (void)creatNaviBtn{
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"相册"
+//                     style:UIBarButtonItemStyleDone target:self action:@selector(choicePhoto)];
+//}
 #pragma mark -- 设置扫描背景
 - (void)setupBaseView{
     NSString *mediaType = AVMediaTypeVideo;
@@ -275,58 +260,52 @@ KeyBoardViewDelegate>
         [_session stopRunning];
         [timer invalidate];
         if (stringValue.length > 0) {
-            if (self.isFirst) {
-                QuickScanOrderVC *quickVc = [QuickScanOrderVC new];
-                quickVc.scanCode = stringValue;
-                [self.navigationController pushViewController:quickVc animated:YES];
-            }else{
-                if (self.scanBack) {
-                    self.scanBack(stringValue);
-                }
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-        }
-    }
-}
-#pragma mark --调用相册扫描--
-- (void)choicePhoto{
-    //调用相册
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
-    //UIImagePickerControllerSourceTypePhotoLibrary为相册
-    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    
-    //设置代理UIImagePickerControllerDelegate和UINavigationControllerDelegate
-    imagePicker.delegate = self;
-    
-    [self presentViewController:imagePicker animated:YES completion:nil];
-}
-//选中图片的回调
-- (void)imagePickerController:(UIImagePickerController*)picker
-didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    //取出选中的图片
-    UIImage *pickImage = info[UIImagePickerControllerOriginalImage];
-    NSData *imageData = UIImagePNGRepresentation(pickImage);
-    CIImage *ciImage = [CIImage imageWithData:imageData];
-    
-    //创建探测器
-    //CIDetectorTypeQRCode表示二维码，这里选择CIDetectorAccuracyLow识别速度快
-    CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil
-                                  options:@{CIDetectorAccuracy: CIDetectorAccuracyLow}];
-    NSArray *feature = [detector featuresInImage:ciImage];
-    
-    //取出探测到的数据
-    for (CIQRCodeFeature *result in feature) {
-        NSString *content = result.messageString;// 这个就是我们想要的值
-        if (content.length > 0) {
-            [self dismissViewControllerAnimated:YES completion:nil];
             if (self.scanBack) {
-                self.scanBack(content);
+                self.scanBack(stringValue);
             }
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
 }
+//#pragma mark --调用相册扫描--
+//- (void)choicePhoto{
+//    //调用相册
+//    UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
+//    //UIImagePickerControllerSourceTypePhotoLibrary为相册
+//    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//
+//    //设置代理UIImagePickerControllerDelegate和UINavigationControllerDelegate
+//    imagePicker.delegate = self;
+//
+//    [self presentViewController:imagePicker animated:YES completion:nil];
+//}
+////选中图片的回调
+//- (void)imagePickerController:(UIImagePickerController*)picker
+//didFinishPickingMediaWithInfo:(NSDictionary *)info
+//{
+//    //取出选中的图片
+//    UIImage *pickImage = info[UIImagePickerControllerOriginalImage];
+//    NSData *imageData = UIImagePNGRepresentation(pickImage);
+//    CIImage *ciImage = [CIImage imageWithData:imageData];
+//
+//    //创建探测器
+//    //CIDetectorTypeQRCode表示二维码，这里选择CIDetectorAccuracyLow识别速度快
+//    CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil
+//                                  options:@{CIDetectorAccuracy: CIDetectorAccuracyLow}];
+//    NSArray *feature = [detector featuresInImage:ciImage];
+//
+//    //取出探测到的数据
+//    for (CIQRCodeFeature *result in feature) {
+//        NSString *content = result.messageString;// 这个就是我们想要的值
+//        if (content.length > 0) {
+//            [self dismissViewControllerAnimated:YES completion:nil];
+//            if (self.scanBack) {
+//                self.scanBack(content);
+//            }
+//            [self.navigationController popViewControllerAnimated:YES];
+//        }
+//    }
+//}
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

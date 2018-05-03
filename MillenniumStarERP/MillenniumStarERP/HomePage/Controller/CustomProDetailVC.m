@@ -23,6 +23,7 @@
 #import "DetailHeadInfo.h"
 #import "StrWithIntTool.h"
 #import "CommonUtils.h"
+#import "ConfirmOrderCollectionVC.h"
 #import "CustomPickView.h"
 #import "HYBLoopScrollView.h"
 @interface CustomProDetailVC ()<UINavigationControllerDelegate,UITableViewDelegate,
@@ -675,8 +676,10 @@
         [self.navigationController popViewControllerAnimated:YES];
         return;
     }
-    ConfirmOrderVC *orderVC = [ConfirmOrderVC new];
-    [self.navigationController pushViewController:orderVC animated:YES];
+    ConfirmOrderCollectionVC *newOrder = [ConfirmOrderCollectionVC new];
+    [self.navigationController pushViewController:newOrder animated:YES];
+    //    ConfirmOrderVC *orderVC = [ConfirmOrderVC new];
+    //    [self.navigationController pushViewController:orderVC animated:YES];
 }
 #pragma mark -- 提交订单
 - (IBAction)addOrder:(id)sender {

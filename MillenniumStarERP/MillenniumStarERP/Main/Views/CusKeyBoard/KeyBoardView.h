@@ -27,6 +27,8 @@ UICollectionViewDelegateFlowLayout,KeyBoardCellDelegate>
 
 @property (nonatomic,strong) UICollectionView * bottomView;
 
+@property (nonatomic,strong) UICollectionView * symbolView;
+
 @property (nonatomic,strong) UIView * inputSource;
 
 @property (nonatomic,strong) UIButton * clearBtn;

@@ -27,6 +27,7 @@
 #import "OrderListController.h"
 #import "NewCustomProDetailVC.h"
 #import "NewCustomizationVC.h"
+#import "StatisticNumberVC.h"
 @interface ConfirmOrderVC ()<UITableViewDelegate,UITableViewDataSource,
                             ConfirmOrdHeadViewDelegate,ConfirmOrdCellDelegate>{
     int curPage;
@@ -42,6 +43,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *depositBtn;
 @property (weak, nonatomic) IBOutlet UILabel *totleLab;
 @property (weak, nonatomic) IBOutlet UILabel *deposLab;
+@property (weak, nonatomic) IBOutlet UIView *editView;
+@property (weak, nonatomic) IBOutlet UIButton *deleBtn;
+@property (weak, nonatomic) IBOutlet UIButton *clearBtn;
 @property (weak, nonatomic) UIButton *topBtn;
 @property (weak, nonatomic) ConfirmEditHeadView *headEView;
 @property (nonatomic,strong)UITableView *tableView;
@@ -65,6 +69,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    pageCount = 12;
     self.isShow = [[AccountTool account].isNoShow intValue]||
     [[AccountTool account].isNoDriShow intValue];
     [self creatConfirmOrder];
@@ -94,6 +99,7 @@
         [self creatNearNetView:^(BOOL isWifi) {
             [self.tableView.mj_header beginRefreshing];
         }];
+        [self creatNaviBtn];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     if (self.isOrd) {
@@ -105,6 +111,44 @@
     OrderListController *listVC = [OrderListController new];
     listVC.isOrd = self.isOrd;
     [self.navigationController pushViewController:listVC animated:YES];
+}
+
+- (void)creatNaviBtn{
+    [self.deleBtn setLayerWithW:3 andColor:BordColor andBackW:0.5];
+    [self.clearBtn setLayerWithW:3 andColor:BordColor andBackW:0.5];
+    UIView *right = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 90, 26)];
+    UIButton *btn1 = [self creatBtnWith:@"编辑" andSel:@"完成"];
+    btn1.frame = CGRectMake(0, 0, 45, 26);
+    btn1.tag = 11;
+    [right addSubview:btn1];
+    
+    UIButton *btn2 = [self creatBtnWith:@"统计" andSel:@""];
+    btn2.frame = CGRectMake(45, 0, 45, 26);
+    btn2.tag = 12;
+    [right addSubview:btn2];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:right];
+}
+
+- (UIButton *)creatBtnWith:(NSString *)title andSel:(NSString *)selTitle{
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.titleLabel.font = [UIFont systemFontOfSize:16];
+    [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [btn setTitle:title forState:UIControlStateNormal];
+    if (selTitle.length>0) {
+        [btn setTitle:selTitle forState:UIControlStateSelected];
+    }
+    [btn addTarget:self action:@selector(changeEditView:) forControlEvents:UIControlEventTouchUpInside];
+    return btn;
+}
+
+- (void)changeEditView:(UIButton *)btn{
+    if (btn.tag==11) {
+        btn.selected = !btn.selected;
+        self.editView.hidden = !btn.selected;
+    }else{
+        StatisticNumberVC *numVc = [StatisticNumberVC new];
+        [self.navigationController pushViewController:numVc animated:YES];
+    }
 }
 
 - (void)orientChange:(NSNotification *)notification{
@@ -133,7 +177,7 @@
     [super viewWillDisappear:animated];
     [self.headView.customerFie resignFirstResponder];
 }
-
+#pragma mark -- creatTable
 - (void)setupTableView{
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero
                                                  style:UITableViewStyleGrouped];
@@ -278,7 +322,7 @@
     }
     [self editColorAndQuality];
 }
-
+//批量更改成色
 - (void)changeColorInfo:(DetailTypeInfo *)cInfo{
     if (self.editId) {
         return;
@@ -463,6 +507,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"cpage"] = @(curPage);
+    params[@"pageNum"] = @(pageCount);
     if (self.qualityInfo){
         params[@"qualityId"] = @(self.qualityInfo.id);
     }
@@ -496,10 +541,10 @@
         self.cusInfo = [CustomerInfo mj_objectWithKeyValues:
                         dict[@"customer"]];
     }
-    if (dict[@"modelColor"]) {
+    if ([YQObjectBool boolForObject:dict[@"modelColor"]]) {
         self.colorArr = dict[@"modelColor"];
     }
-    if (dict[@"modelQuality"]) {
+    if ([YQObjectBool boolForObject:dict[@"modelQuality"]]) {
         self.qualityArr = dict[@"modelQuality"];
     }
     if ([YQObjectBool boolForObject:dict[@"defaultValue"]]) {
@@ -992,16 +1037,19 @@
     double value = 0.0;
     if (!self.editId) {
         NSString *conStr = @"确定";
+        NSString *deleStr = @"删除";
         if (_selectDataArray.count){
-            for (OrderListInfo *collectInfo in _selectDataArray)
-            {
+            for (OrderListInfo *collectInfo in _selectDataArray){
                 value = value+collectInfo.price;
             }
-            conStr = [NSString stringWithFormat:@"%@(%lu)",conStr,(unsigned long)_selectDataArray.count];
+            NSString *cou = [NSString stringWithFormat:@"(%d)",(int)_selectDataArray.count];
+            conStr = [conStr stringByAppendingString:cou];
+            deleStr = [deleStr stringByAppendingString:cou];
         }
         NSString *price = [OrderNumTool strWithPrice:value];
         self.priceLab.text = [NSString stringWithFormat:@"参考总价:%@",price];
         [self.conBtn setTitle:conStr forState:UIControlStateNormal];
+        [self.deleBtn setTitle:deleStr forState:UIControlStateNormal];
     }else{
         double needValue = 0.0;
         if (_dataArray.count){
@@ -1145,69 +1193,69 @@
     });
 }
 
-- (void)submitOrders{
-    NSMutableArray *mutArr = [NSMutableArray array];
-    for (OrderListInfo *collInfo in _selectDataArray) {
-        [mutArr addObject:@(collInfo.id)];
-    }
-    NSString *url = [NSString stringWithFormat:@"%@OrderCurrentSubmitDo",baseUrl];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"tokenKey"] = [AccountTool account].tokenKey;
-    params[@"itemId"] = [StrWithIntTool strWithIntArr:mutArr];
-    params[@"addressId"] = @(self.addressInfo.id);
-    params[@"purityId"] = @(self.colorInfo.id);
-    params[@"qualityId"] = @(self.qualityInfo.id);
-    if (self.headView.wordFie.text.length>0) {
-        params[@"word"] = _headView.wordFie.text;
-    }
-    if (self.headView.noteFie.text.length>0) {
-        params[@"orderNote"] = _headView.noteFie.text;
-    }
-    if (self.invoInfo.title.length>0) {
-        params[@"invTitle"] = self.invoInfo.price;
-        params[@"invType"] = @(self.invoInfo.id);
-    }
-    params[@"customerID"] = @(self.cusInfo.customerID);
-    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
-        if ([response.error intValue]==0) {
-            [MBProgressHUD showSuccess:@"提交成功"];
-            if ([YQObjectBool boolForObject:response.data]&&
-                [YQObjectBool boolForObject:response.data[@"waitOrderCount"]]) {
-                App;
-                app.shopNum = [response.data[@"waitOrderCount"]intValue];
-            }
-            [self gotoNextViewConter:response.data];
-            [self.tableView.mj_header beginRefreshing];
-        }else{
-            [MBProgressHUD showError:response.message];
-        }
-    } requestURL:url params:params];
-}
-//是否需要付款 是否下单ERP
-- (void)gotoNextViewConter:(id)dic{
-    if ([dic[@"isNeetPay"]intValue]==1) {
-        PayViewController *payVc = [PayViewController new];
-        payVc.orderId = dic[@"orderNum"];
-        [self.navigationController pushViewController:payVc animated:YES];
-    }else{
-        if ([dic[@"isErpOrder"]intValue]==0) {
-            ConfirmOrderVC *oDetailVc = [ConfirmOrderVC new];
-            oDetailVc.isOrd = YES;
-            oDetailVc.editId = [dic[@"id"] intValue];
-            [self.navigationController pushViewController:oDetailVc animated:YES];
-        }else{
-            ProductionOrderVC *proVc = [ProductionOrderVC new];
-            proVc.isOrd = YES;
-            proVc.orderNum = dic[@"orderNum"];
-            [self.navigationController pushViewController:proVc animated:YES];
-        }
-    }
-    NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray:
-                                       self.navigationController.viewControllers];
-    NSInteger index = self.navigationController.viewControllers.count;
-    [navigationArray removeObjectAtIndex: index-2];
-    self.navigationController.viewControllers = navigationArray;
-}
+//- (void)submitOrders{
+//    NSMutableArray *mutArr = [NSMutableArray array];
+//    for (OrderListInfo *collInfo in _selectDataArray) {
+//        [mutArr addObject:@(collInfo.id)];
+//    }
+//    NSString *url = [NSString stringWithFormat:@"%@OrderCurrentSubmitDo",baseUrl];
+//    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+//    params[@"tokenKey"] = [AccountTool account].tokenKey;
+//    params[@"itemId"] = [StrWithIntTool strWithIntArr:mutArr];
+//    params[@"addressId"] = @(self.addressInfo.id);
+//    params[@"purityId"] = @(self.colorInfo.id);
+//    params[@"qualityId"] = @(self.qualityInfo.id);
+//    if (self.headView.wordFie.text.length>0) {
+//        params[@"word"] = _headView.wordFie.text;
+//    }
+//    if (self.headView.noteFie.text.length>0) {
+//        params[@"orderNote"] = _headView.noteFie.text;
+//    }
+//    if (self.invoInfo.title.length>0) {
+//        params[@"invTitle"] = self.invoInfo.price;
+//        params[@"invType"] = @(self.invoInfo.id);
+//    }
+//    params[@"customerID"] = @(self.cusInfo.customerID);
+//    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+//        if ([response.error intValue]==0) {
+//            [MBProgressHUD showSuccess:@"提交成功"];
+//            if ([YQObjectBool boolForObject:response.data]&&
+//                [YQObjectBool boolForObject:response.data[@"waitOrderCount"]]) {
+//                App;
+//                app.shopNum = [response.data[@"waitOrderCount"]intValue];
+//            }
+//            [self gotoNextViewConter:response.data];
+//            [self.tableView.mj_header beginRefreshing];
+//        }else{
+//            [MBProgressHUD showError:response.message];
+//        }
+//    } requestURL:url params:params];
+//}
+////是否需要付款 是否下单ERP
+//- (void)gotoNextViewConter:(id)dic{
+//    if ([dic[@"isNeetPay"]intValue]==1) {
+//        PayViewController *payVc = [PayViewController new];
+//        payVc.orderId = dic[@"orderNum"];
+//        [self.navigationController pushViewController:payVc animated:YES];
+//    }else{
+//        if ([dic[@"isErpOrder"]intValue]==0) {
+//            ConfirmOrderVC *oDetailVc = [ConfirmOrderVC new];
+//            oDetailVc.isOrd = YES;
+//            oDetailVc.editId = [dic[@"id"] intValue];
+//            [self.navigationController pushViewController:oDetailVc animated:YES];
+//        }else{
+//            ProductionOrderVC *proVc = [ProductionOrderVC new];
+//            proVc.isOrd = YES;
+//            proVc.orderNum = dic[@"orderNum"];
+//            [self.navigationController pushViewController:proVc animated:YES];
+//        }
+//    }
+//    NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray:
+//                                       self.navigationController.viewControllers];
+//    NSInteger index = self.navigationController.viewControllers.count;
+//    [navigationArray removeObjectAtIndex: index-2];
+//    self.navigationController.viewControllers = navigationArray;
+//}
 
 - (void)cancelOrder{
     NSString *url = [NSString stringWithFormat:@"%@ModelOrderWaitCheckCancelDo",baseUrl];
@@ -1225,6 +1273,54 @@
             [MBProgressHUD showError:response.message];
         }
     } requestURL:url params:params];
+}
+
+- (IBAction)deleAllClick:(id)sender {
+    if (_selectDataArray.count==0) {
+        [MBProgressHUD showError:@"请选择商品"];
+        return;
+    }
+    [NewUIAlertTool show:@"是否删除勾选商品" okBack:^{
+        [SVProgressHUD show];
+        NSString *netUrl = [NSString stringWithFormat:@"%@OrderCurrentDeleteModelItemsDo",baseUrl];
+        NSMutableDictionary *params = [NSMutableDictionary new];
+        params[@"tokenKey"] = [AccountTool account].tokenKey;
+        NSMutableArray *mutArr = [NSMutableArray array];
+        for (OrderListInfo *collInfo in _selectDataArray) {
+            [mutArr addObject:@(collInfo.id)];
+        }
+        params[@"tokenKey"] = [AccountTool account].tokenKey;
+        params[@"itemIds"] = [StrWithIntTool strWithArr:mutArr With:@","];
+        [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+            if ([response.error intValue]==0) {
+                [MBProgressHUD showError:response.message];
+                [self.tableView.mj_header beginRefreshing];
+            }else{
+                [MBProgressHUD showError:response.message];
+            }
+        } requestURL:netUrl params:params];
+    } andView:self.view yes:YES];
+}
+
+- (IBAction)clearAllClick:(id)sender {
+    if (self.dataArray.count==0) {
+        [MBProgressHUD showError:@"没有商品"];
+        return;
+    }
+    [NewUIAlertTool show:@"是否清空当前订单" okBack:^{
+        [SVProgressHUD show];
+        NSString *netUrl = [NSString stringWithFormat:@"%@OrderCurrentDeleteModelClear",baseUrl];
+        NSMutableDictionary *params = [NSMutableDictionary new];
+        params[@"tokenKey"] = [AccountTool account].tokenKey;
+        [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+            if ([response.error intValue]==0) {
+                [MBProgressHUD showError:response.message];
+                [self.tableView.mj_header beginRefreshing];
+            }else{
+                [MBProgressHUD showError:response.message];
+            }
+        } requestURL:netUrl params:params];
+    } andView:self.view yes:YES];
 }
 
 - (void)dealloc {

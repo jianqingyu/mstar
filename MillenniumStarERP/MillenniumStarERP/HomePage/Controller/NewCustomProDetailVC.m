@@ -27,6 +27,11 @@
 #import "CustomDriWordCell.h"
 #import "CustomShowView.h"
 #import "SaveColorData.h"
+#import "SetDriViewController.h"
+#import "StatisticNumberVC.h"
+#import "FMDataTool.h"
+#import "SetDriInfo.h"
+#import "StaticNumInfo.h"
 #import "ConfirmOrderCollectionVC.h"
 @interface NewCustomProDetailVC ()<UINavigationControllerDelegate,UITableViewDelegate,
 UITableViewDataSource,MWPhotoBrowserDelegate>
@@ -36,32 +41,35 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 @property (nonatomic,  weak) IBOutlet UILabel *numLab;
 @property (nonatomic,  weak) IBOutlet UILabel *priceLab;
 @property (nonatomic,  weak) IBOutlet UILabel *allLab;
+@property (weak,  nonatomic) IBOutlet UIButton *staticBtn;
 
 @property (nonatomic,assign)int isCan;
 @property (nonatomic,assign)int idx;
 @property (nonatomic,assign)float wid;
 @property (nonatomic,assign)int isResh;
 @property (nonatomic,assign)BOOL isNote;
+@property (nonatomic,assign)BOOL isError;
 
-@property (nonatomic,  copy)NSString*proNum;
-@property (nonatomic,  copy)NSString*handStr;
+@property (nonatomic,  copy)NSString *proNum;
+@property (nonatomic,  copy)NSString *handStr;
 @property (nonatomic,  copy)NSString *driWord;
-@property (nonatomic,  copy)NSString*lastMess;
+@property (nonatomic,  copy)NSString *lastMess;
 @property (nonatomic,  copy)NSString *driCode;
 @property (nonatomic,  copy)NSString *driPrice;
 @property (nonatomic,  copy)NSString *driId;
 
 @property (nonatomic,  copy)NSArray *typeArr;
 @property (nonatomic,  copy)NSArray *typeSArr;
-@property (nonatomic,  copy)NSArray*detailArr;
-@property (nonatomic,  copy)NSArray*remakeArr;
-@property (nonatomic,  copy)NSArray*IDarray;
-@property (nonatomic,  copy)NSArray*headImg;
-@property (nonatomic,  copy)NSArray*photos;
-@property (nonatomic,  copy)NSArray*specTitles;
+@property (nonatomic,  copy)NSArray *detailArr;
+@property (nonatomic,  copy)NSArray *remakeArr;
+@property (nonatomic,  copy)NSArray *IDarray;
+@property (nonatomic,  copy)NSArray *headImg;
+@property (nonatomic,  copy)NSArray *photos;
+@property (nonatomic,  copy)NSArray *specTitles;
 @property (nonatomic,  copy)NSArray *handArr;
 @property (nonatomic,  copy)NSArray *puritys;
 @property (nonatomic,  copy)NSArray *chooseArr;
+@property (nonatomic,  copy)NSArray *rangeArr;
 
 @property (nonatomic,strong)NSDictionary*stoneDic;
 @property (nonatomic,strong)NSMutableArray*bools;
@@ -89,10 +97,12 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     self.idx = self.isCus?3:2;
     
     [OrderNumTool setCircularWithPath:self.numLab size:CGSizeMake(16, 16)];
+    [self.staticBtn setLayerWithW:5 andColor:BordColor andBackW:0.5];
     [self.lookBtn setLayerWithW:5 andColor:BordColor andBackW:0.5];
-    [OrderNumTool setCircularWithPath:self.addBtn size:CGSizeMake(5, 5)];
+    [self.addBtn setLayerWithW:5 andColor:BordColor andBackW:0.0001];
     
     self.lookBtn.hidden = self.isCus;
+    self.staticBtn.hidden = self.isCus;
     self.priceLab.hidden = [[AccountTool account].isNoShow intValue];
     self.allLab.hidden = [[AccountTool account].isNoShow intValue];
     [self.priceLab setAdjustsFontSizeToFitWidth:YES];
@@ -241,6 +251,28 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:frame];
 }
 
+//- (void)creatSetDriBtn{
+//    if (!self.hView) {
+//        return;
+//    }
+//    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    btn.backgroundColor = [UIColor clearColor];
+//    [btn addTarget:self action:@selector(driClick) forControlEvents:UIControlEventTouchUpInside];
+//    [btn setImage:[UIImage imageNamed:@"icon_set"] forState:UIControlStateNormal];
+//    [self.hView addSubview:btn];
+//    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.hView).offset(20);
+//        make.right.equalTo(self.hView).offset(-10);
+//        make.size.mas_equalTo(CGSizeMake(54, 54));
+//    }];
+//    //    self.setBtn = btn;
+//}
+
+- (void)driClick{
+    SetDriViewController *driVc = [SetDriViewController new];
+    [self.navigationController pushViewController:driVc animated:YES];
+}
+
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     App;
@@ -281,8 +313,10 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     params[@"keyword"] = keyword;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
+            self.isError = NO;
             [self setDetailDataWithDic:response.data];
         }else{
+            self.isError = YES;
             [MBProgressHUD showError:response.message];
         }
     } requestURL:regiUrl params:params];
@@ -548,6 +582,7 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
         [self.view addSubview:self.hView];
         [self.view sendSubviewToBack:self.hView];
     }
+//    [self creatSetDriBtn];
 }
 
 - (void)didImageWithIndex:(NSInteger)index{
@@ -692,7 +727,6 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
             if (messArr.length==0) {
                 [self openNumberAndhandSize:2 and:indexPath];
             }else{
-                self.proId = [messArr intValue];
                 [self clearNakedDri];
                 self.isResh = 2;
                 [self scanSearchData:messArr];
@@ -854,13 +888,20 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     return mutA.copy;
 }
 
+- (IBAction)lookStatic:(id)sender {
+    StatisticNumberVC *numVc = [StatisticNumberVC new];
+    [self.navigationController pushViewController:numVc animated:YES];
+}
+
 - (IBAction)lookOrder:(id)sender {
     if (self.isEdit) {
         [self.navigationController popViewControllerAnimated:YES];
         return;
     }
-    ConfirmOrderVC *orderVC = [ConfirmOrderVC new];
-    [self.navigationController pushViewController:orderVC animated:YES];
+    ConfirmOrderCollectionVC *order = [ConfirmOrderCollectionVC new];
+    [self.navigationController pushViewController:order animated:YES];
+//    ConfirmOrderVC *orderVC = [ConfirmOrderVC new];
+//    [self.navigationController pushViewController:orderVC animated:YES];
 }
 #pragma mark -- 提交订单
 - (IBAction)addOrder:(id)sender {
@@ -919,6 +960,10 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
 }
 
 - (void)addOrderWithDict:(NSMutableDictionary *)params{
+    if (self.isError) {
+        [MBProgressHUD showError:@"没有此款号"];
+        return;
+    }
     NSString *detail;
     if (self.isEdit==1) {
         detail = @"OrderCurrentEditModelItemForDefaultDo";
@@ -928,6 +973,13 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
     }else{
         detail = @"OrderCurrentDoModelItemForDefaultDo";
         params[@"modelPurityId"] = @(self.colorInfo.id);
+        NSArray *values = [[FMDataTool sharedDataBase]getAllSelDriInfo];
+        NSMutableArray *mutA = [NSMutableArray new];
+        for (SetDriInfo *info in values) {
+            [mutA addObject:info.scope];
+        }
+        self.rangeArr = values;
+        params[@"Ranges"] = [StrWithIntTool strWithArr:mutA With:@","];
     }
     NSString *regiUrl = [NSString stringWithFormat:@"%@%@",baseUrl,detail];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
@@ -961,12 +1013,25 @@ UITableViewDataSource,MWPhotoBrowserDelegate>
                 [self loadEditType:response.data];
                 return;
             }
-            if ([YQObjectBool boolForObject:response.data]&&
-                [YQObjectBool boolForObject:response.data[@"waitOrderCount"]]) {
-                if (!self.isCus) {
+            if ([YQObjectBool boolForObject:response.data]) {
+                if ([YQObjectBool boolForObject:response.data[@"waitOrderCount"]]&&!self.isCus) {
                     App;
                     app.shopNum = [response.data[@"waitOrderCount"]intValue];
                     [OrderNumTool orderWithNum:app.shopNum andView:self.numLab];
+                }
+                if ([YQObjectBool boolForObject:response.data[@"range"]]) {
+                    NSArray *arr = [StaticNumInfo mj_objectArrayWithKeyValuesArray:
+                                    response.data[@"range"]];
+                    NSMutableArray *mut = @[].mutableCopy;
+                    for (int i=0; i<arr.count; i++) {
+                        StaticNumInfo *info = arr[i];
+                        SetDriInfo *sInfo = self.rangeArr[i];
+                        if (![info.count isEqualToString:@"0"]&&!([info.count intValue]<[sInfo.number intValue])) {
+                            [mut addObject:[NSString stringWithFormat:@"%@已经够了",sInfo.scope]];
+                        }
+                    }
+                    [MBProgressHUD showDetail:[StrWithIntTool strWithArr:mut With:@","]];
+                    return;
                 }
             }
             [MBProgressHUD showSuccess:@"添加订单成功"];

@@ -24,7 +24,7 @@
     hud.removeFromSuperViewOnHide = YES;
     
     // 1秒之后再消失
-    [hud hide:YES afterDelay:1];
+    [hud hide:YES afterDelay:1.5];
 }
 
 #pragma mark 显示错误信息
@@ -55,6 +55,28 @@
     // 1秒之后再消失
     [hud hide:YES afterDelay:1.5];
     return hud;
+}
+#pragma mark 显示多行信息
++ (MBProgressHUD *)showDetail:(NSString *)text toView:(UIView *)view {
+    if (view == nil) view = [[UIApplication sharedApplication].windows firstObject];
+    // 快速显示一个提示信息
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
+    hud.detailsLabelText = text;
+    hud.mode = MBProgressHUDModeText;
+    // 隐藏时候从父控件中移除
+    hud.removeFromSuperViewOnHide = YES;
+    
+    // YES代表需要蒙版效果
+    //    hud.dimBackground = YES;
+    
+    // 5秒之后再消失
+    [hud hide:YES afterDelay:5.0];
+    return hud;
+}
+
++ (void)showDetail:(NSString *)detail
+{
+    [self showDetail:detail toView:nil];
 }
 
 + (void)showSuccess:(NSString *)success

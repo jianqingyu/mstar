@@ -9,5 +9,5 @@
 #import "BaseViewController.h"
 
 @interface QuickScanOrderVC : BaseViewController
-@property (nonatomic, copy)NSString *scanCode;
+
 @end

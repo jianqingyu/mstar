@@ -21,6 +21,7 @@
 #import "Reachability.h"
 #import "UIWindow+Extension.h"
 #import <AlipaySDK/AlipaySDK.h>
+#import "AppOpenTextTool.h"
 
 @interface AppDelegate ()<WXApiDelegate,JPUSHRegisterDelegate>{
     Reachability *hostReach;
@@ -66,7 +67,7 @@
 
 - (void)addNetNotification{
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reachabilityChanged:)
+             selector:@selector(reachabilityChanged:)
                                                  name: kReachabilityChangedNotification object: nil];
     hostReach = [Reachability reachabilityWithHostName:@"www.google.com"];
     [hostReach startNotifier];
@@ -120,6 +121,7 @@
             }
         }];
     }
+    [AppOpenTextTool openTextWith:url];
 }
 
 - (void)onResp:(BaseResp*)resp{
@@ -159,10 +161,11 @@
     if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         [JPUSHService handleRemoteNotification:userInfo];
     }
-    completionHandler(UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以选择设置
+    completionHandler(UNNotificationPresentationOptionAlert);
+    // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以选择设置
 }
 // iOS 10 Support
-- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
     // Required
     NSDictionary * userInfo = response.notification.request.content.userInfo;
     if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {

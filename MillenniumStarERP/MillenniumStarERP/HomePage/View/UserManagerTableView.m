@@ -14,6 +14,7 @@
 #import "ProductionOrderVC.h"
 #import "StausCount.h"
 #import "SettlementListVC.h"
+#import "ConfirmOrderCollectionVC.h"
 @interface UserManagerTableView()<UITableViewDataSource,UITableViewDelegate>{
     int curPage;
     int totalCount;//商品总数量
@@ -252,10 +253,13 @@
 #pragma mark -- 点击Cell进入列表
 //待审核
 - (void)loadListVcWithIndex:(NSIndexPath *)indexPath{
-    ConfirmOrderVC *oDetailVc = [ConfirmOrderVC new];
+    ConfirmOrderCollectionVC *oDetailVc = [ConfirmOrderCollectionVC new];
+    //    ConfirmOrderVC *orderVC = [ConfirmOrderVC new];
     oDetailVc.boolBack = ^(BOOL isDel){
         if (isDel) {
-            [_dataArray removeObjectAtIndex:indexPath.section];
+            if (_dataArray.count>indexPath.section) {
+                [_dataArray removeObjectAtIndex:indexPath.section];
+            }
         }else{
             [self updataIndexOrder:indexPath.section];
         }

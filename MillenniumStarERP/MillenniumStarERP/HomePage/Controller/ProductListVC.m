@@ -27,6 +27,7 @@
 #import "CustomTitleView.h"
 #import "IQKeyboardManager.h"
 #import "KeyBoardView.h"
+#import "ConfirmOrderCollectionVC.h"
 @interface ProductListVC ()<UICollectionViewDataSource,UICollectionViewDelegate,
                              UITextFieldDelegate,CDRTranslucentSideBarDelegate,
                            KeyBoardViewDelegate>{
@@ -58,9 +59,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    pageCount = 30;
     [self setBaseAllViewData];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:)
         name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+}
+
+- (void)orientChange:(NSNotification *)notification{
+    [self.searchFie resignFirstResponder];
+    self.popClassView.frame = CGRectMake(0, 40, SDevWidth, SDevHeight-40);
+    [self.rightCollection reloadData];
 }
 //开启刷新
 - (void)setIsRefresh:(BOOL)isRefresh{
@@ -68,12 +76,6 @@
         _isRefresh = isRefresh;
         [self.rightCollection.mj_header beginRefreshing];
     }
-}
-
-- (void)orientChange:(NSNotification *)notification{
-    [self.searchFie resignFirstResponder];
-    self.popClassView.frame = CGRectMake(0, 40, SDevWidth, SDevHeight-40);
-    [self.rightCollection reloadData];
 }
 
 - (void)setBaseAllViewData{
@@ -104,7 +106,6 @@
     App;
     [OrderNumTool orderWithNum:app.shopNum andView:self.orderNumLab];
 }
-
 #pragma mark -- 创建collectionView
 - (void)setProTableView{
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc]init];
@@ -254,7 +255,7 @@
 - (void)easyClick:(UIButton *)btn{
     btn.selected = !btn.selected;
     self.isDefultSea = btn.selected;
-    NSString *mess = btn.selected?@"可以不输全款号模糊查找":@"必须精确输入款号查找";
+    NSString *mess = !btn.selected?@"可以不输全款号模糊查找":@"必须精确输入款号查找";
     [MBProgressHUD showSuccess:mess];
 }
 
@@ -279,7 +280,7 @@
     [_searchFie resignFirstResponder];
     NSMutableArray *addArr = @[].mutableCopy;
     if (_searchFie.text.length>0) {
-        if (!self.isDefultSea) {
+        if (self.isDefultSea) {
             [self scanMessageSearch:_searchFie.text];
             return;
         }
@@ -410,8 +411,10 @@
 }
 
 - (IBAction)currentOrder:(id)sender {
-    ConfirmOrderVC *orderVC = [ConfirmOrderVC new];
-    [self.navigationController pushViewController:orderVC animated:YES];
+    ConfirmOrderCollectionVC *newOrder = [ConfirmOrderCollectionVC new];
+    [self.navigationController pushViewController:newOrder animated:YES];
+//    ConfirmOrderVC *orderVC = [ConfirmOrderVC new];
+//    [self.navigationController pushViewController:orderVC animated:YES];
 }
 
 - (IBAction)historyOrder:(id)sender {
@@ -505,6 +508,7 @@
     if (_keyWord.length>0) {
         params[@"keyword"] = _keyWord;
     }
+    params[@"pageNum"] = @(pageCount);
     params[@"cpage"] = @(curPage);
     if (self.backDict.count>0) {
         [params addEntriesFromDictionary:self.backDict];
@@ -609,8 +613,11 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout*)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat rowH = self.isShowPrice?64:33;
-    int num = SDevWidth>SDevHeight?4:2;
+    CGFloat rowH = self.isShowPrice?50:26;
+    int num = SDevWidth>SDevHeight?5:3;
+    if (!IsPhone) {
+        num = SDevWidth>SDevHeight?6:5;
+    }
     CGFloat width = (SDevWidth-(num+1)*5)/num;
     return CGSizeMake(width, width+rowH);
 }
@@ -631,9 +638,9 @@
                                       object:nil userInfo:@{UserInfoRingName:info}];
         }
         NewCustomProDetailVC *new = [NewCustomProDetailVC new];
-        new.isCus = self.isCus;
+        new.isCus   = self.isCus;
         new.seaInfo = self.driInfo;
-        new.proId = info.id;
+        new.proId   = info.id;
         [self.navigationController pushViewController:new animated:YES];
     }else{
         CustomProDetailVC *customDeVC = [CustomProDetailVC new];

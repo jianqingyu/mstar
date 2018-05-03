@@ -14,6 +14,7 @@
 @interface CusTomLoginView()<UITextFieldDelegate>
 @property (weak, nonatomic) UITextField *codeField;
 @property (weak, nonatomic) UIView *loginView;
+@property (weak, nonatomic) UIView *codeView;
 @property (weak, nonatomic) UIButton *loginBtn;
 @property (weak, nonatomic) ZBButten *getCodeBtn;
 @property (weak, nonatomic) UIImageView *backImg;
@@ -121,6 +122,8 @@
     [self creatListView:loginV isC:1];
     [self creatListView:loginV isC:2];
     UIView *listView3 = [self creatListView:loginV isC:3];
+    listView3.hidden = [AccountTool account].tokenKey.length>0;
+    self.codeView = listView3;
     
     UIButton *loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     loginBtn.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -259,7 +262,7 @@
         make.right.equalTo(view).offset(0);
         make.height.mas_equalTo(@0.8);
     }];
-    return fie;
+    return view;
 }
 
 - (UIView *)creatLineChange:(UIView *)view{
@@ -328,10 +331,6 @@
 }
 //登录login
 - (void)loginHome{
-    if (self.codeField.text.length==0){
-        [MBProgressHUD showMessage:@"请输入验证码"];
-        return;
-    }
     if (![NetworkDetermineTool isExistenceNet]) {
         [MBProgressHUD showMessage:@"没有网络"];
         return;
@@ -345,6 +344,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"userName"] = self.nameFie.text;
     params[@"password"] = self.passWordFie.text;
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"phoneCode"] = self.codeField.text;
     params[@"jRegid"] = reId;
     params[@"system"] = @"iOS";
@@ -363,8 +363,15 @@
                 self.btnBack(1);
             }
         }else{
-            NSString *str = response.message?response.message:@"登录失败";
-            SHOWALERTVIEW(str);
+            if ([response.message isEqualToString:@"noVerifyCode"]) {
+                SHOWALERTVIEW(@"请输入验证码");
+                [UIView animateWithDuration:0.5 animations:^{
+                    self.codeView.hidden = NO;
+                }];
+            }else{
+                NSString *str = response.message?response.message:@"登录失败";
+                SHOWALERTVIEW(str);
+            }
         }
     } requestURL:logUrl params:params];
 }

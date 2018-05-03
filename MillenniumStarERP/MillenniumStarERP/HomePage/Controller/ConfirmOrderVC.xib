@@ -13,9 +13,12 @@
             <connections>
                 <outlet property="allBtn" destination="PO6-eS-L8j" id="w9S-2k-eLG"/>
                 <outlet property="bottomView" destination="kEy-eF-dz8" id="LKq-XT-mg3"/>
+                <outlet property="clearBtn" destination="vka-W6-d37" id="sZL-Gf-PCp"/>
                 <outlet property="conBtn" destination="BRQ-i5-vYF" id="jFk-Se-lQr"/>
+                <outlet property="deleBtn" destination="g3n-Mp-IPq" id="0AA-MH-1kL"/>
                 <outlet property="deposLab" destination="sfA-rF-Vtz" id="cFo-tF-oXY"/>
                 <outlet property="depositBtn" destination="vCh-oB-GPx" id="INq-7G-O1R"/>
+                <outlet property="editView" destination="Sau-Zn-POK" id="JaW-fV-lCY"/>
                 <outlet property="priceLab" destination="Mx2-xI-2PL" id="StB-BA-nX9"/>
                 <outlet property="secondView" destination="ZuT-UA-CIP" id="RRE-Mq-AHh"/>
                 <outlet property="totleLab" destination="QBT-PV-lJx" id="Jwn-nP-frE"/>
@@ -24,14 +27,14 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jWV-I2-XAz">
-                    <rect key="frame" x="0.0" y="518" width="320" height="50"/>
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BRQ-i5-vYF">
-                            <rect key="frame" x="230" y="10" width="80" height="30"/>
+                            <rect key="frame" x="285" y="10" width="80" height="30"/>
                             <color key="backgroundColor" red="0.91764705879999997" green="0.058823529409999999" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="ZgC-lE-Xc4"/>
@@ -47,7 +50,7 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kEy-eF-dz8">
-                            <rect key="frame" x="0.0" y="0.0" width="230" height="50"/>
+                            <rect key="frame" x="0.0" y="0.0" width="285" height="50"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PO6-eS-L8j">
                                     <rect key="frame" x="0.0" y="8" width="76" height="35"/>
@@ -83,10 +86,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZuT-UA-CIP">
-                            <rect key="frame" x="0.0" y="0.0" width="225" height="50"/>
+                            <rect key="frame" x="0.0" y="0.0" width="280" height="50"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vCh-oB-GPx">
-                                    <rect key="frame" x="145" y="10" width="80" height="30"/>
+                                    <rect key="frame" x="200" y="10" width="80" height="30"/>
                                     <color key="backgroundColor" red="0.91764705879999997" green="0.058823529409999999" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="pdZ-vk-wrm"/>
@@ -99,13 +102,13 @@
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="定金:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sfA-rF-Vtz">
-                                    <rect key="frame" x="10" y="27" width="130" height="15"/>
+                                    <rect key="frame" x="10" y="27" width="185" height="15"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" red="0.91764705879999997" green="0.058823529409999999" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="参考总价:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QBT-PV-lJx">
-                                    <rect key="frame" x="10" y="8" width="130" height="15"/>
+                                    <rect key="frame" x="10" y="8" width="185" height="15"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" red="0.91764705879999997" green="0.058823529409999999" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
@@ -122,6 +125,49 @@
                                 <constraint firstAttribute="bottom" secondItem="sfA-rF-Vtz" secondAttribute="bottom" constant="8" id="vb7-au-ZfF"/>
                             </constraints>
                         </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sau-Zn-POK">
+                            <rect key="frame" x="199" y="8" width="166" height="34"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g3n-Mp-IPq">
+                                    <rect key="frame" x="86" y="2" width="80" height="30"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="DUt-Hn-bVM"/>
+                                        <constraint firstAttribute="width" constant="80" id="qBt-zN-x83"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <state key="normal" title="删除">
+                                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="deleAllClick:" destination="-1" eventType="touchUpInside" id="Rms-6y-EVP"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vka-W6-d37">
+                                    <rect key="frame" x="0.0" y="2" width="80" height="30"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="80" id="3Ij-lM-WCN"/>
+                                        <constraint firstAttribute="height" constant="30" id="Pkc-s5-7EY"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <state key="normal" title="一键清空">
+                                        <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="clearAllClick:" destination="-1" eventType="touchUpInside" id="0Nw-dY-C1I"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="34" id="WrN-vc-9SV"/>
+                                <constraint firstAttribute="width" constant="166" id="XMO-Eg-hOv"/>
+                                <constraint firstItem="vka-W6-d37" firstAttribute="centerY" secondItem="Sau-Zn-POK" secondAttribute="centerY" id="fwc-o7-evv"/>
+                                <constraint firstItem="g3n-Mp-IPq" firstAttribute="centerY" secondItem="Sau-Zn-POK" secondAttribute="centerY" id="nJ2-zb-z07"/>
+                                <constraint firstAttribute="trailing" secondItem="g3n-Mp-IPq" secondAttribute="trailing" id="out-GI-mBK"/>
+                                <constraint firstItem="vka-W6-d37" firstAttribute="leading" secondItem="Sau-Zn-POK" secondAttribute="leading" id="sKK-b6-g35"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -132,10 +178,12 @@
                         <constraint firstItem="BRQ-i5-vYF" firstAttribute="leading" secondItem="kEy-eF-dz8" secondAttribute="trailing" id="FNg-gF-NRu"/>
                         <constraint firstItem="BRQ-i5-vYF" firstAttribute="leading" secondItem="ZuT-UA-CIP" secondAttribute="trailing" constant="5" id="HRW-na-SRM"/>
                         <constraint firstItem="kEy-eF-dz8" firstAttribute="top" secondItem="jWV-I2-XAz" secondAttribute="top" id="KPv-6u-0CT"/>
+                        <constraint firstItem="Sau-Zn-POK" firstAttribute="centerY" secondItem="jWV-I2-XAz" secondAttribute="centerY" id="Qg1-MT-H3M"/>
                         <constraint firstItem="ZuT-UA-CIP" firstAttribute="leading" secondItem="jWV-I2-XAz" secondAttribute="leading" id="Y9R-aS-XlJ"/>
                         <constraint firstAttribute="trailing" secondItem="BRQ-i5-vYF" secondAttribute="trailing" constant="10" id="gqA-Tn-eff"/>
                         <constraint firstAttribute="bottom" secondItem="ZuT-UA-CIP" secondAttribute="bottom" id="mqM-hF-oiQ"/>
                         <constraint firstAttribute="height" constant="50" id="yIJ-Rm-c6O"/>
+                        <constraint firstAttribute="trailing" secondItem="Sau-Zn-POK" secondAttribute="trailing" constant="10" id="zlT-cV-J9U"/>
                     </constraints>
                 </view>
             </subviews>
@@ -145,7 +193,7 @@
                 <constraint firstItem="jWV-I2-XAz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ORn-sB-6g5"/>
                 <constraint firstAttribute="bottom" secondItem="jWV-I2-XAz" secondAttribute="bottom" id="ZIh-e7-Cfb"/>
             </constraints>
-            <point key="canvasLocation" x="441" y="248"/>
+            <point key="canvasLocation" x="440.5" y="247.5"/>
         </view>
     </objects>
     <resources>

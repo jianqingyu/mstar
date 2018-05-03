@@ -10,5 +10,6 @@
 static NSString * const ROOT_URL = @"http://www.citypasswifi.com/api/";
 @interface RequestClient : AFHTTPSessionManager
 + (instancetype)sharedClient;
++ (instancetype)sharedPostClient;
 - (BOOL)checkNetwork:(AFHTTPSessionManager*)manager;
 @end

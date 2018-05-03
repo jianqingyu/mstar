@@ -31,7 +31,11 @@
         btn.selected = _listInfo.isSel;
         [self.picImg sd_setImageWithURL:[ NSURL URLWithString:_listInfo.pic] placeholderImage:DefaultImage];
         self.titleLab.text = _listInfo.title;
-        self.baseLab.text = _listInfo.baseInfo;
+        self.baseLab.adjustsFontSizeToFitWidth = YES;
+        if (_listInfo.purityName.length>0) {
+            self.baseLab.text = [NSString stringWithFormat:@"成色:%@",
+                                   _listInfo.purityName];
+        }
         self.priceLab.hidden = [[AccountTool account].isNoShow intValue];
         self.priceLab.text = [OrderNumTool strWithPrice:_listInfo.price];
         self.numLab.text = [NSString stringWithFormat:@"%@件",_listInfo.number];
@@ -55,7 +59,9 @@
 
 - (IBAction)allClick:(UIButton *)sender {
     NSInteger index = [self.allBtns indexOfObject:sender];
-    [self.delegate btnCellClick:self andIndex:index];
+    if ([self.delegate respondsToSelector:@selector(btnCellClick:andIndex:)]) {
+        [self.delegate btnCellClick:self andIndex:index];
+    }
 }
 
 @end

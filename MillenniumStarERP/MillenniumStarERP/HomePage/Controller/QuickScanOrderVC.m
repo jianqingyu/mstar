@@ -8,28 +8,39 @@
 
 #import "QuickScanOrderVC.h"
 #import "SaveColorData.h"
+#import "ScanViewController.h"
 #import "HYBLoopScrollView.h"
 #import "DetailModel.h"
 #import "QuickScanTableCell.h"
 #import "ConfirmOrderVC.h"
+#import "QuickScanListCell.h"
+#import "SetDriViewController.h"
+#import "StatisticNumberVC.h"
+#import "QuickScanNoteCell.h"
+#import "ConfirmOrderCollectionVC.h"
 @interface QuickScanOrderVC ()<UINavigationControllerDelegate,UITableViewDataSource,
                                UITableViewDelegate,MWPhotoBrowserDelegate>
-@property (nonatomic,  weak)UITableView *tableView;
+@property (nonatomic,  weak) UITableView *tableView;
 @property (nonatomic,  weak) IBOutlet UIButton *lookBtn;
 @property (nonatomic,  weak) IBOutlet UIButton *addBtn;
 @property (weak,  nonatomic) IBOutlet UIButton *cancelBtn;
+@property (weak,  nonatomic) IBOutlet UIButton *staticBtn;
 @property (nonatomic,  weak) IBOutlet UILabel *numLab;
-@property (nonatomic,  copy)NSArray *IDarray;
-@property (nonatomic,  copy)NSArray *headImg;
-@property (nonatomic,  copy)NSArray *photos;
-@property (nonatomic,  copy)NSArray *colours;
-@property (nonatomic,  copy)NSArray *handArr;
-@property (nonatomic,  copy)NSString *handStr;
-@property (nonatomic,  copy)NSString *proNum;
-@property (nonatomic,assign)float wid;
-@property (nonatomic,strong)UIView *hView;
-@property (nonatomic,strong)DetailModel *modelInfo;
-@property (nonatomic,strong)DetailTypeInfo *colorInfo;
+@property (nonatomic,  copy) NSArray *IDarray;
+@property (nonatomic,  copy) NSArray *headImg;
+@property (nonatomic,  copy) NSArray *photos;
+@property (nonatomic,  copy) NSArray *colours;
+@property (nonatomic,  copy) NSArray *handArr;
+@property (nonatomic,  copy) NSString *handStr;
+@property (nonatomic,  copy) NSString *proNum;
+@property (nonatomic,  copy) NSString *remarks;
+
+@property (nonatomic,assign) float wid;
+@property (nonatomic,assign) BOOL isError;
+@property (nonatomic,strong) UIView *hView;
+@property (nonatomic,  weak) UIButton *setBtn;
+@property (nonatomic,strong) DetailModel *modelInfo;
+@property (nonatomic,strong) DetailTypeInfo *colorInfo;
 @end
 
 @implementation QuickScanOrderVC
@@ -37,18 +48,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupBaseView];
+    [self loadScanView];
 }
 
 - (void)setupBaseView{
     self.wid = IsPhone?0.5:0.65;
     self.proNum = @"1";
     [self setBaseTableView];
-    [self setupQuickData];
+    [self changeTableHeadView];
     [self creatNaviBtn];
     [self setupLoadColor];
     [self.numLab setLayerWithW:8 andColor:BordColor andBackW:0.001];
     [self.lookBtn setLayerWithW:5 andColor:BordColor andBackW:0.5];
     [self.cancelBtn setLayerWithW:5 andColor:BordColor andBackW:0.5];
+    [self.staticBtn setLayerWithW:5 andColor:BordColor andBackW:0.5];
     [self.addBtn setLayerWithW:5 andColor:BordColor andBackW:0.001];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
@@ -64,6 +77,36 @@
 
 - (void)backClick{
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+//- (void)creatSetDriBtn{
+//    if (!self.hView) {
+//        return;
+//    }
+//    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    btn.backgroundColor = [UIColor clearColor];
+//    [btn addTarget:self action:@selector(driClick) forControlEvents:UIControlEventTouchUpInside];
+//    [btn setImage:[UIImage imageNamed:@"icon_set"] forState:UIControlStateNormal];
+//    [self.hView addSubview:btn];
+//    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.hView).offset(20);
+//        make.right.equalTo(self.hView).offset(-10);
+//        make.size.mas_equalTo(CGSizeMake(54, 54));
+//    }];
+////    self.setBtn = btn;
+//}
+
+//- (void)driClick{
+//    SetDriViewController *driVc = [SetDriViewController new];
+//    [self.navigationController pushViewController:driVc animated:YES];
+//}
+
+- (void)loadScanView{
+    ScanViewController *scanVc = [ScanViewController new];
+    scanVc.scanBack = ^(id message) {
+        [self setupQuickData:message];
+    };
+    [self.navigationController pushViewController:scanVc animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -106,9 +149,9 @@
     table.bounces = NO;
     table.delegate = self;
     table.dataSource = self;
-    table.estimatedRowHeight = 120;
+    table.estimatedRowHeight = 0;
     table.rowHeight = UITableViewAutomaticDimension;
-    table.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    table.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:table];
     CGFloat headF = 0;
     if (!IsPhone){
@@ -129,20 +172,17 @@
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:frame];
 }
 
-- (void)setupQuickData{
+- (void)setupQuickData:(NSString *)scanCode{
     NSString *regiUrl = [NSString stringWithFormat:
                          @"%@ModelDetailPageGetInfoByModelNumSimplify",baseUrl];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
-    params[@"modelNum"] = self.scanCode;
+    params[@"modelNum"] = scanCode;
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
             [self setDetailDataWithDic:response.data];
         }else{
             [MBProgressHUD showError:response.message];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.navigationController popViewControllerAnimated:YES];
-            });
         }
     } requestURL:regiUrl params:params];
 }
@@ -187,10 +227,27 @@
                                 data[@"model"]];
         self.modelInfo = modelIn;
         [self creatCusTomHeadView];
+        self.remarks = modelIn.remarks;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
     }
+}
+#pragma mark -- loadData 初始化数据
+- (void)scanSearchData:(NSString *)keyword{
+    NSString *regiUrl = [NSString stringWithFormat:@"%@ModelDetailPageForSCanCode",baseUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"tokenKey"] = [AccountTool account].tokenKey;
+    params[@"keyword"] = keyword;
+    [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
+        if ([response.error intValue]==0) {
+            self.isError = NO;
+            [self setDetailDataWithDic:response.data];
+        }else{
+            self.isError = YES;
+            [MBProgressHUD showError:response.message];
+        }
+    } requestURL:regiUrl params:params];
 }
 #pragma mark - 初始化图片
 - (void)creatCusTomHeadView{
@@ -242,14 +299,16 @@
     CGFloat wid = headView.width;
     CGFloat height = headView.height;
     CGRect frame = CGRectMake(0, 0, wid, height);
-    HYBLoopScrollView *loop = [HYBLoopScrollView loopScrollViewWithFrame:
-                               frame imageUrls:headArr];
-    loop.timeInterval = 6.0;
-    loop.didSelectItemBlock = ^(NSInteger atIndex,HYBLoadImageView  *sender){
-        [self didImageWithIndex:atIndex];
-    };
-    loop.alignment = kPageControlAlignRight;
-    [headView addSubview:loop];
+    if (headArr.count>0) {
+        HYBLoopScrollView *loop = [HYBLoopScrollView loopScrollViewWithFrame:
+                                   frame imageUrls:headArr];
+        loop.timeInterval = 6.0;
+        loop.didSelectItemBlock = ^(NSInteger atIndex,HYBLoadImageView  *sender){
+            [self didImageWithIndex:atIndex];
+        };
+        loop.alignment = kPageControlAlignRight;
+        [headView addSubview:loop];
+    }
     self.hView = headView;
     if (isHead) {
         self.tableView.tableHeaderView = self.hView;
@@ -259,6 +318,7 @@
         [self.view addSubview:self.hView];
         [self.view sendSubviewToBack:self.hView];
     }
+//    [self creatSetDriBtn];
 }
 
 - (void)didImageWithIndex:(NSInteger)index{
@@ -295,14 +355,19 @@
 
 #pragma mark -tableviewDataSource-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (section==0) {
-        return 1;
+    return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section==0) {
+        return 105;
     }else{
-        return self.colours.count;
+        UITableViewCell *cell = [self tableView:self.tableView cellForRowAtIndexPath:indexPath];
+        return cell.frame.size.height;
     }
 }
 
@@ -317,29 +382,36 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section==0) {
         QuickScanTableCell *scanCell = [QuickScanTableCell cellWithTableView:tableView];
-        scanCell.MessBack = ^(BOOL isSel,NSString *messArr){
-            self.proNum = messArr;
+        scanCell.MessBack = ^(BOOL isSel,NSString *message){
+            if (isSel) {
+                self.proNum = message;
+            }else{
+                if ([message isEqualToString:@"扫描"]) {
+                    [self loadScanView];
+                }else{
+                    [self scanSearchData:message];
+                }
+            }
         };
-        scanCell.colur = self.colorInfo.title;
+        scanCell.colur     = self.colorInfo.title;
         scanCell.modelInfo = self.modelInfo;
-        scanCell.messArr = self.proNum;
+        scanCell.messArr   = self.proNum;
         return scanCell;
+    }else if(indexPath.section==1){
+        QuickScanListCell *listCell = [QuickScanListCell cellWithTableView:tableView];
+        listCell.back = ^(id model) {
+            self.colorInfo = model;
+            SaveColorData *saveColor = [SaveColorData shared];
+            saveColor.colorInfo = model;
+            NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:0];
+            [self.tableView reloadRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationNone];
+        };
+        listCell.listArr = self.colours;
+        return listCell;
     }else{
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"textCell"];
-        if (!cell) {
-            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"textCell"];
-            cell.textLabel.font = [UIFont systemFontOfSize:16];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        DetailTypeInfo *info = self.colours[indexPath.row];
-        if (info.isSel) {
-            cell.backgroundColor = DefaultColor;
-        }else{
-            cell.backgroundColor = [UIColor whiteColor];
-        }
-        cell.textLabel.text = info.title;
-        return cell;
+        QuickScanNoteCell *noteCell = [QuickScanNoteCell cellWithTableView:tableView];
+        noteCell.note = self.remarks;
+        return noteCell;
     }
 }
 
@@ -350,23 +422,30 @@
         }
         DetailTypeInfo *info = self.colours[indexPath.row];
         info.isSel = YES;
-        self.colorInfo = info;
-        SaveColorData *saveColor = [SaveColorData shared];
-        saveColor.colorInfo = info;
-        [self.tableView reloadData];
+        
     }
 }
 
 - (IBAction)lookClick:(id)sender {
-    ConfirmOrderVC *orderVC = [ConfirmOrderVC new];
-    [self.navigationController pushViewController:orderVC animated:YES];
+    ConfirmOrderCollectionVC *newOrder = [ConfirmOrderCollectionVC new];
+    [self.navigationController pushViewController:newOrder animated:YES];
+    //    ConfirmOrderVC *orderVC = [ConfirmOrderVC new];
+    //    [self.navigationController pushViewController:orderVC animated:YES];
+}
+- (IBAction)statisticClick:(id)sender {
+    StatisticNumberVC *numVc = [StatisticNumberVC new];
+    [self.navigationController pushViewController:numVc animated:YES];
 }
 
 - (IBAction)cancelClick:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self loadScanView];
 }
 
 - (IBAction)addClick:(id)sender {
+    if (!self.modelInfo) {
+        [MBProgressHUD showError:@"请输入款号或者扫描"];
+        return;
+    }
     if ([self.proNum length]==0) {
         [MBProgressHUD showError:@"请选择件数"];
         return;
@@ -380,7 +459,8 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"tokenKey"] = [AccountTool account].tokenKey;
     params[@"productId"] = self.modelInfo.id;
-    params[@"number"] = self.proNum;
+    params[@"number"]    = self.proNum;
+    params[@"remarks"]   = self.remarks;
     params[@"modelPurityId"] = @(self.colorInfo.id);
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
@@ -391,7 +471,7 @@
                 app.shopNum = [response.data[@"waitOrderCount"]intValue];
                 [OrderNumTool orderWithNum:app.shopNum andView:self.numLab];
             }
-            [self.navigationController popViewControllerAnimated:YES];
+            [self loadScanView];
         }else{
             [MBProgressHUD showError:response.message];
         }

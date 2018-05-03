@@ -34,7 +34,8 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
+//    self.openUrl = @"https://itunes.apple.com/cn/app/千禧之星珠宝/id1227342902?mt=8";
+    self.openUrl = @"https://www.pgyer.com/cDyd";
     NSString *name = [AccountTool account].userName;
     NSString *password = [AccountTool account].password;
     self.loginView.nameFie.text = name;
@@ -51,6 +52,7 @@
     loginV.btnBack = ^(int staue){
         if (staue==1) {
             if (_noLogin) {
+                _noLogin = NO;
                 [self dismissViewControllerAnimated:YES completion:nil];
                 if (self.back) {
                     self.back(YES);

@@ -1,0 +1,18 @@
+//
+//  UserGoldCollCell.m
+//  MillenniumStarERP
+//
+//  Created by 余建清 on 2018/4/24.
+//  Copyright © 2018年 com.millenniumStar. All rights reserved.
+//
+
+#import "UserGoldCollCell.h"
+
+@implementation UserGoldCollCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
+
+@end

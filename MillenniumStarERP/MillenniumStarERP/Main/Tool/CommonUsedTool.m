@@ -14,7 +14,8 @@
                Url:(NSString *)url {
     //1.请求管理者对象
     AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
-    mgr.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",
+    mgr.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:
+                                                     @"application/json",
                                                      @"text/html",
                                                      @"image/jpeg",
                                                      @"image/png",
@@ -28,20 +29,35 @@
     NSString *str = [formatter stringFromDate:[NSDate date]];
     NSString *fileName = [NSString stringWithFormat:@"%@.jpg", str];
     //3.发送请求
-    [mgr POST:url parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    [mgr POST:url parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         NSData *data = UIImageJPEGRepresentation(image, 0.5);
         [formData appendPartWithFileData:data name:@"attachment" fileName:fileName mimeType:@"image/jpg"];
-    } success:^(NSURLSessionDataTask *task, NSDictionary * responseObject) {
+    } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [MBProgressHUD showSuccess:responseObject[@"message"]];
         if (callback) {
             callback(responseObject,nil);
         }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [MBProgressHUD showError:@"保存头像失败"];
         if (callback) {
             callback(nil,error);
         }
     }];
+    //老方法废弃了
+//    [mgr POST:url parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+//        NSData *data = UIImageJPEGRepresentation(image, 0.5);
+//        [formData appendPartWithFileData:data name:@"attachment" fileName:fileName mimeType:@"image/jpg"];
+//    } success:^(NSURLSessionDataTask *task, NSDictionary * responseObject) {
+//        [MBProgressHUD showSuccess:responseObject[@"message"]];
+//        if (callback) {
+//            callback(responseObject,nil);
+//        }
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        [MBProgressHUD showError:@"保存头像失败"];
+//        if (callback) {
+//            callback(nil,error);
+//        }
+//    }];
 }
 
 @end

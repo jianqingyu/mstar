@@ -13,7 +13,7 @@
 - (id)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
-        self.placeholder = @"请输入搜索关键词";
+        self.placeholder = @"输入搜索";
         self.font = [UIFont systemFontOfSize:14];
         self.borderStyle = UITextBorderStyleRoundedRect;
         self.returnKeyType = UIReturnKeySearch;

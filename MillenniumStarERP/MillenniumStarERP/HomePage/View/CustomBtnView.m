@@ -40,7 +40,7 @@
     [lab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(self.mas_centerY);
         make.left.equalTo(self).offset(0);
-        make.right.equalTo(btn.mas_left).with.offset(-3);
+        make.right.equalTo(btn.mas_left).with.offset(0);
     }];
     self.titleLab = lab;
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];

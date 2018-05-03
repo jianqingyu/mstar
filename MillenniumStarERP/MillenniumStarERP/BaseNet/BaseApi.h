@@ -17,8 +17,12 @@
                params:(NSMutableDictionary*)params;
 /*通用接口
  */
-+ (void)getGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL params:(NSMutableDictionary*)params;
-+ (void)postGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL params:(NSMutableDictionary*)params;
++ (void)getGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString *)requestURL
+                params:(NSMutableDictionary*)params;
++ (void)postGeneralData:(REQUEST_CALLBACK)callback requestURL:(NSString *)requestURL
+                 params:(id)params;
++ (void)postJsonData:(REQUEST_CALLBACK)callback requestURL:(NSString*)requestURL
+              params:(id)params;
 /*
 取消所有队列
  */
