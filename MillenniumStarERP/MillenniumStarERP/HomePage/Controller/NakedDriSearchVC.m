@@ -316,6 +316,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NakedDriSeaTableCell *cell = [NakedDriSeaTableCell cellWithTableView:tableView];
+    cell.isEvenNum = (indexPath.row%2==0);
     cell.cusType = self.cusType;
     cell.isShow = self.isShow;
     cell.back = ^(BOOL isSel){

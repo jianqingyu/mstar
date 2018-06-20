@@ -9,14 +9,13 @@
 #import "UserTodayGoldVC.h"
 #import "CustomDatePick.h"
 #import "UserGoldInfo.h"
+#import "NewPerCustomizeView.h"
 #import "UserGoldCollCell.h"
 @interface UserTodayGoldVC ()<UICollectionViewDataSource,UICollectionViewDelegate>
 @property (nonatomic,strong) CustomDatePick *datePickView;
 @property (nonatomic,strong) UICollectionView *rightView;
 @property (weak,  nonatomic) IBOutlet UIButton *dateBtn;
-@property (weak,  nonatomic) IBOutlet UILabel *lab1;
-@property (weak,  nonatomic) IBOutlet UILabel *lab2;
-@property (weak,  nonatomic) IBOutlet UILabel *lab3;
+@property (weak,  nonatomic) IBOutlet UIView *dateView;
 @property (nonatomic,  copy) NSString *dateStr;
 @property (nonatomic,  copy) NSArray *goldArr;
 @end
@@ -26,10 +25,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"今日金价";
-//    self.view.backgroundColor = DefaultColor;
 //    UIImage *image = [UIImage imageNamed:@"gold_bg"];
 //    self.view.layer.contents = (id)image.CGImage;
-    // 设置时间格式
+//     设置时间格式
+    [self.dateView setLayerWithW:3 andColor:BordColor andBackW:0.0001];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyy-MM-dd";
     self.dateStr = [formatter stringFromDate:[NSDate date]];
@@ -55,6 +54,7 @@
     self.rightView.backgroundColor = [UIColor clearColor];
     self.rightView.delegate = self;
     self.rightView.dataSource = self;
+    self.rightView.bounces = NO;
     [self.view addSubview:self.rightView];
     [self.rightView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(44);
@@ -101,12 +101,13 @@
     NSString *cellId = @"UserGoldCollCell";
     UserGoldCollCell *collcell = [collectionView
                    dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
+    [collcell setLayerWithW:3 andColor:[UIColor darkGrayColor] andBackW:0.5];
     UserGoldInfo *info;
     if (indexPath.row<self.goldArr.count) {
         info = self.goldArr[indexPath.row];
     }
-    NSString *str = [NSString stringWithFormat:@"%@  %0.1f/g",info.PurityName,info.UnitPrice];
-    collcell.colorLab.text = str;
+    collcell.colorLab.text = info.PurityName;
+    collcell.priLab.text = [NSString stringWithFormat:@"￥%0.1f/g",info.UnitPrice];
     return collcell;
 }
 
@@ -120,7 +121,7 @@
     CGFloat width = (SDevWidth-(num+1)*5)/num;
     return CGSizeMake(width, 44);
 }
-#pragma mark -- 日历选择
+#pragma mark -- 日历选择 --
 - (void)loadDatePick{
     CustomDatePick *datePick = [CustomDatePick creatCustomView];
     [self.view addSubview:datePick];

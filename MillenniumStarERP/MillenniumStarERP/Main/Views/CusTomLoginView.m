@@ -8,7 +8,7 @@
 
 #import "CusTomLoginView.h"
 #import "ZBButten.h"
-#import "SaveDataTool.h"
+#import "SaveUserInfo.h"
 #import "JPUSHService.h"
 #import "NetworkDetermineTool.h"
 @interface CusTomLoginView()<UITextFieldDelegate>
@@ -351,6 +351,8 @@
     NSString *logUrl = [NSString stringWithFormat:@"%@userLoginDo",baseUrl];
     [BaseApi getNoGeneralData:^(BaseResponse *response, NSError *error) {
         if (response !=nil&&[response.error intValue]==0) {
+            SaveUserInfo *user = [SaveUserInfo shared];
+            user.orderErpId = [response.data[@"orderErpId"]intValue];
             params[@"tokenKey"] = response.data[@"tokenKey"];
             params[@"isNoShow"] = [AccountTool account].isNoShow;
             params[@"isNoDriShow"] = [AccountTool account].isNoDriShow;

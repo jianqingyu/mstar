@@ -10,4 +10,5 @@
 
 @interface UserGoldCollCell : UICollectionViewCell
 @property (weak, nonatomic) IBOutlet UILabel *colorLab;
+@property (weak, nonatomic) IBOutlet UILabel *priLab;
 @end

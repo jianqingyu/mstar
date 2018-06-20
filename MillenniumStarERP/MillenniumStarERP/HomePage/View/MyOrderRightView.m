@@ -21,9 +21,11 @@
 #import "SearchOrderView.h"
 #import "SearchDateInfo.h"
 #import "ShowLoginViewTool.h"
-@interface MyOrderRightView()<UITextFieldDelegate,YQDropdownMenuDelagate,UITableViewDelegate,UITableViewDataSource>
+@interface MyOrderRightView()<UITextFieldDelegate,YQDropdownMenuDelagate,
+            UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet SearchOrderView *btnSeaView;
 @property (nonatomic,  weak) UITextField *searchFie;
+@property (weak, nonatomic) IBOutlet UITextField *textFie;
 @property (nonatomic,  weak) UIButton *titleBtn;
 @property (nonatomic,strong) CustomDatePick *datePickView;
 @property (nonatomic,  weak) CustomBtnView *btnView;
@@ -36,8 +38,6 @@
 @property (strong,nonatomic) IBOutletCollection(UIView) NSArray *dateViews;
 @property (strong,nonatomic) IBOutletCollection(UIButton) NSArray *dateBtns;
 @property (weak,  nonatomic) IBOutlet UIView *topBackView;
-@property (weak,  nonatomic) IBOutlet UITextField *textFie;
-@property (weak,  nonatomic) IBOutlet UIView *backFieView;
 @end
 @implementation MyOrderRightView
 
@@ -54,8 +54,12 @@
 - (void)setBaseView:(CGRect)frame{
     self.backgroundColor = DefaultColor;
     self.dict = [NSMutableDictionary new];
-    [self setBaseListBtnView];
-    [self.backFieView setLayerWithW:3 andColor:BordColor andBackW:0.5];
+//    [self setBaseListBtnView];
+//    [self.backFieView setLayerWithW:3 andColor:BordColor andBackW:0.5];
+    __weak __typeof(&*self)weakSelf = self;
+    self.btnSeaView.dateBack = ^(SearchDateInfo *info){
+        [weakSelf setBtnData:info.sdate and:info.edate];
+    };
     for (UIView *baV in self.dateViews) {
         baV.layer.cornerRadius = 3;
     }
@@ -96,12 +100,7 @@
         make.height.mas_equalTo(@30);
     }];
     _searchFie = titleFie;
-    
-    self.textFie.tag = 1082;
-    __weak __typeof(&*self)weakSelf = self;
-    self.btnSeaView.dateBack = ^(SearchDateInfo *info){
-        [weakSelf setBtnData:info.sdate and:info.edate];
-    };
+//    self.textFie.tag = 1082;
 }
 
 - (void)loadSearchData{
@@ -124,10 +123,15 @@
     ScreenDetailInfo *cInfo = arrBtn[0];
     self.dict[@"skeyid"] = @(sInfo.id);
     self.dict[@"sscopeid"] = @(cInfo.id);
-    [self setBtnData:dic[@"startDate"] and:dic[@"endDate"]];
     self.textArr = arr;
     [self creatSearchBtn:arrBtn];
     self.btnView.titleLab.text = sInfo.title;
+    for (SearchDateInfo *dateInfo in arrSea) {
+        dateInfo.isDefault = NO;
+    }
+    SearchDateInfo *curInfo = arrSea[1];
+    curInfo.isDefault = YES;
+    [self setBtnData:curInfo.sdate and:curInfo.edate];
     self.btnSeaView.arr = arrSea;
 }
 
@@ -141,7 +145,7 @@
 }
 
 - (void)creatSearchBtn:(NSArray *)arr{
-    CGRect frame = CGRectMake(0, 250,SDevWidth , 60);
+    CGRect frame = CGRectMake(0, 190+49,SDevWidth , 60);
     SearchHeadBtnView *head = [[SearchHeadBtnView alloc]initWithFrame:frame withArr:arr];
     frame.size.height = head.height;
     head.frame = frame;
@@ -259,7 +263,6 @@
     [self.datePickView.datePick setDate:[formatter dateFromString:str] animated:YES];
     self.datePickView.hidden = NO;
 }
-
 #pragma mark 客户选择
 - (IBAction)searchCustomer:(id)sender {
     [self.textFie resignFirstResponder];
@@ -338,7 +341,7 @@
         [SVProgressHUD dismiss];
     } requestURL:regiUrl params:params];
 }
-
+#pragma mark -- 确认搜索
 - (void)searchClick{
     [self.textFie resignFirstResponder];
     [self.searchFie resignFirstResponder];

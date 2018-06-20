@@ -256,7 +256,6 @@
     [self.datePickView.datePick setDate:[formatter dateFromString:str] animated:YES];
     self.datePickView.hidden = NO;
 }
-
 #pragma mark 客户选择
 - (IBAction)searchCustomer:(id)sender {
     [self.textFie resignFirstResponder];

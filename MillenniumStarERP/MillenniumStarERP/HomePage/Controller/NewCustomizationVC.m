@@ -33,7 +33,6 @@
 @property (nonatomic,  copy)NSArray *headImg;
 @property (nonatomic,  copy)NSArray *IDarray;
 @property (nonatomic,  copy)NSArray *customArr;
-@property (nonatomic,  copy)NSArray *puritys;
 @property (nonatomic,  copy)NSArray *dataNum;
 @property (nonatomic,  copy)NSArray *handArr;
 @property (nonatomic,  copy)NSString *handStr;
@@ -48,7 +47,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Design of style";
     [_bottomSureBtn setLayerWithW:0.0001 andColor:LineColor andBackW:0.5];
     self.height = 1000;
     self.numPer = 0.8;
@@ -149,7 +147,7 @@
         }
     } requestURL:netUrl params:params];
 }
-//删除单个部件返回数据
+// 删除单个部件返回数据
 - (void)loadDefalutData{
     self.chooseArr  = @[].mutableCopy;
     [SVProgressHUD show];
@@ -207,9 +205,6 @@
         self.dataNum = dic[@"modelpartCount"];
         self.chooseV.dataNum = self.dataNum;
     }
-    if ([YQObjectBool boolForObject:dic[@"modelPuritys"]]) {
-        self.puritys = dic[@"modelPuritys"];
-    }
     if ([YQObjectBool boolForObject:dic[@"handSizeData"]]) {
         NSMutableArray *mutA = [NSMutableArray new];
         for (NSString *title in dic[@"handSizeData"]) {
@@ -218,7 +213,7 @@
         self.handArr = mutA.copy;
     }
 }
-//搜索部件
+//点击搜索部件
 - (void)searchCusData{
     [SVProgressHUD show];
     self.customV.dataArr = @[];
@@ -232,7 +227,8 @@
     [BaseApi getGeneralData:^(BaseResponse *response, NSError *error) {
         if ([response.error intValue]==0) {
             if ([YQObjectBool boolForObject:response.data[@"list"]]) {
-                self.customArr = [NewCustomizationInfo mj_objectArrayWithKeyValuesArray:response.data[@"list"]];
+                self.customArr = [NewCustomizationInfo
+                                  mj_objectArrayWithKeyValuesArray:response.data[@"list"]];
                 self.customV.dataArr = self.customArr;
             }
         }

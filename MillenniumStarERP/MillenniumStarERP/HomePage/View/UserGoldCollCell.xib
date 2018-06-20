@@ -18,24 +18,40 @@
                 <rect key="frame" x="0.0" y="0.0" width="160" height="44"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FAy-en-QJ7">
+                        <rect key="frame" x="79.5" y="0.0" width="1" height="44"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="1" id="Txt-Z8-Ko4"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="金价" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e0e-7T-CzY">
+                        <rect key="frame" x="85.5" y="14" width="29" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="成色" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q69-d7-z4E">
-                        <rect key="frame" x="66" y="14" width="29" height="17"/>
+                        <rect key="frame" x="45.5" y="14" width="29" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
             </view>
-            <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Q69-d7-z4E" secondAttribute="trailing" constant="2" id="DRr-xE-Wqa"/>
-                <constraint firstItem="Q69-d7-z4E" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="2" id="ZZA-m4-Zo4"/>
-                <constraint firstItem="Q69-d7-z4E" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="ejq-8t-VOx"/>
-                <constraint firstItem="Q69-d7-z4E" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="rge-cr-i9h"/>
+                <constraint firstItem="Q69-d7-z4E" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="6J7-vb-fBN"/>
+                <constraint firstItem="FAy-en-QJ7" firstAttribute="leading" secondItem="Q69-d7-z4E" secondAttribute="trailing" constant="5" id="JMt-H4-BuR"/>
+                <constraint firstItem="FAy-en-QJ7" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="JjX-dW-MM5"/>
+                <constraint firstItem="e0e-7T-CzY" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="QDt-9o-XZO"/>
+                <constraint firstAttribute="bottom" secondItem="FAy-en-QJ7" secondAttribute="bottom" id="S4C-jo-P0U"/>
+                <constraint firstItem="e0e-7T-CzY" firstAttribute="leading" secondItem="FAy-en-QJ7" secondAttribute="trailing" constant="5" id="Yd1-Rs-Qqd"/>
+                <constraint firstItem="FAy-en-QJ7" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="lSq-bk-j7t"/>
             </constraints>
             <size key="customSize" width="160" height="44"/>
             <connections>
                 <outlet property="colorLab" destination="Q69-d7-z4E" id="tYf-ox-4xi"/>
+                <outlet property="priLab" destination="e0e-7T-CzY" id="OuQ-ZO-yTS"/>
             </connections>
             <point key="canvasLocation" x="89" y="51"/>
         </collectionViewCell>

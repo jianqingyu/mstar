@@ -15,4 +15,5 @@ typedef void (^NakedDriSeaBack)(BOOL isSel);
 @property (nonatomic,assign)int cusType;
 @property (nonatomic,  copy)NakedDriSeaBack back;
 @property (nonatomic,strong)NakedDriSeaListInfo *seaInfo;
+@property (nonatomic,assign)BOOL isEvenNum;
 @end

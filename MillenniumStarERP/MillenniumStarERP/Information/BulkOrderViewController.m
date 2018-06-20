@@ -153,7 +153,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     return @"删除";
 }
-//下单
+// 下单
 - (IBAction)conmitClick:(UIButton *)sender {
     if (self.listArr.count==0) {
         return;

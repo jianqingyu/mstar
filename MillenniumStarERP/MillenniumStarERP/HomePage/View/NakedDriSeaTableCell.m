@@ -28,7 +28,8 @@
 - (void)setSeaInfo:(NakedDriSeaListInfo *)seaInfo{
     if (seaInfo) {
         _seaInfo = seaInfo;
-        self.backgroundColor = _seaInfo.isSel?DefaultColor:[UIColor whiteColor];
+        UIColor *baColor = self.isEvenNum?DefaultColor:[UIColor whiteColor];
+        self.backgroundColor = _seaInfo.isSel?CUSTOM_COLOR(250, 210, 184):baColor;
         NSArray *arr = [self arrWithModel];
         if (self.mutBtns.count==0) {
             [self creatBtnWithInfo:arr];

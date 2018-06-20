@@ -56,7 +56,6 @@
     [self searchClick];
     return YES;
 }
-
 #pragma mark -- 网络请求
 - (void)setupHeaderRefresh{
     // 刷新功能

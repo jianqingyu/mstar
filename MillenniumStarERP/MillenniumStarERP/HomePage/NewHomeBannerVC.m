@@ -76,8 +76,13 @@
     }
     BOOL isMyOn = [[[NSUserDefaults standardUserDefaults]objectForKey:@"myOn"]intValue];
     if (isMyOn) {
-        NSDictionary *myDic = @{@"title":@"我的订单",@"img":@"p_08-1",@"vc":@"SearchOrderVc"};
+        NSDictionary *myDic = @{@"title":@"我的订单",@"img":@"p_08-1",@"vc":@"UserOrderListVC"};
         [self.listVcs addObject:myDic];
+    }
+    BOOL isPerOn = [[[NSUserDefaults standardUserDefaults]objectForKey:@"perOn"]intValue];
+    if (isPerOn) {
+        NSDictionary *perDic = @{@"title":@"个性定制",@"img":@"p_08-1",@"vc":@"NewCustomSecondVC"};
+        [self.listVcs addObject:perDic];
     }
     if (self.listVcs.count==0) {
         return;
@@ -90,15 +95,15 @@
         make.bottom.equalTo(self.view).with.offset(-100);
         make.size.mas_equalTo(CGSizeMake(width, 80));
     }];
-    self.listView = bottomV;
+    self.listView = bottomV; 
 
     CGFloat mar = (width-self.pushVcs.count*60)/(self.pushVcs.count-1);
     for (int i=0; i<self.listVcs.count; i++) {
         NSDictionary *dic = self.listVcs[i];
         CustomTopBtn *right = [CustomTopBtn creatCustomView];
         right.bBtn.tag = i;
-        [right.sBtn setBackgroundImage:[UIImage imageNamed:dic[@"img"]] forState:
-         UIControlStateNormal];
+        [right.sBtn setBackgroundImage:[UIImage imageNamed:dic[@"img"]]
+                              forState:UIControlStateNormal];
         right.titleLab.attributedText = [self setShadow:dic[@"title"]];
         [right.bBtn addTarget:self action:@selector(openCusClick:)
              forControlEvents:UIControlEventTouchUpInside];
@@ -108,19 +113,8 @@
 }
 
 - (void)openCusClick:(UIButton *)btn{
-    [self resetWindow];
     NSString *class = self.listVcs[btn.tag][@"vc"];
-    const char *className = [class cStringUsingEncoding:NSASCIIStringEncoding];
-    Class newClass = objc_getClass(className);
-    //如果没有则注册一个类
-    if (!newClass) {
-        Class superClass = [NSObject class];
-        newClass = objc_allocateClassPair(superClass, className, 0);
-        objc_registerClassPair(newClass);
-    }
-    // 创建对象
-    BaseViewController *instance = [[newClass alloc] init];
-    [self.navigationController pushViewController:instance animated:YES];
+    [self openStrViewControllWith:class];
 }
 
 //加载默认地址
@@ -309,20 +303,24 @@
             [self openWindowCusHuateView];
         }
     }else{
-        [self resetWindow];
         NSString *class = self.pushVcs[btn.tag];
-        const char *className = [class cStringUsingEncoding:NSASCIIStringEncoding];
-        Class newClass = objc_getClass(className);
-        //如果没有则注册一个类
-        if (!newClass) {
-            Class superClass = [NSObject class];
-            newClass = objc_allocateClassPair(superClass, className, 0);
-            objc_registerClassPair(newClass);
-        }
-        // 创建对象
-        BaseViewController *instance = [[newClass alloc] init];
-        [self.navigationController pushViewController:instance animated:YES];
+        [self openStrViewControllWith:class];
     }
+}
+
+- (void)openStrViewControllWith:(NSString *)class{
+    [self resetWindow];
+    const char *className = [class cStringUsingEncoding:NSASCIIStringEncoding];
+    Class newClass = objc_getClass(className);
+    //如果没有则注册一个类
+    if (!newClass) {
+        Class superClass = [NSObject class];
+        newClass = objc_allocateClassPair(superClass, className, 0);
+        objc_registerClassPair(newClass);
+    }
+    // 创建对象
+    BaseViewController *instance = [[newClass alloc] init];
+    [self.navigationController pushViewController:instance animated:YES];
 }
 
 - (void)openWindowCusHuateView{

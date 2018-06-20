@@ -42,27 +42,9 @@
             make.top.equalTo(backV).offset(0);
             make.centerX.mas_equalTo(backV.mas_centerX);
             make.height.mas_equalTo(@44);
-            make.width.mas_equalTo(@(SDevWidth*0.6));
+            make.width.mas_equalTo(backV.mas_width).multipliedBy(0.6);
         }];
         self.titleLab = title;
-        
-//        UITextField *title = [[UITextField alloc]init];
-//        title.font = [UIFont systemFontOfSize:18];
-//        title.textAlignment = NSTextAlignmentCenter;
-//        title.text = @"请选择类型";
-//        title.userInteractionEnabled = NO;
-//        title.keyboardType = UIKeyboardTypeNumberPad;
-//        title.delegate = self;
-//        title.inputView = [[UIView alloc]initWithFrame:CGRectZero];
-//        title.inputAccessoryView = [[UIView alloc]init];
-//        [backV addSubview:title];
-//        [title mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(backV).offset(0);
-//            make.centerX.mas_equalTo(backV.mas_centerX);
-//            make.height.mas_equalTo(@44);
-//            make.width.mas_equalTo(@(SDevWidth*0.6));
-//        }];
-//        self.titleLab = title;
         
         UIButton *cancel = [UIButton buttonWithType:UIButtonTypeCustom];
         [cancel setTitle:@"取消" forState:UIControlStateNormal];

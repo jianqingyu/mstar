@@ -14,10 +14,10 @@
 #import "EditAddressVC.h"
 #import "EditPhoneNumVc.h"
 #import "CommonUsedTool.h"
+#import "SaveUserInfo.h"
 #import "MasterCountInfo.h"
 #import "EditShowPriceVC.h"
 #import "UserOrderListVC.h"
-#import "SearchOrderVc.h"
 #import "UserTodayGoldVC.h"
 #import "ChooseAddressCusView.h"
 #import <ShareSDK/ShareSDK.h>
@@ -54,9 +54,8 @@
 
 - (void)setBaseViewData{
     self.textArr = @[@[@"用户名",@"修改头像"],
-                     @[@"设置",@"修改密码",@"管理地址",@"清理缓存",@"订单审核",@"今日金价",@"我的订单"]];
-//    self.textArr = @[@[@"用户名",@"修改头像"],
-//                     @[@"设置",@"修改密码",@"管理地址",@"清理缓存",@"订单审核"]];
+                 @[@"设置",@"修改密码",@"管理地址",@"清理缓存",@"订单审核",
+                   @"今日金价(显示在首页)",@"我的订单(显示在首页)",@"个性定制(显示在首页)"]];
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -107,7 +106,8 @@
     CGFloat width = MIN(SDevWidth, SDevHeight)*0.8;
     cancelBtn.backgroundColor = MAIN_COLOR;
     [cancelBtn setLayerWithW:5 andColor:BordColor andBackW:0.0001];
-    [cancelBtn addTarget:self action:@selector(cancelClick) forControlEvents:UIControlEventTouchUpInside];
+    [cancelBtn addTarget:self action:@selector(cancelClick)
+        forControlEvents:UIControlEventTouchUpInside];
     [cancelBtn setTitle:@"退出登录" forState:UIControlStateNormal];
     [footView addSubview:cancelBtn];
     [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -252,6 +252,13 @@
                 tableCell.accessoryView = switchBtn;
                 [switchBtn addTarget:self action:@selector(myClick:)
                     forControlEvents:UIControlEventTouchUpInside];
+            }else if(indexPath.row==7){
+                UISwitch *switchBtn = [[UISwitch alloc]initWithFrame:CGRectMake(0, 0, 50, 20)];
+                BOOL isOn = [[[NSUserDefaults standardUserDefaults]objectForKey:@"perOn"]intValue];
+                [switchBtn setOn:isOn];
+                tableCell.accessoryView = switchBtn;
+                [switchBtn addTarget:self action:@selector(perClick:)
+                    forControlEvents:UIControlEventTouchUpInside];
             }else{
                 tableCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
@@ -307,7 +314,7 @@
                 UserTodayGoldVC *gold = [UserTodayGoldVC new];
                 [self.navigationController pushViewController:gold animated:YES];
             }else{
-                SearchOrderVc *seaVc = [SearchOrderVc new];
+                UserOrderListVC *seaVc = [UserOrderListVC new];
                 [self.navigationController pushViewController:seaVc animated:YES];
             }
             break;
@@ -325,6 +332,12 @@
     [[NSUserDefaults standardUserDefaults]setObject:@(btn.on) forKey:@"myOn"];
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
+
+- (void)perClick:(UISwitch *)btn{
+    [[NSUserDefaults standardUserDefaults]setObject:@(btn.on) forKey:@"perOn"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+}
+
 //- (void)creatAddView{
 //    UIView *bView = [UIView new];
 //    bView.backgroundColor = CUSTOM_COLOR_ALPHA(0, 0, 0, 0.5);
